@@ -1,0 +1,88 @@
+name: 📚 Docs
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📦 Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.14.0
+
+      - name: 🏗️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build Docs (Nx affected)
+        id: affected_build
+        run: |
+          set -eu
+          BASE="${{ github.event.before }}"
+          HEAD="${{ github.sha }}"
+          if [ -z "${BASE}" ] || [ "${BASE}" = "0000000000000000000000000000000000000000" ]; then
+            BASE="$(git rev-parse HEAD^ || echo "")"
+          fi
+          if [ -z "${BASE}" ]; then
+            echo "No valid BASE commit found, building unconditionally"
+            pnpm nx build "@arkitec-ui/docs"
+          else
+            echo "Checking if `@arkitec-ui/docs` is affected between ${BASE}..${HEAD}"
+            if pnpm nx show projects --affected --base="${BASE}" --head="${HEAD}" | grep -q "@arkitec-ui/docs"; then
+              echo "@arkitec-ui/docs is affected. Building only docs..."
+              pnpm nx build "@arkitec-ui/docs"
+            else
+              echo "@arkitec-ui/docs not affected. Skipping build."
+            fi
+          fi
+          if [ -d apps/docs/dist ]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: ⚙️ Configure Pages
+        if: steps.affected_build.outputs.should_deploy == 'true'
+        uses: actions/configure-pages@v5
+
+      - name: 📦 Upload Pages Artifact
+        if: steps.affected_build.outputs.should_deploy == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/docs/dist
+
+      - name: 🚀 Deploy to GitHub Pages
+        if: steps.affected_build.outputs.should_deploy == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: ⏭️ Skip deploy (docs not affected)
+        if: steps.affected_build.outputs.should_deploy != 'true'
+        run: |
+          echo "Skipping deploy - `@arkitec-ui/docs` is not affected in this push."

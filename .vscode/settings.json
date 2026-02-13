@@ -1,0 +1,63 @@
+{
+  "nxConsole.generateAiAgentRules": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[javascript]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "editor.codeActionsOnSave": {
+    "quickfix.oxc": "explicit",
+    "source.organizeImports.oxc": "explicit",
+    "source.fixAll.oxc": "explicit"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.tanstack": true,
+    "**/node_modules": true,
+    ".nitro": true,
+    ".output": true,
+    ".nx": true,
+    "tmp": true,
+    "**/dist": false,
+    "node_modules": true,
+    ".husky": false,
+    "bun.lock": true
+  },
+  "files.watcherExclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "search.exclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript][typescript][javascriptreact][typescriptreact][json][jsonc][css][graphql]": {
+    "editor.defaultFormatter": "dprint.dprint"
+  },
+  "editor.formatOnPaste": true,
+  "emmet.showExpandedAbbreviation": "never"
+}

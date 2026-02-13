@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/solid/query"
+    },
+    {
+      "path": "./packages/node/better-auth"
+    },
+    {
+      "path": "./apps/node-auth-app"
+    }
+  ],
+  "compilerOptions": {
+    "strictNullChecks": true
+  }
+}
