@@ -1,0 +1,45 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "arkitect-ui",
+  "homepage": "https://devx-op.github.io/arkitect-ui/",
+  "items": [
+    {
+      "name": "r/button",
+      "type": "registry:ui",
+      "title": "React button",
+      "description": "button component for react",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge",
+        "class-variance-authority",
+        "@ark-ui/react",
+        "react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/button",
+      "type": "registry:ui",
+      "title": "Solid button",
+      "description": "button component for solid",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge",
+        "class-variance-authority",
+        "@ark-ui/solid",
+        "solid-js"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
+}

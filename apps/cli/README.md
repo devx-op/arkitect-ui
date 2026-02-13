@@ -61,7 +61,7 @@ bun apps/cli/dist/src/main.js [command] [options]
 ### Global Installation (Coming Soon)
 
 ```bash
-npm install -g @arkitec-ui/cli
+npm install -g @arkitect-ui/cli
 arkitect-ui [command] [options]
 ```
 

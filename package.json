@@ -1,5 +1,5 @@
 {
-  "name": "@arkitec-ui/repo",
+  "name": "@arkitect-ui/repo",
   "version": "1.0.0",
   "license": "MIT",
   "description": "Arkitec-ui set of components for SolidJs and React",
@@ -16,7 +16,8 @@
     "lint:many": "pnpm nx run-many --target=lint && pnpm exec dprint check",
     "publish:affected": "pnpm nx publish-affected",
     "release:affected": "pnpm nx release-affected",
-    "release:affected:dry-run": "pnpm nx release-affected-dry-run"
+    "release:affected:dry-run": "pnpm nx release-affected-dry-run",
+    "registry:build": "mkdir -p apps/docs/public/r/r apps/docs/public/r/s && pnpm exec shadcn build --output apps/docs/public/r"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
@@ -29,6 +30,7 @@
     "@nx/js": "catalog:",
     "@nx/node": "catalog:",
     "@nx/react": "catalog:",
+    "@nx/storybook": "catalog:",
     "@nx/vite": "catalog:",
     "@nx/vitest": "22.4.5",
     "@nx/web": "catalog:",
@@ -47,6 +49,8 @@
     "nx": "22.4.5",
     "nx-oxlint": "catalog:",
     "oxlint": "1.42.0",
+    "shadcn": "catalog:",
+    "ts-patch": "catalog:",
     "tslib": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
@@ -88,5 +92,8 @@
       "bun"
     ]
   },
-  "packageManager": "pnpm@10.29.3"
+  "packageManager": "pnpm@10.29.3",
+  "dependencies": {
+    "vite-tsconfig-paths": "catalog:"
+  }
 }

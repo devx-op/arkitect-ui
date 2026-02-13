@@ -1,5 +1,5 @@
 {
-  "name": "@arkitec-ui/cli",
+  "name": "@arkitect-ui/cli",
   "version": "0.1.0",
   "description": "CLI tool for creating Effect-TS monorepos and managing components",
   "type": "module",

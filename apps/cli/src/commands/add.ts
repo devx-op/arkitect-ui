@@ -13,7 +13,7 @@ const componentNameArg = Args.text({ name: "component-name" }).pipe(
 const registryOption = Options.text("registry").pipe(
   Options.withAlias("r"),
   Options.withDescription("Registry to use for the component"),
-  Options.withDefault("@arkitec-ui/ui"),
+  Options.withDefault("@arkitect-ui/ui"),
 )
 
 const versionOption = Options.text("version").pipe(

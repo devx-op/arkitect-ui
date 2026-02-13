@@ -1,0 +1,68 @@
+{
+  "name": "@arkitect-ui/react",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "description": "Arkitect UI React Components",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./primitives/*": {
+      "types": "./src/primitives/*.d.ts",
+      "default": "./src/primitives/*.js"
+    },
+    "./features/dashboard/*": {
+      "types": "./src/features/dashboard/*.d.ts",
+      "default": "./src/features/dashboard/*.js"
+    },
+    "./*": {
+      "types": "./src/*.d.ts",
+      "default": "./src/*.js"
+    },
+    "./app.css": "./src/app.css",
+    "./base.css": "./src/base.css"
+  },
+  "dependencies": {
+    "@arkitect-ui/shared": "workspace:*",
+    "@ark-ui/react": "catalog:",
+    "class-variance-authority": "catalog:",
+    "clsx": "catalog:",
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "react-use-measure": "catalog:",
+    "recharts": "catalog:",
+    "shadcn": "catalog:",
+    "sonner": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tailwindcss": "catalog:",
+    "tw-animate-css": "catalog:"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "catalog:",
+    "@arkitect-ui/monorepo-tools": "workspace:*",
+    "@nx/vite": "catalog:",
+    "@storybook/addon-a11y": "catalog:",
+    "@storybook/addon-docs": "catalog:",
+    "@storybook/addon-postcss": "catalog:",
+    "@storybook/addon-vitest": "catalog:",
+    "@storybook/react": "catalog:",
+    "@storybook/react-vite": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
+    "autoprefixer": "catalog:",
+    "glob": "catalog:",
+    "jsdom": "catalog:",
+    "postcss": "catalog:",
+    "storybook": "catalog:",
+    "vite": "catalog:"
+  }
+}

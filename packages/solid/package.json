@@ -1,0 +1,51 @@
+{
+  "name": "@arkitect-ui/solid",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.tsx",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.tsx"
+    },
+    "./*": {
+      "types": "./src/*.d.ts",
+      "default": "./src/*.tsx"
+    }
+  },
+  "dependencies": {
+    "@arkitect-ui/shared": "workspace:*",
+    "@ark-ui/solid": "catalog:",
+    "class-variance-authority": "catalog:",
+    "clsx": "catalog:",
+    "lucide-solid": "catalog:",
+    "solid-js": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tailwindcss": "catalog:",
+    "tw-animate-css": "catalog:",
+    "storybook-solidjs-vite": "catalog:"
+  },
+  "devDependencies": {
+    "@arkitect-ui/monorepo-tools": "workspace:*",
+    "@nx/vite": "catalog:",
+    "@solidjs/testing-library": "catalog:",
+    "@chromatic-com/storybook": "catalog:",
+    "@storybook/addon-a11y": "catalog:",
+    "@storybook/addon-docs": "catalog:",
+    "@storybook/addon-postcss": "catalog:",
+    "@storybook/addon-vitest": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "vite-plugin-dts": "catalog:",
+    "autoprefixer": "catalog:",
+    "jsdom": "catalog:",
+    "postcss": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "storybook": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-solid": "catalog:",
+    "vitest": "catalog:"
+  }
+}

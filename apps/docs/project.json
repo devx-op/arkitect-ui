@@ -1,6 +1,6 @@
 {
   "$schema": "./../../node_modules/nx/schemas/project-schema.json",
-  "name": "@arkitec-ui/docs",
+  "name": "@arkitect-ui/docs",
   "projectType": "application",
   "sourceRoot": "apps/docs/src",
   "tags": ["docs"],

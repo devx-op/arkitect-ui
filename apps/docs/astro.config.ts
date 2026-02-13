@@ -24,16 +24,20 @@ export default defineConfig({
                 label: "Getting Started",
                 items: ["react/getting-started", "react/installation"],
               },
-              {
+              /*{
                 label: "Packages",
                 items: ["react/packages/react-query", "react/packages/react-ui", "react/packages/chat-react"],
-              },
+              },*/
               {
+                label: "Components",
+                items: ["react/components/button"],
+              },
+              /*{
                 label: "Reference",
                 autogenerate: {
                   directory: "react/reference",
                 },
-              },
+              },*/
             ],
           },
           {
@@ -46,19 +50,23 @@ export default defineConfig({
                 label: "Getting Started",
                 items: ["solid/getting-started", "solid/installation"],
               },
-              {
+              /*{
                 label: "Packages",
                 items: ["solid/packages/solid-effect-atom", "solid/packages/solid-query", "solid/packages/solid-ui"],
-              },
+              },*/
               {
+                label: "Components",
+                items: ["solid/components/button"],
+              },
+              /*{
                 label: "Reference",
                 autogenerate: {
                   directory: "solid/reference",
                 },
-              },
+              },*/
             ],
           },
-          {
+          /*{
             label: "Backend",
             icon: "bars",
             link: "backend/",
@@ -101,7 +109,7 @@ export default defineConfig({
                 },
               },
             ],
-          },
+          },*/
         ]),
         startlightThemeNova(),
       ],
