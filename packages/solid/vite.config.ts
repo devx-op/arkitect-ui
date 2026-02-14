@@ -16,7 +16,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@/lib/utils": path.resolve(__dirname, "../../shared/src/lib/utils.ts"),
+      "@/lib/utils": path.resolve(__dirname, "../shared/src/lib/utils.ts"),
       "@": path.resolve(__dirname, "./src"),
     },
   },
@@ -39,5 +39,7 @@ export default defineConfig({
         inline: [/solid-js/],
       },
     },
+    // Pasar automáticamente cuando no hay tests
+    passWithNoTests: true,
   },
 })

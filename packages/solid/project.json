@@ -1,7 +1,7 @@
 {
-  "name": "@arkitect-ui/react",
+  "name": "@arkitect-ui/solid",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/react/src",
+  "sourceRoot": "packages/solid/src",
   "projectType": "library",
   "tags": ["type:ui", "scope:shared"],
   "targets": {
@@ -9,8 +9,8 @@
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "packages/react/dist",
-        "configFile": "packages/react/vite.config.ts",
+        "outputPath": "packages/solid/dist",
+        "configFile": "packages/solid/vite.config.ts",
         "generatePackageJson": true
       }
     },
@@ -18,7 +18,7 @@
       "executor": "nx-oxlint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/react/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["packages/solid/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {
@@ -26,7 +26,7 @@
       "outputs": ["{options.reportsDirectory}"],
       "options": {
         "passWithNoTests": true,
-        "reportsDirectory": "{workspaceRoot}/coverage/packages/react"
+        "reportsDirectory": "{workspaceRoot}/coverage/packages/solid"
       }
     }
   }

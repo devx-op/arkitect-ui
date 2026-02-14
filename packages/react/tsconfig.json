@@ -1,11 +1,19 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.storybook.json"
+  "extends": "@arkitect-ui/monorepo-tools/tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "outDir": "./dist",
+    "composite": false,
+    "declaration": true,
+    "noEmit": false,
+    "types": ["node", "vite/client"],
+    "baseUrl": ".",
+    "rootDirs": ["./src", "../../shared/src"],
+    "paths": {
+      "@/lib/*": ["../shared/src/lib/*"],
+      "@/components/ui/*": ["./src/components/ui/*"]
     }
-  ]
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
 }

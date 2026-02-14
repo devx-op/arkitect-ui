@@ -6,11 +6,11 @@
     "composite": false,
     "declaration": true,
     "noEmit": false,
-    "types": ["node"],
+    "types": ["node", "vite/client"],
     "baseUrl": ".",
     "rootDirs": ["./src", "../../shared/src"],
     "paths": {
-      "@/lib/*": ["./../shared/src/lib/*"],
+      "@/lib/*": ["../shared/src/lib/*"],
       "@/components/ui/*": ["./src/components/ui/*"]
     }
   },

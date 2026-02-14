@@ -1,6 +1,9 @@
 name: 🚀 CD
 
 on:
+  push:
+    branches:
+      - master
 
 permissions:
   contents: write # Needed for creating commits and tags

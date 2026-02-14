@@ -3,28 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "./src/index.js",
-  "types": "./src/index.d.ts",
+  "main": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
   "description": "Arkitect UI React Components",
   "exports": {
     ".": {
-      "types": "./src/index.d.ts",
-      "default": "./src/index.js"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.es.js"
     },
     "./primitives/*": {
-      "types": "./src/primitives/*.d.ts",
-      "default": "./src/primitives/*.js"
+      "types": "./dist/primitives/*.d.ts",
+      "default": "./dist/primitives/*.es.js"
     },
     "./features/dashboard/*": {
-      "types": "./src/features/dashboard/*.d.ts",
-      "default": "./src/features/dashboard/*.js"
+      "types": "./dist/features/dashboard/*.d.ts",
+      "default": "./dist/features/dashboard/*.es.js"
     },
     "./*": {
-      "types": "./src/*.d.ts",
-      "default": "./src/*.js"
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.es.js"
     },
-    "./app.css": "./src/app.css",
-    "./base.css": "./src/base.css"
+    "./app.css": "./dist/app.css",
+    "./base.css": "./dist/base.css"
   },
   "dependencies": {
     "@arkitect-ui/shared": "workspace:*",
