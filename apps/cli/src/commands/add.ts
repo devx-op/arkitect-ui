@@ -16,13 +16,13 @@ const REGISTRY_BASE_URL = "https://devx-op.github.io/arkitect-ui/r"
 
 // Arguments and options for add command
 const componentNameArg = Args.text({ name: "component-name" }).pipe(
-  Args.withDescription("Name of the component to add"),
+  Args.withDescription("Name of the Component to add"),
   Args.optional,
 )
 
 const allOption = Options.boolean("all").pipe(
   Options.withAlias("a"),
-  Options.withDescription("Install all available components"),
+  Options.withDescription("Install all available Components"),
   Options.withDefault(false),
 )
 
