@@ -1,0 +1,93 @@
+---
+title: Getting Started (React)
+description: Set up Tailwind CSS and Ark UI for React, then add arkitect-ui components via CLI or manually.
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+## Prerequisites
+
+- Node.js and pnpm installed
+- A React project (Vite, Next.js, or similar)
+- Tailwind CSS (v4) setup — see official docs: https://tailwindcss.com/docs
+- Ark UI for React
+
+## 1) Install Tailwind CSS
+
+Follow Tailwind’s guide for your framework. Typical steps:
+
+```bash
+pnpm add -D tailwindcss
+npx tailwindcss init
+```
+
+Add Tailwind to your global stylesheet:
+
+```css
+@import "tailwindcss";
+```
+
+Ensure Tailwind scans your React source files (adjust paths as needed):
+
+```txt
+src/**/*.{ts,tsx}
+```
+
+## 2) Install Ark UI (React)
+
+```bash
+pnpm add @ark-ui/react
+```
+
+Ark UI provides accessible primitives and logic; arkitect-ui builds styled components using Tailwind on top of these primitives.
+
+## 3) Add arkitect-ui components
+
+Choose your workflow: CLI or Manual.
+
+<Tabs>
+  <TabItem label="CLI (Recommended)">
+
+Run the initializer to scaffold config and components:
+
+```bash
+npx arkitect-ui init
+```
+
+Add specific components when you need them:
+
+```bash
+npx arkitect-ui add button
+```
+
+This copies the component source into your project so you have full control (styles, variants, code).
+
+  </TabItem>
+  <TabItem label="Manual">
+
+Copy components directly from the documentation (e.g., Button) into `src/components/ui/`. Import and use:
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+export function Example() {
+  return <Button variant="default">Click me</Button>;
+}
+```
+
+Manual copy-paste gives you complete ownership over styles and behavior, just like shadcn/ui.
+
+  </TabItem>
+</Tabs>
+
+## 4) Verify setup
+
+- Import your global stylesheet (Tailwind) once in your app entry
+- Render a sample component (Button) to confirm styles and behavior
+
+## Next steps
+
+- Browse React components: /arkitect-ui/react/
+- Add more components via CLI or copy-paste
+- Customize Tailwind tokens to match your brand
+

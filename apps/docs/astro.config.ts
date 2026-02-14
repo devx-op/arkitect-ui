@@ -25,7 +25,10 @@ export default defineConfig({
     ],
     resolve: {
       alias: {
-        "@/lib/utils": resolve(__dirname, "../../packages/shared/src/lib/utils.ts"),
+        "@/lib/utils": resolve(
+          __dirname,
+          "../../packages/shared/src/lib/utils.ts",
+        ),
       },
     },
   },
@@ -38,6 +41,11 @@ export default defineConfig({
       include: ["**/packages/solid/**", "**/solid/**"],
     }),
     starlight({
+      title: "",
+      logo: {
+        light: "./src/assets/light-logo.svg",
+        dark: "./src/assets/dark-logo.svg",
+      },
       plugins: [
         startlightSidebarTopics([
           {
@@ -82,8 +90,13 @@ export default defineConfig({
       components: {
         Sidebar: "./src/components/Sidebar.astro",
       },
-      title: "arkitect-ui",
-      social: [{ icon: "github", label: "GitHub", href: "https://github.com/devx-op/arkitect-ui" }],
+      social: [
+        {
+          icon: "github",
+          label: "GitHub",
+          href: "https://github.com/devx-op/arkitect-ui",
+        },
+      ],
       /* 			sidebar: [
               {
                   label: 'Guides',

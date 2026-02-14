@@ -1,0 +1,93 @@
+---
+title: Primeros pasos (SolidJS)
+description: Configura Tailwind CSS y Ark UI para SolidJS, luego añade componentes de arkitect-ui vía CLI o manualmente.
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+
+## Requisitos previos
+
+- Node.js y pnpm instalados
+- Un proyecto SolidJS (Vite o similar)
+- Configuración de Tailwind CSS (v4) — consulta la documentación oficial: https://tailwindcss.com/docs
+- Ark UI para SolidJS
+
+## 1) Instalar Tailwind CSS
+
+Sigue la guía de Tailwind para tu framework. Pasos típicos:
+
+```bash
+pnpm add -D tailwindcss
+npx tailwindcss init
+```
+
+Añade Tailwind a tu hoja de estilos global:
+
+```css
+@import "tailwindcss";
+```
+
+Asegura que Tailwind escanee tus archivos fuente de Solid (ajusta rutas según necesites):
+
+```txt
+src/**/*.{ts,tsx}
+```
+
+## 2) Instalar Ark UI (Solid)
+
+```bash
+pnpm add @ark-ui/solid
+```
+
+Ark UI proporciona primitivas accesibles y lógica; arkitect-ui construye componentes estilizados con Tailwind sobre estas primitivas.
+
+## 3) Añadir componentes de arkitect-ui
+
+Elige tu flujo de trabajo: CLI o Manual.
+
+<Tabs>
+  <TabItem label="CLI (Recomendado)">
+
+Ejecuta el inicializador para configurar y copiar componentes:
+
+```bash
+npx arkitect-ui init
+```
+
+Añade componentes específicos cuando los necesites:
+
+```bash
+npx arkitect-ui add button --framework=solid
+```
+
+Esto copia el código del componente a tu proyecto para que tengas control total (estilos, variantes, código).
+
+  </TabItem>
+  <TabItem label="Manual">
+
+Copia componentes directamente desde la documentación (por ejemplo, Button) a `src/components/ui/`. Importa y usa:
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+export function Ejemplo() {
+  return <Button variant="default">Haz clic</Button>;
+}
+```
+
+El copiar-pegar te da propiedad completa sobre estilos y comportamiento, inspirado en shadcn/ui.
+
+  </TabItem>
+</Tabs>
+
+## 4) Verificar configuración
+
+- Importa tu hoja de estilos global (Tailwind) una vez en la entrada de tu app
+- Renderiza un componente de ejemplo (Button) para confirmar estilos y comportamiento
+
+## Próximos pasos
+
+- Explorar componentes de Solid: /arkitect-ui/solid/
+- Añadir más componentes vía CLI o copiar-pegar
+- Personalizar tokens de Tailwind para que coincidan con tu marca
+

@@ -1,21 +1,15 @@
 ---
 title: Bienvenido a arkitect-ui
-description: Aplicaciones componibles y con tipos seguros usando Effect en React, SolidJS y Node.js
+description: Una librería de componentes UI multi-framework construida sobre Ark UI y Tailwind CSS. Componentes copiar-pegar o instalables para React y SolidJS para construir tu sistema de diseño.
 template: splash
 hero:
   title: |
     Bienvenido a
-    <span
-      class="font-black text-transparent
-        bg-clip-text bg-gradient-to-b
-        from-accent-700 to-accent-400
-        dark:from-accent-500 dark:to-accent-200"
-    >
-      arkitect-ui
-    </span>
-  tagline: Crea aplicaciones robustas y con tipos seguros usando Effect en React, SolidJS y Node.js
+  tagline: Una librería de componentes UI multi-framework construida sobre Ark UI y Tailwind CSS. Componentes copiar-pegar o instalables para React y SolidJS para construir tu sistema de diseño.
   image:
-    file: ../../../assets/houston.webp
+    dark: ../../../assets/dark-logo.svg
+    light: ../../../assets/light-logo.svg
+    alt: arkitect-ui logo
   actions:
     - text: Empezar
       link: react/getting-started/
@@ -35,42 +29,60 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
 
 ## ¿Qué es arkitect-ui?
 
-arkitect-ui
+arkitect-ui es una librería de componentes UI multi-framework que proporciona componentes copiar-pegar e instalables construidos sobre [Ark UI](https://ark-ui.com) y [Tailwind CSS](https://tailwindcss.com). Inspirada en [Tailwind CSS](https://tailwindcss.com), [Tark UI](https://tark-ui.com) y [shadcn/ui](https://ui.shadcn.com), te ayuda a construir tu propio sistema de diseño con componentes bellamente diseñados que funcionan perfectamente en React y SolidJS.
 
-## Plataformas
+## Soporte de Frameworks
 
 <CardGrid stagger>
 	<Card title="React" icon="react">
-    	[Explorar paquetes de React →](react/)
+		Componentes hermosos y accesibles para React con soporte completo de TypeScript. Copia-pega o instala componentes directamente en tu proyecto.
+
+    	[Explorar Componentes React →](react/)
     </Card>
     <Card title="SolidJS" icon="seti:sublime">
-    	[Explorar paquetes de SolidJS →](solid/)
+    	Componentes reactivos optimizados para SolidJS con el mismo diseño hermoso y características de accesibilidad.
+
+    	[Explorar Componentes SolidJS →](solid/)
+    </Card>
+    <Card title="Copiar-pegar o Instalar" icon="document">
+    	Elige tu flujo de trabajo preferido: copia componentes directamente en tu proyecto o instálalos como paquetes. Acceso completo al código fuente incluido.
+
+    	[Comenzar →](getting-started/)
     </Card>
 
 </CardGrid>
 
-## Características clave
+## Características Principales
 
-### Consistencia multiplataforma
+### Construido sobre Ark UI
 
-Comparte lógica de negocio y tipos entre aplicaciones de React, SolidJS y Node.js para un comportamiento consistente.
+Aprovecha la base robusta de Ark UI para accesibilidad, navegación por teclado y lógica de componentes, asegurando que tus componentes funcionen perfectamente desde el primer momento.
 
-## Inicio rápido
+### Integración con Tailwind CSS
 
-Elige tu plataforma para comenzar:
+Estilizado hermoso con clases de utilidad de Tailwind CSS. Fácil de personalizar y extender para que coincida con tu marca y requisitos de diseño.
 
-<CardGrid>
-	<Card title="Aplicación React" icon="react">
+### Soporte Multi-Framework
 
-    	[Inicio rápido React →](react/getting-started/)
-    </Card>
-    <Card title="Aplicación SolidJS" icon="seti:sublime">
-    	[Inicio rápido SolidJS →](solid/getting-started/)
-    </Card>
+API y diseño consistentes entre React y SolidJS. Construye tu sistema de diseño una vez, úsalo en todas partes.
 
-</CardGrid>
+### Experiencia de Desarrollador
 
-## Comunidad y soporte
+Soporte de TypeScript incluido, documentación completa y ejemplos. Los componentes están completamente tipados y listos para usar.
+
+### Flujo de Trabajo Flexible
+
+Copia-pega componentes directamente en tu proyecto para máximo control, o instálalos como paquetes por conveniencia. Obtienes el código fuente completo de cualquier manera.
+
+## Qué Incluye
+
+- **Componentes UI** - Botones, formularios, navegación, layouts y más
+- **Tokens de Diseño** - Colores, tipografía, espaciado y otras bases del sistema de diseño  
+- **Ejemplos** - Ejemplos del mundo real y casos de uso para cada componente
+- **Documentación** - Guías completas para personalización y uso
+- **Soporte TypeScript** - Definiciones de tipos completas y soporte IntelliSense
+
+## Comunidad y Soporte
 
 <CardGrid>
 	<Card title="GitHub" icon="github">

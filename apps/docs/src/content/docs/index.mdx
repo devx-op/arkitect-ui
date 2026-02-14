@@ -1,21 +1,15 @@
 ---
 title: Welcome to arkitect-ui
-description: Type-safe, composable applications with Effect across React, SolidJS, and Node.js
+description: A multi-framework UI component library built on Ark UI and Tailwind CSS. Copy-paste or installable components for React and SolidJS to build your design system.
 template: splash
 hero:
   title: |
     Welcome to
-    <span
-      class="font-black text-transparent
-        bg-clip-text bg-gradient-to-b
-        from-accent-700 to-accent-400
-        dark:from-accent-500 dark:to-accent-200"
-    >
-      arkitect-ui
-    </span>
-  tagline: Build robust, type-safe applications with Effect across React, SolidJS, and Node.js
+  tagline: A multi-framework UI component library built on Ark UI and Tailwind CSS. Copy-paste or installable components for React and SolidJS to build your design system.
   image:
-    file: ../../assets/houston.webp
+    dark: ../../assets/dark-logo.svg
+    light: ../../assets/light-logo.svg
+    alt: arkitect-ui logo
   actions:
     - text: Get Started
       link: react/getting-started/
@@ -35,41 +29,58 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
 
 ## What is arkitect-ui?
 
-## Platform Support
+arkitect-ui is a multi-framework UI component library that provides copy-paste and installable components built on top of [Ark UI](https://ark-ui.com) and [Tailwind CSS](https://tailwindcss.com). Inspired by [Tailwind CSS](https://tailwindcss.com), [Tark UI](https://tark-ui.com), and [shadcn/ui](https://ui.shadcn.com), it helps you build your own design system with beautifully designed components that work seamlessly across React and SolidJS.
+
+## Framework Support
 
 <CardGrid stagger>
 	<Card title="React" icon="react">
-		Effect integration with TanStack Query, comprehensive UI components, and real-time chat functionality for React applications.
+		Beautiful, accessible components for React with full TypeScript support. Copy-paste or install components directly into your project.
 
-    	[Explore React packages →](react/)
+    	[Browse React Components →](react/)
     </Card>
     <Card title="SolidJS" icon="seti:sublime">
-    	Reactive Effect integration optimized for SolidJS's fine-grained reactivity system with UI components and chat features.
+    	Reactive components optimized for SolidJS with the same beautiful design and accessibility features.
 
-    	[Explore SolidJS packages →](solid/)
+    	[Browse SolidJS Components →](solid/)
+    </Card>
+    <Card title="Copy-Paste or Install" icon="document">
+    	Choose your preferred workflow - copy components directly into your project or install them as packages. Full source code access included.
+
+    	[Get Started →](getting-started/)
     </Card>
 
 </CardGrid>
 
 ## Key Features
 
-### Type Safety First
+### Built on Ark UI
 
-Every package is built with TypeScript and Effect's powerful type system, providing compile-time guarantees and excellent IDE support.
+Leverages the robust foundation of Ark UI for accessibility, keyboard navigation, and component logic, ensuring your components work flawlessly out of the box.
 
-### Cross-Platform Consistency
+### Tailwind CSS Integration
 
-Components across React, SolidJS, applications for consistent behavior.
+Beautiful styling with Tailwind CSS utility classes. Easy to customize and extend to match your brand and design requirements.
 
-## Quick Start
+### Multi-Framework Support
 
-Choose your platform to get started:
+Consistent API and design across React and SolidJS. Build your design system once, use it everywhere.
 
-<CardGrid>
-	<Card title="React Application" icon="react">
-  </Card>
+### Developer Experience
 
-</CardGrid>
+TypeScript support out of the box, comprehensive documentation, and examples. Components are fully typed and ready to use.
+
+### Flexible Workflow
+
+Copy-paste components directly into your project for maximum control, or install them as packages for convenience. You get the full source code either way.
+
+## What's Included
+
+- **UI Components** - Buttons, forms, navigation, layouts, and more
+- **Design Tokens** - Colors, typography, spacing, and other design system foundations  
+- **Examples** - Real-world examples and use cases for each component
+- **Documentation** - Comprehensive guides for customization and usage
+- **TypeScript Support** - Full type definitions and IntelliSense support
 
 ## Community & Support
 
@@ -86,7 +97,3 @@ Choose your platform to get started:
     </Card>
 
 </CardGrid>
-
-## Deployment Verification
-
-This update verifies GitHub Pages deployment triggered by Nx affected changes to the docs project.
