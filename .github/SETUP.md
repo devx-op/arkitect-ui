@@ -28,11 +28,13 @@ Configure these secrets in your GitHub repository settings (`Settings > Secrets 
 - **Method**: OIDC (OpenID Connect) - more secure than personal tokens
 - **Setup**: Link your package to your GitHub repository in JSR
 - **How to configure**:
-  1. Go to your package `@arkitec-ui/solid-query` on [jsr.io](https://jsr.io/)
-  2. Go to the **"Settings"** tab
-  3. In **"GitHub repository"** field, enter your repository name (e.g., `your-username/arkitect-ui`)
-  4. Click **"Link"** to connect the package to your repository
-  5. No secrets needed in GitHub - OIDC handles authentication automatically
+
+1. Go to your package `@arkitect-ui/solid-query` on [jsr.io](https://jsr.io/)
+2. Go to the **"Settings"** tab
+3. In **"GitHub repository"** field, enter your repository name (e.g., `your-username/arkitect-ui`)
+4. Click **"Link"** to connect the package to your repository
+5. No secrets needed in GitHub - OIDC handles authentication automatically
+
 - **Reference**: [JSR Publishing from GitHub Actions](https://jsr.io/docs/publishing-packages#publishing-from-github-actions)
 
 ## 🏗️ Workflow Overview
@@ -122,7 +124,7 @@ always-auth=true
     },
     "releaseTagPattern": "release/{version}",
     "version": {
-      "preVersionCommand": "pnpm nx build @arkitec-ui/react-remix @arkitec-ui/react-router"
+      "preVersionCommand": "pnpm nx build @arkitect-ui/react-remix @arkitect-ui/react-router"
     }
   }
 }

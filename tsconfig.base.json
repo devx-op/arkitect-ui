@@ -14,10 +14,7 @@
     "strict": true,
     "target": "es2022",
     "baseUrl": ".",
-    "paths": {
-      "@arkitec-ui/solid-effect-atom": ["packages/solid/effect-atom/src/index.ts"]
-    },
-    "customConditions": ["@arkitec-ui/source"],
+    "customConditions": ["@arkitect-ui/source"],
     "plugins": [
       {
         "name": "@effect/language-service",
@@ -26,7 +23,7 @@
           "effect",
           "@effect/platform",
           "@effect/platform-node",
-          "@arkitec-ui/cli"
+          "@arkitect-ui/cli"
         ],
         "diagnosticSeverity": {
           "importFromBarrel": "error"

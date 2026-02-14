@@ -49,14 +49,14 @@ jobs:
           fi
           if [ -z "${BASE}" ]; then
             echo "No valid BASE commit found, building unconditionally"
-            pnpm nx build "@arkitec-ui/docs"
+            pnpm nx build "@arkitect-ui/docs"
           else
-            echo "Checking if `@arkitec-ui/docs` is affected between ${BASE}..${HEAD}"
-            if pnpm nx show projects --affected --base="${BASE}" --head="${HEAD}" | grep -q "@arkitec-ui/docs"; then
-              echo "@arkitec-ui/docs is affected. Building only docs..."
-              pnpm nx build "@arkitec-ui/docs"
+            echo "Checking if `@arkitect-ui/docs` is affected between ${BASE}..${HEAD}"
+            if pnpm nx show projects --affected --base="${BASE}" --head="${HEAD}" | grep -q "@arkitect-ui/docs"; then
+              echo "@arkitect-ui/docs is affected. Building only docs..."
+              pnpm nx build "@arkitect-ui/docs"
             else
-              echo "@arkitec-ui/docs not affected. Skipping build."
+              echo "@arkitect-ui/docs not affected. Skipping build."
             fi
           fi
           if [ -d apps/docs/dist ]; then
@@ -83,4 +83,4 @@ jobs:
       - name: ⏭️ Skip deploy (docs not affected)
         if: steps.affected_build.outputs.should_deploy != 'true'
         run: |
-          echo "Skipping deploy - `@arkitec-ui/docs` is not affected in this push."
+          echo "Skipping deploy - `@arkitect-ui/docs` is not affected in this push."

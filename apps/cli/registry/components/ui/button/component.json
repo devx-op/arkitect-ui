@@ -2,7 +2,7 @@
   "name": "button",
   "version": "1.0.0",
   "description": "A customizable button component with variants and sizes",
-  "registry": "@arkitec-ui/ui",
+  "registry": "@arkitect-ui/ui",
   "component-type": "ui",
   "framework-support": ["react", "solid"],
   "dependencies": ["class-variance-authority", "clsx"],

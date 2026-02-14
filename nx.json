@@ -150,7 +150,7 @@
     "release-affected-dry-run": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm nx release --projects=@arkitec-ui/solid-query --dry-run",
+        "command": "pnpm nx release --projects=@arkitect-ui/solid-query --dry-run",
         "shell": true
       }
     }
