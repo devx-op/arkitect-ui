@@ -10,8 +10,8 @@
     "noEmit": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@arkiteck-ui/shared-ui/*": ["./src/*"]
+      "@/lib/*": ["../shared/src/lib/*"],
+      "@/components/ui/*": ["./src/components/ui/*"]
     }
   },
   "exclude": [

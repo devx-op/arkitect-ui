@@ -13,6 +13,12 @@ import type { UserConfig } from "vite"
 
 export default {
   root: dirname,
+  resolve: {
+    alias: {
+      "@/lib/utils": path.resolve(dirname, "../../shared/src/lib/utils.ts"),
+      "@": path.resolve(dirname, "./src"),
+    },
+  },
   plugins: [nxViteTsPaths()],
   build: {
     outDir: "dist",

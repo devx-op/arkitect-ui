@@ -3,8 +3,12 @@
 import starlight from "@astrojs/starlight"
 import tailwindcss from "@tailwindcss/vite"
 import { defineConfig } from "astro/config"
+import { dirname, resolve } from "node:path"
+import { fileURLToPath } from "node:url"
 import startlightSidebarTopics from "starlight-sidebar-topics"
 import startlightThemeNova from "starlight-theme-nova"
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 import expressiveCode from "astro-expressive-code"
 import react from "@astrojs/react"
@@ -15,7 +19,15 @@ export default defineConfig({
   site: "https://devx-op.github.io",
   base: "/arkitect-ui/",
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [
+      // @ts-expect-error - Type mismatch due to Vite version difference between Astro and Workspace
+      tailwindcss(),
+    ],
+    resolve: {
+      alias: {
+        "@/lib/utils": resolve(__dirname, "../../packages/shared/src/lib/utils.ts"),
+      },
+    },
   },
   integrations: [
     expressiveCode(),
@@ -46,12 +58,6 @@ export default defineConfig({
                 label: "Components",
                 items: ["react/components/button"],
               },
-              /*{
-              label: "Reference",
-              autogenerate: {
-                directory: "react/reference",
-              },
-            },*/
             ],
           },
           {
@@ -64,66 +70,12 @@ export default defineConfig({
                 label: "Getting Started",
                 items: ["solid/getting-started", "solid/installation"],
               },
-              /*{
-              label: "Packages",
-              items: ["solid/packages/solid-effect-atom", "solid/packages/solid-query", "solid/packages/solid-ui"],
-            },*/
               {
                 label: "Components",
                 items: ["solid/components/button"],
               },
-              /*{
-              label: "Reference",
-              autogenerate: {
-                directory: "solid/reference",
-              },
-            },*/
             ],
           },
-          /*{
-          label: "Backend",
-          icon: "bars",
-          link: "backend/",
-          id: "backend",
-          items: [
-            {
-              label: "Getting Started",
-              items: ["backend/getting-started", "backend/installation"],
-            },
-            {
-              label: "Packages",
-              items: ["backend/packages/node-better-auth", "backend/packages/node-auth-app"],
-            },
-            {
-              label: "Reference",
-              autogenerate: {
-                directory: "backend/reference",
-              },
-            },
-          ],
-        },
-        {
-          label: "Universal",
-          icon: "puzzle",
-          link: "universal/",
-          id: "universal",
-          items: [
-            {
-              label: "Getting Started",
-              items: ["universal/getting-started", "universal/concepts"],
-            },
-            {
-              label: "Packages",
-              items: ["universal/packages/chat-domain", "universal/packages/shared-types"],
-            },
-            {
-              label: "Reference",
-              autogenerate: {
-                directory: "universal/reference",
-              },
-            },
-          ],
-        },*/
         ]),
         startlightThemeNova(),
       ],

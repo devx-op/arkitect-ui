@@ -15,7 +15,10 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    alias: {},
+    alias: {
+      "@/lib/utils": path.resolve(__dirname, "../../shared/src/lib/utils.ts"),
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
   build: {
     lib: {

@@ -1,16 +1,22 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@arkitect-ui/monorepo-tools/tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
+    "composite": false,
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "bundler",
     "strict": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node"],
+    "baseUrl": ".",
+    "rootDirs": ["./src", "../../shared/src"],
+    "paths": {
+      "@/lib/*": ["../shared/src/lib/*"],
+      "@/components/ui/*": ["./src/components/ui/*"]
+    }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }

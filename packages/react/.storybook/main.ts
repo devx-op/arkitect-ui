@@ -2,9 +2,11 @@ import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin"
 import type { StorybookConfig } from "@storybook/react-vite"
 import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
-import { dirname } from "node:path"
+import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { mergeConfig } from "vite"
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.@(mdx|stories.@(js|jsx|ts|tsx))"],
@@ -22,6 +24,12 @@ const config: StorybookConfig = {
   viteFinal: async (config) =>
     mergeConfig(config, {
       plugins: [react(), nxViteTsPaths(), tailwindcss()],
+      resolve: {
+        alias: {
+          "@/lib/utils": resolve(__dirname, "../../shared/src/lib/utils.ts"),
+          "@": resolve(__dirname, "../src"),
+        },
+      },
     }),
 }
 

@@ -3,14 +3,15 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "outDir": "dist",
+    "composite": false,
     "declaration": true,
     "noEmit": false,
     "types": ["node"],
-    "rootDir": "src",
     "baseUrl": ".",
+    "rootDirs": ["./src", "../../shared/src"],
     "paths": {
-      "@/*": ["./src/*"],
-      "@arkitect-ui/react/*": ["./src/*"]
+      "@/lib/*": ["./../shared/src/lib/*"],
+      "@/components/ui/*": ["./src/components/ui/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
