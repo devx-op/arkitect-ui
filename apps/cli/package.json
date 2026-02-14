@@ -1,7 +1,7 @@
 {
   "name": "@arkitect-ui/cli",
   "version": "0.2.1",
-  "description": "CLI tool for creating Effect-TS monorepos and managing components",
+  "description": "CLI tool managing components for Arkitect-UI",
   "type": "module",
   "bin": {
     "arkitect-ui": "./dist/src/main.js"
@@ -41,5 +41,8 @@
     "type": "git",
     "url": "https://github.com/devx-op/arkitect-ui.git",
     "directory": "apps/cli"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
