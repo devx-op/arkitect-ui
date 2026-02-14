@@ -4,7 +4,7 @@
   "description": "CLI tool for creating Effect-TS monorepos and managing components",
   "type": "module",
   "bin": {
-    "arkitect-ui": "./dist/main.js"
+    "arkitect-ui": "./dist/src/main.js"
   },
   "files": [
     "dist",
@@ -15,15 +15,16 @@
     "@effect/cli": "catalog:",
     "@effect/platform": "catalog:",
     "@effect/platform-node": "catalog:",
+    "chalk": "^5.3.0",
     "effect": "catalog:",
     "handlebars": "^4.7.8",
-    "tar": "^7.4.3",
-    "chalk": "^5.3.0"
+    "tar": "^7.4.3"
   },
   "devDependencies": {
     "@types/handlebars": "^4.1.0",
-    "@types/tar": "^6.1.13",
     "@types/node": "catalog:",
+    "@types/tar": "^6.1.13",
+    "@effect/vitest": "catalog:",
     "typescript": "catalog:"
   },
   "keywords": [
@@ -40,7 +41,5 @@
     "type": "git",
     "url": "https://github.com/devx-op/arkitect-ui.git",
     "directory": "apps/cli"
-  },
-  "peerDependencies": {},
-  "optionalDependencies": {}
+  }
 }

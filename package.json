@@ -17,7 +17,7 @@
     "publish:affected": "pnpm nx publish-affected",
     "release:affected": "pnpm nx release-affected",
     "release:affected:dry-run": "pnpm nx release-affected-dry-run",
-    "registry:build": "mkdir -p apps/docs/public/r/r apps/docs/public/r/s && pnpm exec shadcn build --output apps/docs/public/r"
+    "registry:build": "mkdir -p apps/docs/public/r/r apps/docs/public/r/s && pnpm exec shadcn build --output apps/docs/public/r && cp registry.json apps/docs/public/r/index.json"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [

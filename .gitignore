@@ -122,3 +122,5 @@ storybook-static/
 
 # References
 _references/
+
+tmp/

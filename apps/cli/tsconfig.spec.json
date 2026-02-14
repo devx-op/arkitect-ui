@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["vitest", "node"],
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@effect/vitest": ["../../_references/effect/packages/vitest/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.spec.ts", "src/**/*.test.ts", "test/**/*.spec.ts", "test/**/*.test.ts"]
+}

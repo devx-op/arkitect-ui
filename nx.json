@@ -91,13 +91,7 @@
   "release": {
     "projectsRelationship": "independent",
     "projects": [
-      "packages/react/remix",
-      "packages/react/router",
-      "packages/node/better-auth",
-      "packages/solid/query",
-      "packages/react/router-better-auth",
-      "packages/prisma",
-      "packages/solid/effect-atom"
+      "apps/cli"
     ],
     "changelog": {
       "automaticFromRef": "HEAD~100",

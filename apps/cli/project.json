@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "name": "cli",
+  "name": "@arkitect-ui/cli",
   "sourceRoot": "apps/cli/src",
   "projectType": "application",
   "targets": {
@@ -43,6 +43,14 @@
       "options": {
         "command": "tsc --noEmit",
         "cwd": "apps/cli"
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": false,
+        "reportsDirectory": "{workspaceRoot}/coverage/apps/cli"
       }
     }
   },
