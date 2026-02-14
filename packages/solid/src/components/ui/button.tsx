@@ -32,11 +32,11 @@ const buttonVariants = cva(
 export interface ButtonProps extends ComponentProps<typeof ark.button>, VariantProps<typeof buttonVariants> {}
 
 export const Button = (props: ButtonProps) => {
-  const [local, rest] = splitProps(props, ["className", "variant", "size"])
+  const [local, rest] = splitProps(props, ["class", "variant", "size"])
 
   return (
     <ark.button
-      className={cn(buttonVariants({ variant: local.variant, size: local.size, className: local.className }))}
+      class={cn(buttonVariants({ variant: local.variant, size: local.size, class: local.class }))}
       {...rest}
     />
   )

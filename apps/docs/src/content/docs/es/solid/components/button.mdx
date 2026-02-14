@@ -1,14 +1,14 @@
 ---
 title: Button
-description: Displays a button or a component that looks like a button.
+description: Muestra un botón o un componente que parece un botón.
 ---
 
-import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
-import buttonCode from "../../../../../../../packages/solid/src/components/ui/button.tsx?raw";
+import { Tabs, TabItem, Code } from '@astrojs/starlight/components';
+import buttonCode from '../../../../../../../../packages/solid/src/components/ui/button.tsx?raw';
 import { Button } from "@arkitect-ui/solid";
 
 <Tabs>
-  <TabItem label="Preview">
+  <TabItem label="Vista previa">
     <div class="flex gap-2 flex-wrap">
       <Button client:visible variant="default">Button</Button>
       <Button client:visible variant="secondary">Secondary</Button>
@@ -18,7 +18,7 @@ import { Button } from "@arkitect-ui/solid";
       <Button client:visible variant="link">Link</Button>
     </div>
   </TabItem>
-  <TabItem label="Code">
+  <TabItem label="Código">
     ```tsx
     import { Button } from "@/components/ui/button"
 
@@ -35,14 +35,17 @@ import { Button } from "@arkitect-ui/solid";
       )
     }
     ```
-
   </TabItem>
 </Tabs>
 
-## Installation
+## Instalación
 
 <Tabs>
-  <TabItem label="CLI">```bash npx arkitect-ui add button ```</TabItem>
+  <TabItem label="CLI">
+    ```bash
+    npx arkitect-ui add button
+    ```
+  </TabItem>
   <TabItem label="Manual">
     <Code code={buttonCode} lang="tsx" title="components/ui/button.tsx" />
   </TabItem>

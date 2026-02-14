@@ -12,6 +12,12 @@ catalogs:
     '@ark-ui/solid':
       specifier: ^4.4.0
       version: 4.10.2
+    '@astrojs/react':
+      specifier: ^4.4.2
+      version: 4.4.2
+    '@astrojs/solid-js':
+      specifier: ^5.1.3
+      version: 5.1.3
     '@astrojs/starlight':
       specifier: 0.36.3
       version: 0.36.3
@@ -99,6 +105,9 @@ catalogs:
     astro:
       specifier: 5.17.1
       version: 5.17.1
+    astro-expressive-code:
+      specifier: 0.41.6
+      version: 0.41.6
     autoprefixer:
       specifier: 10.4.22
       version: 10.4.22
@@ -189,9 +198,6 @@ catalogs:
     tailwindcss:
       specifier: 4.1.18
       version: 4.1.18
-    tailwindcss-animate:
-      specifier: 1.0.7
-      version: 1.0.7
     ts-patch:
       specifier: ^3.2.1
       version: 3.3.0
@@ -361,6 +367,21 @@ importers:
 
   apps/docs:
     dependencies:
+      '@arkitect-ui/react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      '@arkitect-ui/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@arkitect-ui/solid':
+        specifier: workspace:*
+        version: link:../../packages/solid
+      '@astrojs/react':
+        specifier: 'catalog:'
+        version: 4.4.2(@types/node@25.2.3)(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(yaml@2.8.2)
+      '@astrojs/solid-js':
+        specifier: 'catalog:'
+        version: 5.1.3(@testing-library/jest-dom@6.9.1)(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(solid-js@1.9.11)(terser@5.46.0)(yaml@2.8.2)
       '@astrojs/starlight':
         specifier: 'catalog:'
         version: 0.36.3(astro@5.17.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.57.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2))
@@ -373,9 +394,21 @@ importers:
       astro:
         specifier: 'catalog:'
         version: 5.17.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.57.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2)
+      astro-expressive-code:
+        specifier: 'catalog:'
+        version: 0.41.6(astro@5.17.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.57.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2))
+      react:
+        specifier: 'catalog:'
+        version: 19.2.4
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.4(react@19.2.4)
       sharp:
         specifier: 'catalog:'
         version: 0.34.5
+      solid-js:
+        specifier: 'catalog:'
+        version: 1.9.11
       starlight-sidebar-topics:
         specifier: 'catalog:'
         version: 0.6.2(@astrojs/starlight@0.36.3(astro@5.17.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.57.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2)))(astro@5.17.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.57.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2))
@@ -511,9 +544,6 @@ importers:
       tailwindcss:
         specifier: 'catalog:'
         version: 4.1.18
-      tailwindcss-animate:
-        specifier: 'catalog:'
-        version: 1.0.7(tailwindcss@4.1.18)
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -709,8 +739,27 @@ packages:
     resolution: {integrity: sha512-q8VwfU/fDZNoDOf+r7jUnMC2//H2l0TuQ6FkGJL8vD8nw/q5KiL3DS1KKBI3QhI9UQhpJ5dc7AtqfbXWuOgLCQ==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
 
+  '@astrojs/react@4.4.2':
+    resolution: {integrity: sha512-1tl95bpGfuaDMDn8O3x/5Dxii1HPvzjvpL2YTuqOOrQehs60I2DKiDgh1jrKc7G8lv+LQT5H15V6QONQ+9waeQ==}
+    engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
+    peerDependencies:
+      '@types/react': 19.1.13
+      '@types/react-dom': 19.1.9
+      react: ^17.0.2 || ^18.0.0 || ^19.0.0
+      react-dom: ^17.0.2 || ^18.0.0 || ^19.0.0
+
   '@astrojs/sitemap@3.7.0':
     resolution: {integrity: sha512-+qxjUrz6Jcgh+D5VE1gKUJTA3pSthuPHe6Ao5JCxok794Lewx8hBFaWHtOnN0ntb2lfOf7gvOi9TefUswQ/ZVA==}
+
+  '@astrojs/solid-js@5.1.3':
+    resolution: {integrity: sha512-KxfYt4y1d7BuSw6EsN1EaPoGYsIES7bEI6AtTbncuabRUUMZs+mOWOeOdmgnwVLj+jbNbhBjUZsqr77eUviZdw==}
+    engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
+    peerDependencies:
+      solid-devtools: ^0.30.1
+      solid-js: ^1.8.5
+    peerDependenciesMeta:
+      solid-devtools:
+        optional: true
 
   '@astrojs/starlight-tailwind@4.0.2':
     resolution: {integrity: sha512-SYN/6zq6hJO5tWqbQ2tWT9/jd8ubUkzkBCcF94vByC/ZJ20Mi5GPjFvAh89Yky/aIM+jXxT6W5q4p6l58GKHiQ==}
@@ -3031,6 +3080,9 @@ packages:
   '@preact/signals-core@1.13.0':
     resolution: {integrity: sha512-slT6XeTCAbdql61GVLlGU4x7XHI7kCZV5Um5uhE4zLX4ApgiiXc0UYFvVOKq06xcovzp7p+61l68oPi563ARKg==}
 
+  '@rolldown/pluginutils@1.0.0-beta.27':
+    resolution: {integrity: sha512-+d0F4MKMCbeVUJwG96uQ4SgAznZNSq93I3V+9NHA4OpvqG8mRCpGdKmK8l/dl02h2CCDHwW2FqilnTyDcAnqjA==}
+
   '@rolldown/pluginutils@1.0.0-beta.47':
     resolution: {integrity: sha512-8QagwMH3kNCuzD8EWL8R2YPW5e4OrHNSAHRFDdmFqEwEaD/KcNKjVoumo+gP2vW5eKB2UPbM6vTYiGZX0ixLnw==}
 
@@ -4065,6 +4117,12 @@ packages:
     resolution: {integrity: sha512-lrW200hZdbfRtztbygyaq/6jP6AKE8qQN2KvPcJ+x7wiD038YtnYtZ82IMNJ69GJibV7bwL3y9FgK+5w/pYt6g==}
     cpu: [x64]
     os: [win32]
+
+  '@vitejs/plugin-react@4.7.0':
+    resolution: {integrity: sha512-gUu9hwfWvvEDBBmgtAowQCojwZmJ5mcLn3aufeCsitijs3+f2NsrPtlAWIR6OPiqljl96GVCUbLe0HyqIpVaoA==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
 
   '@vitejs/plugin-react@5.1.1':
     resolution: {integrity: sha512-WQfkSw0QbQ5aJ2CHYw23ZGkqnRwqKHD/KYsMeTkZzPT4Jcf0DcBxBtwMJxnu6E7oxw5+JC6ZAiePgh28uJ1HBA==}
@@ -7839,6 +7897,10 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
+  react-refresh@0.17.0:
+    resolution: {integrity: sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==}
+    engines: {node: '>=0.10.0'}
+
   react-refresh@0.18.0:
     resolution: {integrity: sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==}
     engines: {node: '>=0.10.0'}
@@ -8497,11 +8559,6 @@ packages:
 
   tailwind-merge@3.4.0:
     resolution: {integrity: sha512-uSaO4gnW+b3Y2aWoWfFpX62vn2sR3skfhbjsEnaBI81WD1wBLlHZe5sWf0AqjksNdYTbGBEd0UasQMT3SNV15g==}
-
-  tailwindcss-animate@1.0.7:
-    resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
 
   tailwindcss@4.1.18:
     resolution: {integrity: sha512-4+Z+0yiYyEtUVCScyfHCxOYP06L5Ne+JiHhY2IjR2KWMIWhJOYZKLSGZaP5HkZ8+bY0cxfzwDE5uOmzFXyIwxw==}
@@ -9577,11 +9634,54 @@ snapshots:
     dependencies:
       prismjs: 1.30.0
 
+  '@astrojs/react@4.4.2(@types/node@25.2.3)(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(yaml@2.8.2)':
+    dependencies:
+      '@types/react': 19.1.13
+      '@types/react-dom': 19.1.9(@types/react@19.1.13)
+      '@vitejs/plugin-react': 4.7.0(vite@6.4.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2))
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+      ultrahtml: 1.6.0
+      vite: 6.4.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2)
+    transitivePeerDependencies:
+      - '@types/node'
+      - jiti
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - yaml
+
   '@astrojs/sitemap@3.7.0':
     dependencies:
       sitemap: 8.0.2
       stream-replace-string: 2.0.0
       zod: 3.25.76
+
+  '@astrojs/solid-js@5.1.3(@testing-library/jest-dom@6.9.1)(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(solid-js@1.9.11)(terser@5.46.0)(yaml@2.8.2)':
+    dependencies:
+      solid-js: 1.9.11
+      vite: 6.4.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2)
+      vite-plugin-solid: 2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.11)(vite@6.4.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2))
+    transitivePeerDependencies:
+      - '@testing-library/jest-dom'
+      - '@types/node'
+      - jiti
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - yaml
 
   '@astrojs/starlight-tailwind@4.0.2(@astrojs/starlight@0.36.3(astro@5.17.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.57.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2)))(tailwindcss@4.1.18)':
     dependencies:
@@ -12481,6 +12581,8 @@ snapshots:
 
   '@preact/signals-core@1.13.0': {}
 
+  '@rolldown/pluginutils@1.0.0-beta.27': {}
+
   '@rolldown/pluginutils@1.0.0-beta.47': {}
 
   '@rollup/plugin-babel@6.1.0(@babel/core@7.29.0)(@types/babel__core@7.20.5)(rollup@4.57.1)':
@@ -13477,6 +13579,18 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
+  '@vitejs/plugin-react@4.7.0(vite@6.4.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2))':
+    dependencies:
+      '@babel/core': 7.29.0
+      '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.29.0)
+      '@babel/plugin-transform-react-jsx-source': 7.27.1(@babel/core@7.29.0)
+      '@rolldown/pluginutils': 1.0.0-beta.27
+      '@types/babel__core': 7.20.5
+      react-refresh: 0.17.0
+      vite: 6.4.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2)
+    transitivePeerDependencies:
+      - supports-color
+
   '@vitejs/plugin-react@5.1.1(vite@7.3.1(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2))':
     dependencies:
       '@babel/core': 7.29.0
@@ -13632,7 +13746,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vitest: 4.0.18(@types/node@20.19.25)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(msw@2.12.10(@types/node@20.19.25)(typescript@5.9.3))(terser@5.46.0)(yaml@2.8.2)
+      vitest: 4.0.18(@types/node@25.2.3)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(msw@2.12.10(@types/node@25.2.3)(typescript@5.9.3))(terser@5.46.0)(yaml@2.8.2)
 
   '@vitest/utils@3.2.4':
     dependencies:
@@ -18547,6 +18661,8 @@ snapshots:
 
   react-is@18.3.1: {}
 
+  react-refresh@0.17.0: {}
+
   react-refresh@0.18.0: {}
 
   react-router@7.13.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
@@ -19494,10 +19610,6 @@ snapshots:
 
   tailwind-merge@3.4.0: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@4.1.18):
-    dependencies:
-      tailwindcss: 4.1.18
-
   tailwindcss@4.1.18: {}
 
   tapable@2.3.0: {}
@@ -19922,6 +20034,21 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
       - rollup
+      - supports-color
+
+  vite-plugin-solid@2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.11)(vite@6.4.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2)):
+    dependencies:
+      '@babel/core': 7.29.0
+      '@types/babel__core': 7.20.5
+      babel-preset-solid: 1.9.10(@babel/core@7.29.0)(solid-js@1.9.11)
+      merge-anything: 5.1.7
+      solid-js: 1.9.11
+      solid-refresh: 0.6.3(solid-js@1.9.11)
+      vite: 6.4.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2)
+      vitefu: 1.1.1(vite@6.4.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2))
+    optionalDependencies:
+      '@testing-library/jest-dom': 6.9.1
+    transitivePeerDependencies:
       - supports-color
 
   vite-plugin-solid@2.11.10(@testing-library/jest-dom@6.9.1)(solid-js@1.9.11)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2)):
