@@ -1,14 +1,13 @@
 import * as NodeFileSystem from "@effect/platform-node/NodeFileSystem"
-import * as FileSystem from "@effect/platform/FileSystem"
-import * as Path from "@effect/platform/Path"
 import * as Effect from "effect/Effect"
-import * as Layer from "effect/Layer"
 import * as NodePath from "node:path"
 import * as OS from "node:os"
 import * as FS from "node:fs/promises"
 
 export const createTempDir = Effect.promise(async () => {
-  const tmpDir = await FS.mkdtemp(NodePath.join(OS.tmpdir(), "arkitect-cli-test-"))
+  const tmpDir = await FS.mkdtemp(
+    NodePath.join(OS.tmpdir(), "arkitect-cli-test-"),
+  )
   return tmpDir
 })
 

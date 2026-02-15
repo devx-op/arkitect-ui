@@ -3,11 +3,9 @@ import * as Effect from "effect/Effect"
 import * as Layer from "effect/Layer"
 import * as HttpClient from "@effect/platform/HttpClient"
 import * as HttpClientResponse from "@effect/platform/HttpClientResponse"
-import * as NodeFileSystem from "@effect/platform-node/NodeFileSystem"
+import * as NodeContext from "@effect/platform-node/NodeContext"
 import * as FileSystem from "@effect/platform/FileSystem"
-import * as Path from "@effect/platform-node/NodePath"
 import * as Command from "@effect/cli/Command"
-import * as Console from "effect/Console"
 import { addCommand } from "../src/commands/add.js"
 import { initCommand } from "../src/commands/init.js"
 import { withTempDir } from "./utils.js"
@@ -18,6 +16,7 @@ const MockHttpClient = Layer.succeed(
     if (request.url.includes("index.json")) {
       return Effect.succeed(
         HttpClientResponse.fromWeb(
+          request,
           new Response(
             JSON.stringify({
               items: [
@@ -37,6 +36,7 @@ const MockHttpClient = Layer.succeed(
     if (request.url.includes("button.json")) {
       return Effect.succeed(
         HttpClientResponse.fromWeb(
+          request,
           new Response(
             JSON.stringify({
               name: "button",
@@ -54,7 +54,7 @@ const MockHttpClient = Layer.succeed(
         ),
       )
     }
-    return Effect.fail(new Error(`Unexpected request: ${request.url}`))
+    return Effect.die(new Error(`Unexpected request: ${request.url}`))
   }),
 )
 
@@ -63,22 +63,39 @@ describe("add command", () => {
     withTempDir((dir) =>
       Effect.gen(function*() {
         const cli = Command.run(
-          Command.make("cli").pipe(Command.withSubcommands([initCommand, addCommand])),
+          Command.make("cli").pipe(
+            Command.withSubcommands([initCommand, addCommand]),
+          ),
           { name: "test", version: "0.0.0" },
         )
 
         // Init first
-        yield* cli(["node", "test", "init", "--cwd", dir, "--yes", "--install-deps=false"])
+        yield* cli([
+          "node",
+          "test",
+          "init",
+          "--cwd",
+          dir,
+          "--yes",
+          "--install-deps=false",
+        ])
 
         // Add button with dry-run
-        yield* cli(["node", "test", "add", "button", "--cwd", dir, "--dry-run"])
+        yield* cli([
+          "node",
+          "test",
+          "add",
+          "button",
+          "--cwd",
+          dir,
+          "--dry-run",
+        ])
 
         const fs = yield* FileSystem.FileSystem
         const configExists = yield* fs.exists(`${dir}/components.json`)
         expect(configExists).toBe(true)
       }).pipe(
-        Effect.provide(NodeFileSystem.layer),
-        Effect.provide(Path.layer),
+        Effect.provide(NodeContext.layer),
         Effect.provide(MockHttpClient),
       )
     ))
