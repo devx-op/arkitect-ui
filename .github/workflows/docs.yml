@@ -49,11 +49,13 @@ jobs:
           fi
           if [ -z "${BASE}" ]; then
             echo "No valid BASE commit found, building unconditionally"
+            pnpm registry:build
             pnpm nx build "@arkitect-ui/docs"
           else
             echo "Checking if `@arkitect-ui/docs` is affected between ${BASE}..${HEAD}"
             if pnpm nx show projects --affected --base="${BASE}" --head="${HEAD}" | grep -q "@arkitect-ui/docs"; then
               echo "@arkitect-ui/docs is affected. Building only docs..."
+              pnpm registry:build
               pnpm nx build "@arkitect-ui/docs"
             else
               echo "@arkitect-ui/docs not affected. Skipping build."

@@ -1,0 +1,22 @@
+{
+  "name": "arkitect-ui-solid-example",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/vite": "catalog:",
+    "solid-devtools": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-solid": "catalog:"
+  },
+  "dependencies": {
+    "@ark-ui/solid": "catalog:",
+    "class-variance-authority": "catalog:",
+    "clsx": "catalog:",
+    "solid-js": "catalog:",
+    "tailwind-merge": "catalog:"
+  }
+}

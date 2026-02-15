@@ -4,9 +4,10 @@ import * as Effect from "effect/Effect"
 import * as Option from "effect/Option"
 import * as FileSystem from "@effect/platform/FileSystem"
 import * as Schema from "effect/Schema"
+import * as Config from "effect/Config"
 import { ComponentsConfig } from "../schemas/components-config.js"
 
-const REGISTRY_INDEX_URL = "https://devx-op.github.io/arkitect-ui/r/index.json"
+const DEFAULT_REGISTRY_BASE_URL = "https://devx-op.github.io/arkitect-ui/r"
 
 interface RegistryIndex {
   items: Array<{
@@ -24,6 +25,13 @@ export const listCommand = Command.make("list", {}, () =>
 
     yield* Console.log("🔍 Fetching components from Arkitect UI registry...")
 
+    const registryBaseUrlRaw = yield* Config.string("REGISTRY_URL").pipe(
+      Config.withDefault(DEFAULT_REGISTRY_BASE_URL),
+    )
+    const registryBaseUrl = registryBaseUrlRaw.endsWith("/")
+      ? registryBaseUrlRaw.slice(0, -1)
+      : registryBaseUrlRaw
+
     // Detect framework from components.json if available
     let framework = Option.none<"react" | "solid">()
     const hasConfig = yield* fs.exists("components.json")
@@ -38,7 +46,7 @@ export const listCommand = Command.make("list", {}, () =>
 
     // Fetch registry index
     const response = yield* Effect.tryPromise({
-      try: () => fetch(REGISTRY_INDEX_URL),
+      try: () => fetch(`${registryBaseUrl}/index.json`),
       catch: (err) => new Error(`Failed to fetch registry: ${err}`),
     })
 

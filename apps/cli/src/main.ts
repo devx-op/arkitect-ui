@@ -6,9 +6,9 @@ import * as NodeRuntime from "@effect/platform-node/NodeRuntime"
 import * as NodeHttpClient from "@effect/platform-node/NodeHttpClient"
 import * as Console from "effect/Console"
 import * as Effect from "effect/Effect"
-import { addCommand } from "./commands/add"
-import { initCommand } from "./commands/init"
-import { listCommand } from "./commands/list"
+import { addCommand } from "./commands/add.js"
+import { initCommand } from "./commands/init.js"
+import { listCommand } from "./commands/list.js"
 
 // Main CLI command
 const arkitectUiCommand = Command.make(

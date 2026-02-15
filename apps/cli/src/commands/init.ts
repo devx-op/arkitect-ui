@@ -8,6 +8,11 @@ import * as Effect from "effect/Effect"
 import * as Option from "effect/Option"
 import * as Schema from "effect/Schema"
 import { ComponentsConfig } from "../schemas/components-config.js"
+import * as NodePath from "node:path"
+import { fileURLToPath } from "node:url"
+
+const here = NodePath.dirname(fileURLToPath(import.meta.url))
+const cssTemplatePath = NodePath.resolve(here, "../../templates/global.css")
 
 // Options for the init command
 const cwdOption = Options.text("cwd").pipe(
@@ -168,7 +173,7 @@ export const initCommand = Command.make(
         rsc: framework === "react",
         tsx: true,
         tailwind: {
-          config: "tailwind.config.js",
+          config: "",
           css: cssPath,
           baseColor: "slate",
           cssVariables: true,
@@ -179,20 +184,64 @@ export const initCommand = Command.make(
           utils: `@/${utilsPath.replace(`${srcDir}/`, "").replace(".ts", "")}`,
           ui: `@/${componentsDir.replace(`${srcDir}/`, "")}`,
         },
-        arkitect: {
-          framework: framework,
-        },
       })
 
-      const encodedConfig = yield* Schema.encode(
-        Schema.parseJson(ComponentsConfig),
-      )(componentsConfig)
+      const encodedConfig = yield* Schema.encode(ComponentsConfig)(componentsConfig)
+      const encodedJson = JSON.stringify(encodedConfig, null, 2)
 
       yield* fs.writeFileString(
         `${options.cwd}/components.json`,
-        encodedConfig,
+        `${encodedJson}\n`,
       )
       yield* Console.log("✅ components.json created successfully.")
+
+      const cssTargetPath = NodePath.isAbsolute(cssPath)
+        ? cssPath
+        : NodePath.join(options.cwd, cssPath)
+
+      const hasTemplate = yield* fs.exists(cssTemplatePath)
+      if (hasTemplate) {
+        const cssDir = NodePath.dirname(cssTargetPath)
+        const hasCssDir = yield* fs.exists(cssDir)
+        if (!hasCssDir) {
+          yield* fs.makeDirectory(cssDir, { recursive: true })
+        }
+        const cssContent = yield* fs.readFileString(cssTemplatePath)
+        yield* fs.writeFileString(cssTargetPath, cssContent)
+        yield* Console.log(`✅ Global CSS created at ${cssPath}`)
+      } else {
+        yield* Console.log(
+          "⚠️  Arkitect UI CSS template not found. Skipping CSS file creation.",
+        )
+      }
+
+      // 3.1 Update tsconfig paths to match aliases
+      const tsconfigPath = `${options.cwd}/tsconfig.json`
+      const hasTsconfig = yield* fs.exists(tsconfigPath)
+      if (hasTsconfig) {
+        try {
+          const tsContent = yield* fs.readFileString(tsconfigPath)
+          const raw = tsContent
+            .replace(/\/\*[\s\S]*?\*\//g, "")
+            .replace(/^\s*\/\/.*$/gm, "")
+          const ts = JSON.parse(raw)
+          ts.compilerOptions ??= {}
+          ts.compilerOptions.baseUrl ??= "."
+          const paths = (ts.compilerOptions.paths ??= {})
+          paths["@/components/*"] ??= [`${srcDir}/components/*`]
+          paths["@/components/ui/*"] ??= [`${srcDir}/components/ui/*`]
+          paths["@/lib/*"] ??= [`${srcDir}/lib/*`]
+          paths["@/lib/utils"] ??= [`${srcDir}/lib/utils`]
+          // Write tsconfig
+          yield* fs.writeFileString(
+            tsconfigPath,
+            JSON.stringify(ts, null, 2) + "\n",
+          )
+          yield* Console.log("✅ tsconfig paths updated.")
+        } catch {
+          yield* Console.log("⚠️  Failed to update tsconfig paths.")
+        }
+      }
 
       // 4. Install Dependencies
       const shouldInstallDeps = yield* Option.match(options.installDeps, {
