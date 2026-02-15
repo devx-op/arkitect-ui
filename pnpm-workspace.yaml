@@ -51,6 +51,7 @@ catalog:
   dprint: 0.51.1
   effect: 3.19.16
   glob: ^11.0.0
+  globals: ^16.5.0
   husky: 9.1.7
   jiti: 2.6.1
   jsdom: ^26.0.0
