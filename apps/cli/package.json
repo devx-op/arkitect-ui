@@ -1,6 +1,6 @@
 {
   "name": "@arkitect-ui/cli",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "CLI tool managing components for Arkitect-UI",
   "type": "module",
   "bin": {
