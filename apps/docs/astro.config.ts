@@ -25,10 +25,11 @@ export default defineConfig({
     ],
     resolve: {
       alias: {
-        "@/lib/utils": resolve(
-          __dirname,
-          "../../packages/shared/src/lib/utils.ts",
-        ),
+        // "@/lib/utils": resolve(
+        //   __dirname,
+        //   "../../packages/shared/src/lib/utils.ts",
+        // ),
+        "@": resolve(__dirname, "./src"),
         "@arkitect-ui/react": resolve(__dirname, "../../packages/react/src"),
         "@arkitect-ui/solid": resolve(__dirname, "../../packages/solid/src"),
       },
