@@ -29,6 +29,7 @@
   "dependencies": {
     "@arkitect-ui/shared": "workspace:*",
     "@ark-ui/react": "catalog:",
+    "@tabler/icons-react": "3.36.1",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "lucide-react": "catalog:",

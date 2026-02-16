@@ -18,6 +18,7 @@
   "dependencies": {
     "@arkitect-ui/shared": "workspace:*",
     "@ark-ui/solid": "catalog:",
+    "@tabler/icons-solidjs": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "lucide-solid": "catalog:",

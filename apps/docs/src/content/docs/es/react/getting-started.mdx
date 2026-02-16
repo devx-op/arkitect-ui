@@ -48,24 +48,39 @@ Elige tu flujo de trabajo: CLI o Manual.
 <Tabs>
   <TabItem label="CLI (Recomendado)">
 
-Ejecuta el inicializador para configurar y copiar componentes:
+Ejecuta el inicializador para configurar el proyecto y utilidades básicas:
 
 ```bash
 npx arkitect-ui init
 ```
 
-Añade componentes específicos cuando los necesites:
+Este comando:
+
+- Crea `components.json` con aliases como `@/components/ui` y `@/lib/utils`
+- Genera una hoja de estilos global si falta
+- Crea un helper `cn` en `src/lib/utils.ts`
+- Actualiza la configuración de TypeScript para soportar el alias de paths `@/*`
+- Añade un alias `@` a tu configuración de Vite cuando usas Vite
+
+Después añade componentes específicos cuando los necesites:
 
 ```bash
 npx arkitect-ui add button
 ```
 
-Esto copia el código del componente a tu proyecto para que tengas control total (estilos, variantes, código).
+El CLI copia el código fuente del componente a tu proyecto para que tengas control total (estilos, variantes, código).
 
   </TabItem>
   <TabItem label="Manual">
 
-Copia componentes directamente desde la documentación (por ejemplo, Button) a `src/components/ui/`. Importa y usa:
+Si prefieres una configuración manual:
+
+- Configura Tailwind CSS en tu proyecto
+- Asegúrate de que tu configuración de TypeScript tenga `baseUrl: "."` y `paths["@/*"] = ["./src/*"]`
+- Añade un alias `@` en la configuración de tu bundler (por ejemplo, Vite) que apunte a `./src`
+- Crea un archivo `src/lib/utils.ts` con un helper `cn` si quieres reutilizar los patrones de Arkitect UI
+
+Luego copia componentes directamente desde la documentación (por ejemplo, Button) a `src/components/ui/`. Importa y usa:
 
 ```tsx
 import { Button } from "@/components/ui/button";
@@ -90,4 +105,3 @@ El copiar-pegar te da propiedad completa sobre estilos y comportamiento, inspira
 - Explorar componentes de React: /arkitect-ui/react/
 - Añadir más componentes vía CLI o copiar-pegar
 - Personalizar tokens de Tailwind para que coincidan con tu marca
-
