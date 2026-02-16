@@ -226,15 +226,20 @@ export const addCommand = Command.make(
 
           const existsResults = yield* Effect.forEach(targetPaths, (p) => fs.exists(p))
 
-          const createdCount = existsResults.filter(Boolean).length
-          if (createdCount === 0) {
-            // Fallback: create files manually from registry item
+          const missingIndexes: Array<number> = []
+          for (let i = 0; i < existsResults.length; i++) {
+            if (!existsResults[i]) {
+              missingIndexes.push(i)
+            }
+          }
+
+          if (missingIndexes.length > 0) {
             yield* Console.log(
-              "⚠️  No files detected after shadcn add. Applying fallback write.",
+              "⚠️  Missing files after shadcn add. Applying fallback write.",
             )
-            for (let i = 0; i < itemJson.files.length; i++) {
-              const file = itemJson.files[i]
-              const target = targetPaths[i]
+            for (const index of missingIndexes) {
+              const file = itemJson.files[index]
+              const target = targetPaths[index]
               const dir = path.dirname(target)
               const hasDir = yield* fs.exists(dir)
               if (!hasDir) {

@@ -50,8 +50,13 @@ const yesOption = Options.boolean("yes").pipe(
   Options.withDescription("Skip prompts and use defaults/flags"),
 )
 
-const installDepsOption = Options.boolean("install-deps").pipe(
-  Options.withDescription("Install dependencies automatically"),
+const installDepsOption = Options.choice("install-deps", [
+  "yes",
+  "no",
+  "true",
+  "false",
+]).pipe(
+  Options.withDescription("Install dependencies after setup: yes or no"),
   Options.optional,
 )
 
@@ -63,7 +68,7 @@ type InitOptions = {
   utilsPath: Option.Option<string>
   cssPath: Option.Option<string>
   yes: boolean
-  installDeps: Option.Option<boolean>
+  installDeps: Option.Option<"yes" | "no" | "true" | "false">
 }
 
 // Export the init command
@@ -180,6 +185,7 @@ export const initCommand = Command.make(
           prefix: "",
         },
         aliases: {
+          // Use import-style aliases; TS config handles resolving "@/..."
           components: `@/${componentsDir.replace(`${srcDir}/`, "")}`,
           utils: `@/${utilsPath.replace(`${srcDir}/`, "").replace(".ts", "")}`,
           ui: `@/${componentsDir.replace(`${srcDir}/`, "")}`,
@@ -215,9 +221,29 @@ export const initCommand = Command.make(
         )
       }
 
+      const utilsTargetPath = NodePath.isAbsolute(utilsPath)
+        ? utilsPath
+        : NodePath.join(options.cwd, utilsPath)
+      const hasUtils = yield* fs.exists(utilsTargetPath)
+      if (!hasUtils) {
+        const utilsDir = NodePath.dirname(utilsTargetPath)
+        const hasUtilsDir = yield* fs.exists(utilsDir)
+        if (!hasUtilsDir) {
+          yield* fs.makeDirectory(utilsDir, { recursive: true })
+        }
+        const utilsContent = 'import { type ClassValue, clsx } from "clsx"\n' +
+          'import { twMerge } from "tailwind-merge"\n\n' +
+          "export function cn(...inputs: ClassValue[]) {\n" +
+          "  return twMerge(clsx(inputs))\n" +
+          "}\n"
+        yield* fs.writeFileString(utilsTargetPath, utilsContent)
+        yield* Console.log(`✅ Utils file created at ${utilsPath}`)
+      }
+
       // 3.1 Update tsconfig paths to match aliases
       const tsconfigPath = `${options.cwd}/tsconfig.json`
       const hasTsconfig = yield* fs.exists(tsconfigPath)
+
       if (hasTsconfig) {
         try {
           const tsContent = yield* fs.readFileString(tsconfigPath)
@@ -227,54 +253,215 @@ export const initCommand = Command.make(
           const ts = JSON.parse(raw)
           ts.compilerOptions ??= {}
           ts.compilerOptions.baseUrl ??= "."
-          const paths = (ts.compilerOptions.paths ??= {})
-          paths["@/components/*"] ??= [`${srcDir}/components/*`]
-          paths["@/components/ui/*"] ??= [`${srcDir}/components/ui/*`]
-          paths["@/lib/*"] ??= [`${srcDir}/lib/*`]
-          paths["@/lib/utils"] ??= [`${srcDir}/lib/utils`]
-          // Write tsconfig
+          // Use simplified generic alias mapping
+          ts.compilerOptions.paths = {
+            "@/*": [`./${srcDir}/*`],
+            ...ts.compilerOptions.paths,
+          }
+
           yield* fs.writeFileString(
             tsconfigPath,
             JSON.stringify(ts, null, 2) + "\n",
           )
-          yield* Console.log("✅ tsconfig paths updated.")
+          yield* Console.log("✅ tsconfig.json paths updated.")
         } catch {
-          yield* Console.log("⚠️  Failed to update tsconfig paths.")
+          yield* Console.log("⚠️  Failed to update paths in tsconfig.json.")
         }
       }
 
-      // 4. Install Dependencies
+      // 3.1b If tsconfig.app.json exists, ensure it also has baseUrl and generic @/* paths
+      const tsconfigAppPath = `${options.cwd}/tsconfig.app.json`
+      const hasTsconfigApp = yield* fs.exists(tsconfigAppPath)
+      if (hasTsconfigApp) {
+        try {
+          const tsContent = yield* fs.readFileString(tsconfigAppPath)
+          const raw = tsContent
+            .replace(/\/\*[\s\S]*?\*\//g, "")
+            .replace(/^\s*\/\/.*$/gm, "")
+          const ts = JSON.parse(raw)
+          ts.compilerOptions ??= {}
+          ts.compilerOptions.baseUrl ??= "."
+          ts.compilerOptions.paths = {
+            "@/*": [`./${srcDir}/*`],
+            ...ts.compilerOptions.paths,
+          }
+          yield* fs.writeFileString(
+            tsconfigAppPath,
+            JSON.stringify(ts, null, 2) + "\n",
+          )
+          yield* Console.log("✅ tsconfig.app.json paths updated.")
+        } catch {
+          yield* Console.log(
+            "⚠️  Failed to update paths in tsconfig.app.json.",
+          )
+        }
+      }
+
+      // 3.2 Update Vite resolve.alias for "@/..." if this is a Vite project
+      const viteConfigCandidates = [
+        "vite.config.ts",
+        "vite.config.mts",
+        "vite.config.js",
+        "vite.config.mjs",
+      ] as const
+
+      let viteConfigPath: string | undefined
+      for (const rel of viteConfigCandidates) {
+        const full = `${options.cwd}/${rel}`
+        const exists = yield* fs.exists(full)
+        if (exists) {
+          viteConfigPath = full
+          break
+        }
+      }
+
+      if (viteConfigPath) {
+        try {
+          const viteContent = yield* fs.readFileString(viteConfigPath)
+
+          // If alias "@" already exists, respect existing configuration
+          const hasAtAlias = /['"]@['"]\s*:/.test(viteContent)
+
+          if (!hasAtAlias) {
+            // Ensure we can use fileURLToPath / URL for robust ESM-safe alias
+            let updated = viteContent
+            if (
+              !updated.includes('from "node:url"') &&
+              !updated.includes("from 'node:url'")
+            ) {
+              updated = 'import { fileURLToPath, URL } from "node:url";\n' + updated
+            }
+
+            const aliasLine = '      "@": fileURLToPath(new URL("./src", import.meta.url)),'
+
+            if (updated.includes("alias: {")) {
+              updated = updated.replace(
+                /alias:\s*\{/,
+                `alias: {\n${aliasLine}`,
+              )
+            } else if (updated.includes("resolve: {")) {
+              updated = updated.replace(
+                /resolve:\s*\{/,
+                `resolve: {\n    alias: {\n${aliasLine}\n    },`,
+              )
+            } else if (updated.includes("defineConfig({")) {
+              updated = updated.replace(
+                /defineConfig\(\s*\{/,
+                `defineConfig({\n  resolve: {\n    alias: {\n${aliasLine}\n    },\n  },`,
+              )
+            }
+
+            if (updated !== viteContent) {
+              yield* fs.writeFileString(viteConfigPath, updated)
+              yield* Console.log("✅ Vite alias @ updated.")
+            }
+          }
+        } catch {
+          yield* Console.log("⚠️  Failed to update Vite resolve.alias.")
+        }
+      }
+
+      // 4. Ensure dependencies in package.json
+      const baseDeps = ["clsx", "tailwind-merge", "class-variance-authority"]
+      const allDeps = [...baseDeps]
+
+      const versionTemplate: Record<string, string> = {
+        clsx: "2.1.1",
+        "tailwind-merge": "3.4.0",
+        "class-variance-authority": "0.7.1",
+      }
+
+      // Ensure dependencies exist in package.json using the template versions
+      const hasPackageJsonForDeps = yield* fs.exists(packageJsonPath)
+      if (hasPackageJsonForDeps) {
+        const pkgContent = yield* fs.readFileString(packageJsonPath)
+        const pkg = JSON.parse(pkgContent)
+        pkg.dependencies ??= {}
+        pkg.devDependencies ??= {}
+        for (const dep of allDeps) {
+          if (!pkg.dependencies[dep] && !pkg.devDependencies[dep]) {
+            const version = versionTemplate[dep]
+            if (version) {
+              pkg.dependencies[dep] = version
+            }
+          }
+        }
+        yield* fs.writeFileString(
+          packageJsonPath,
+          JSON.stringify(pkg, null, 2) + "\n",
+        )
+        yield* Console.log("✅ package.json dependencies updated.")
+      } else {
+        yield* Console.log(
+          "⚠️  package.json not found. Skipping dependency hints.",
+        )
+      }
+
+      // 5. Optionally install dependencies (interactive if not specified)
+      // Detect package manager walking up from cwd to workspace root
+      let pm = "npm"
+      {
+        let currentDir = options.cwd
+        for (let i = 0; i < 5; i++) {
+          const pnpmLock = NodePath.join(currentDir, "pnpm-lock.yaml")
+          const yarnLock = NodePath.join(currentDir, "yarn.lock")
+          const bunLock = NodePath.join(currentDir, "bun.lockb")
+          const pkgLock = NodePath.join(currentDir, "package-lock.json")
+
+          const hasPnpmLock = yield* fs.exists(pnpmLock)
+          const hasYarnLock = yield* fs.exists(yarnLock)
+          const hasBunLock = yield* fs.exists(bunLock)
+          const hasPkgLock = yield* fs.exists(pkgLock)
+
+          if (hasPnpmLock) {
+            pm = "pnpm"
+            break
+          }
+          if (hasYarnLock) {
+            pm = "yarn"
+            break
+          }
+          if (hasBunLock) {
+            pm = "bun"
+            break
+          }
+          if (hasPkgLock) {
+            pm = "npm"
+            break
+          }
+
+          const parent = NodePath.dirname(currentDir)
+          if (parent === currentDir) {
+            break
+          }
+          currentDir = parent
+        }
+      }
+
       const shouldInstallDeps = yield* Option.match(options.installDeps, {
         onNone: () =>
           options.yes
-            ? Effect.succeed(true)
+            ? Effect.succeed(false)
             : Prompt.confirm({
-              message: "Would you like to install required dependencies now?",
+              message: `Install required Arkitect UI dependencies now with ${pm}?`,
               initial: true,
             }),
-        onSome: Effect.succeed,
+        onSome: (v) => Effect.succeed(v === "yes" || v === "true"),
       })
 
       if (shouldInstallDeps) {
-        const baseDeps = ["clsx", "tailwind-merge", "class-variance-authority"]
-        const frameworkDeps = framework === "react" ? ["@ark-ui/react"] : ["@ark-ui/solid"]
-        const allDeps = [...baseDeps, ...frameworkDeps]
-
         yield* Console.log(
           `📦 Installing dependencies: ${allDeps.join(", ")}...`,
         )
 
-        let pm = "npm"
-        const hasPnpmLock = yield* fs.exists(`${options.cwd}/pnpm-lock.yaml`)
-        const hasYarnLock = yield* fs.exists(`${options.cwd}/yarn.lock`)
-        const hasBunLock = yield* fs.exists(`${options.cwd}/bun.lockb`)
-
-        if (hasPnpmLock) pm = "pnpm"
-        else if (hasYarnLock) pm = "yarn"
-        else if (hasBunLock) pm = "bun"
-
         const installCmd = pm === "npm" ? "install" : "add"
-        const args = [installCmd, ...allDeps]
+
+        const depArgs = allDeps.map((dep) => {
+          const version = versionTemplate[dep]
+          return version ? `${dep}@${version}` : dep
+        })
+
+        const args = [installCmd, ...depArgs]
 
         const command = PlatformCommand.make(pm, ...args).pipe(
           PlatformCommand.workingDirectory(options.cwd),

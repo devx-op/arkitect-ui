@@ -170,10 +170,7 @@ describe("Solid E2E Flow", () => {
         const tsconfig = JSON.parse(
           yield* fs.readFileString(`${dir}/tsconfig.json`),
         )
-        expect(tsconfig.compilerOptions.paths["@/lib/utils"]).toBeDefined()
-        expect(
-          tsconfig.compilerOptions.paths["@/components/ui/*"],
-        ).toBeDefined()
+        expect(tsconfig.compilerOptions.paths["@/*"]).toEqual(["./src/*"])
 
         // 3. Add Button
         // This will try to run shadcn, fail (because npx isn't mocked/we are offline-ish),

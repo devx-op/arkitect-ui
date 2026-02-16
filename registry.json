@@ -8,20 +8,13 @@
       "type": "registry:ui",
       "title": "React button",
       "description": "button component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
       "dependencies": [
-        "clsx",
-        "tailwind-merge",
-        "class-variance-authority",
-        "@ark-ui/react",
-        "react"
+        "@ark-ui/react"
       ],
       "files": [
         {
           "path": "packages/react/src/components/ui/button.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "packages/shared/src/lib/utils.ts",
           "type": "registry:ui"
         }
       ]
@@ -31,21 +24,14 @@
       "type": "registry:ui",
       "title": "Solid button",
       "description": "button component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
       "dependencies": [
-        "clsx",
-        "tailwind-merge",
-        "class-variance-authority",
-        "@ark-ui/solid",
-        "solid-js"
+        "@ark-ui/solid"
       ],
       "files": [
         {
           "path": "packages/solid/src/components/ui/button.tsx",
           "type": "registry:ui"
-        },
-        {
-          "path": "packages/shared/src/lib/utils.ts",
-          "type": "registry:lib"
         }
       ]
     }
