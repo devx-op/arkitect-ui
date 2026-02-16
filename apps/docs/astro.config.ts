@@ -29,6 +29,8 @@ export default defineConfig({
           __dirname,
           "../../packages/shared/src/lib/utils.ts",
         ),
+        "@arkitect-ui/react": resolve(__dirname, "../../packages/react/src"),
+        "@arkitect-ui/solid": resolve(__dirname, "../../packages/solid/src"),
       },
     },
   },
