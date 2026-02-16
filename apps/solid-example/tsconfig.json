@@ -3,21 +3,6 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "target": "ESNext",
-    "baseUrl": ".",
-    "paths": {
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@/components/ui/*": [
-        "src/components/ui/*"
-      ],
-      "@/lib/*": [
-        "src/lib/*"
-      ],
-      "@/lib/utils": [
-        "src/lib/utils"
-      ]
-    },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "isolatedModules": true,
@@ -27,6 +12,12 @@
     "strict": true,
     "types": [
       "vite/client"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   }
 }
