@@ -91,6 +91,7 @@ export default defineConfig({
         startlightThemeNova(),
       ],
       components: {
+        Head: "./src/components/Head.astro",
         Sidebar: "./src/components/Sidebar.astro",
         ThemeSelect: "./src/components/ui/theme-select.astro",
         Hero: "./src/components/Hero.astro",

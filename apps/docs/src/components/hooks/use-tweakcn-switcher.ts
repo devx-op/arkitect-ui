@@ -205,10 +205,35 @@ export function useTweakcnSwitcher(
       try {
         const savedTheme = JSON.parse(saved)
         if (savedTheme.url) {
-          // Apply theme after a short delay to ensure mode is set
-          setTimeout(() => {
+          // Check if tweakcn styles already exist in the DOM (e.g. preserved
+          // across view-transition swaps by the before-swap persistence script).
+          // If they do we only need to sync React state and cache the registry
+          // item for future mode toggles — no need to re-apply CSS or re-fetch.
+          const existingStyles = document.querySelector('style[data-tweakcn-switcher="true"]')
+          const existingInlineVars = document.documentElement.getAttribute("style")
+          const stylesAlreadyApplied = !!(existingStyles || (existingInlineVars && existingInlineVars.includes("--")))
+
+          if (stylesAlreadyApplied) {
+            // Sync React state with the already-applied theme
+            const themeName = savedTheme.name || savedTheme.url.match(/\/([^/]+)\.json$/)?.[1] || "custom-theme"
+            const themeId = `theme-${themeName}`
+            const themeOption = themes.find((t) => t.url === savedTheme.url)
+              || { id: themeId, name: themeName, url: savedTheme.url }
+
+            setCurrentTheme(themeOption)
+            setThemes((prev) => {
+              if (prev.some((t) => t.url === savedTheme.url)) return prev
+              return [...prev, themeOption]
+            })
+
+            // Fetch registry item in background for mode toggle support
+            fetchThemeFromUrl(savedTheme.url)
+              .then((item) => setCurrentRegistryItem(item))
+              .catch(console.error)
+          } else {
+            // No persisted styles — apply theme from scratch
             applyTheme(savedTheme.url).catch(console.error)
-          }, 0)
+          }
         }
       } catch (e) {
         console.error("Failed to load saved theme:", e)
@@ -216,6 +241,7 @@ export function useTweakcnSwitcher(
     }
 
     setIsInitialized(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [persist, storageKey, applyTheme, applyModeToDOM])
 
   // Apply mode changes to current theme

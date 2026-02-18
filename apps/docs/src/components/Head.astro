@@ -1,0 +1,117 @@
+---
+import type { Props } from "@astrojs/starlight/props"
+import StarlightHead from "@astrojs/starlight/components/Head.astro"
+import { ClientRouter } from "astro:transitions"
+---
+
+<StarlightHead {...Astro.props}><slot /></StarlightHead>
+<ClientRouter />
+
+<!--
+  Persist tweakcn theme styles across view transitions (SPA navigation).
+  This script runs BEFORE the DOM swap to copy theme state from the current
+  document to the incoming document, preventing any CSS flickering.
+-->
+<script is:inline>
+  document.addEventListener("astro:before-swap", (event) => {
+    var currentRoot = document.documentElement
+    var newRoot = event.newDocument.documentElement
+
+    // 1. Copy data-theme attribute and dark class
+    var theme = currentRoot.getAttribute("data-theme")
+    if (theme) {
+      newRoot.setAttribute("data-theme", theme)
+    }
+    if (currentRoot.classList.contains("dark")) {
+      newRoot.classList.add("dark")
+    } else {
+      newRoot.classList.remove("dark")
+    }
+
+    // 2. Copy color-scheme
+    var colorScheme = currentRoot.style.colorScheme
+    if (colorScheme) {
+      newRoot.style.colorScheme = colorScheme
+    }
+
+    // 3. Copy ALL inline CSS custom properties (theme variables set via root.style.setProperty)
+    var currentStyle = currentRoot.getAttribute("style")
+    if (currentStyle) {
+      newRoot.setAttribute("style", currentStyle)
+    }
+
+    // 4. Copy tweakcn dynamic style/link nodes to new document head
+    var selectors = [
+      'style[data-tweakcn-switcher="true"]',
+      'style[data-tweakcn-switcher-font-vars="true"]',
+      'link[data-tweakcn-switcher-font="true"]',
+    ]
+    for (var i = 0; i < selectors.length; i++) {
+      var nodes = document.querySelectorAll(selectors[i])
+      for (var j = 0; j < nodes.length; j++) {
+        event.newDocument.head.appendChild(nodes[j].cloneNode(true))
+      }
+    }
+
+    // 5. Copy body attributes (dark class, data-theme) if set
+    var currentBody = document.body
+    var newBody = event.newDocument.body
+    if (currentBody && newBody) {
+      var bodyTheme = currentBody.getAttribute("data-theme")
+      if (bodyTheme) {
+        newBody.setAttribute("data-theme", bodyTheme)
+      }
+      if (currentBody.classList.contains("dark")) {
+        newBody.classList.add("dark")
+      } else {
+        newBody.classList.remove("dark")
+      }
+    }
+  })
+</script>
+
+<!--
+  Re-initialize the sidebar topics dropdown after SPA navigations.
+  The plugin's own <script is:inline> only runs on the first full page load;
+  after a ClientRouter DOM swap the old elements are destroyed and the cached
+  references inside that script become stale. This listener fires on every
+  navigation (and on first load) to re-bind fresh event handlers.
+-->
+<script is:inline>
+  ;(function () {
+    var firstLoad = true
+
+    document.addEventListener("astro:page-load", function () {
+      // On the very first load the plugin's own script already initialised
+      // the dropdown — skip to avoid a double-toggle (open then immediately close).
+      if (firstLoad) {
+        firstLoad = false
+        return
+      }
+
+      var btn = document.getElementById("starlight-sidebar-topics-dropdown-button")
+      var menu = document.getElementById("starlight-sidebar-topics-dropdown-menu")
+      if (!btn || !menu) return
+
+      btn.addEventListener("click", function () {
+        menu.hidden = !menu.hidden
+      })
+    })
+
+    // A single document-level listener that always looks up the *live* elements
+    // by ID instead of relying on closure references that go stale after swap.
+    // The plugin's original listener becomes harmless after the first swap
+    // (it still references detached nodes and is effectively a no-op).
+    document.addEventListener("click", function (event) {
+      var menu = document.getElementById("starlight-sidebar-topics-dropdown-menu")
+      var btn = document.getElementById("starlight-sidebar-topics-dropdown-button")
+      if (
+        menu && btn &&
+        !menu.contains(event.target) &&
+        !btn.contains(event.target)
+      ) {
+        menu.hidden = true
+      }
+    })
+  })()
+</script>
