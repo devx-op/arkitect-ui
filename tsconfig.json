@@ -4,13 +4,25 @@
   "files": [],
   "references": [
     {
-      "path": "./packages/solid/query"
+      "path": "./packages/react"
     },
     {
-      "path": "./packages/node/better-auth"
+      "path": "./packages/shared"
     },
     {
-      "path": "./apps/node-auth-app"
+      "path": "./packages/solid"
+    },
+    {
+      "path": "./apps/cli"
+    },
+    {
+      "path": "./apps/docs"
+    },
+    {
+      "path": "./apps/react-example"
+    },
+    {
+      "path": "./apps/solid-example"
     }
   ],
   "compilerOptions": {

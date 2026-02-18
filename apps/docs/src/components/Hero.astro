@@ -1,0 +1,107 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "@astrojs/starlight/components";
+import type { Props } from "@astrojs/starlight/props";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+
+// @ts-ignore - Accessing internal Starlight locals
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline, image, actions = [] } = data.hero || {};
+
+const imageAttrs = {
+  loading: "eager" as const,
+  decoding: "async" as const,
+  width: 400,
+  height: 400,
+  alt: image?.alt || "",
+};
+
+let darkImage: ImageMetadata | undefined;
+let lightImage: ImageMetadata | undefined;
+let rawImage: ImageMetadata | undefined;
+
+if (image) {
+  // @ts-ignore
+  if (image.file) {
+    // @ts-ignore
+    rawImage = image.file;
+  } else if (image.dark || image.light) {
+    // @ts-ignore
+    darkImage = image.dark;
+    // @ts-ignore
+    lightImage = image.light;
+  }
+}
+---
+
+<div class="hero flex flex-col items-center gap-8 py-12 md:py-20 lg:flex-row lg:gap-16 lg:py-24">
+  <div class="flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
+    <h1 class="text-4xl font-extrabold tracking-tight lg:text-6xl text-foreground">
+      {title}
+    </h1>
+    
+    {tagline && (
+      <div class="text-xl text-muted-foreground lg:text-2xl max-w-[42rem]">
+        {tagline}
+      </div>
+    )}
+
+    {actions.length > 0 && (
+      <div class="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+        {actions.map((action: { text: string; link: string; icon?: string; variant?: "primary" | "secondary" | "minimal" }) => (
+          <a
+            href={action.link}
+            class={cn(
+              buttonVariants({
+                variant: action.variant === "minimal" ? "secondary" : "default",
+                size: "lg",
+              }),
+              "gap-2 no-underline"
+            )}
+          >
+            {action.text}
+            {action.icon && <Icon name={action.icon as any} class="h-4 w-4" />}
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+
+  {image && (
+    <div class="hero-image relative mx-auto w-full max-w-[400px] lg:max-w-[500px]">
+      {darkImage && lightImage && (
+        <>
+          <Image
+            src={darkImage}
+            {...imageAttrs}
+            class="dark-only w-full h-auto"
+          />
+          <Image
+            src={lightImage}
+            {...imageAttrs}
+            class="light-only w-full h-auto"
+          />
+        </>
+      )}
+      {rawImage && (
+        <Image src={rawImage} {...imageAttrs} class="w-full h-auto" />
+      )}
+    </div>
+  )}
+</div>
+
+<style>
+  .dark-only {
+    display: none;
+  }
+  .light-only {
+    display: block;
+  }
+  :global([data-theme="dark"]) .dark-only {
+    display: block;
+  }
+  :global([data-theme="dark"]) .light-only {
+    display: none;
+  }
+</style>

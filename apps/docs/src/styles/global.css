@@ -16,3 +16,36 @@
 Add additional Tailwind styles to this file:
 https://tailwindcss.com/docs/adding-custom-styles#using-custom-css
 */
+
+/* Hide Starlight's native theme toggle since we use TweakcnSwitcher */
+starlight-theme-select,
+[data-theme-toggle],
+.theme-toggle,
+select[name="theme"] {
+  display: none !important;
+}
+
+/* Ensure TweakcnSwitcher styles take precedence */
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* View Transitions for smooth radial theme switch */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Disable view transitions on reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

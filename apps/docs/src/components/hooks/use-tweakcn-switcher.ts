@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { type RefObject, useCallback, useEffect, useState } from "react"
 import type { ThemeOption, ThemeRegistryItem, TweakcnSwitcherConfig } from "@/lib/types"
 import { applyThemeFromRegistry, extractThemeNameFromUrl, fetchThemeFromUrl } from "@/lib/utils"
 
@@ -13,12 +13,15 @@ export interface UseTweakcnSwitcherReturn {
   removeTheme: (themeId: string) => void
   mode: "light" | "dark"
   setMode: (mode: "light" | "dark") => void
+  toggleMode: () => Promise<void>
 }
 
 const DEFAULT_STORAGE_KEY = "tweakcn-switcher-theme"
+const MODE_STORAGE_KEY = "tweakcn-switcher-mode"
 
 export function useTweakcnSwitcher(
   config: TweakcnSwitcherConfig = {},
+  buttonRef?: RefObject<HTMLElement | null>,
 ): UseTweakcnSwitcherReturn {
   const {
     defaultThemes = [],
@@ -30,8 +33,108 @@ export function useTweakcnSwitcher(
   const [currentTheme, setCurrentTheme] = useState<ThemeOption | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [mode, setMode] = useState<"light" | "dark">("light")
+  const [mode, setModeState] = useState<"light" | "dark">("light")
   const [currentRegistryItem, setCurrentRegistryItem] = useState<ThemeRegistryItem | null>(null)
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  // Apply mode to DOM without animation (used for initialization)
+  const applyModeToDOM = useCallback((newMode: "light" | "dark") => {
+    if (typeof document === "undefined") return
+
+    const root = document.documentElement
+    const body = document.body
+
+    if (newMode === "dark") {
+      root.classList.add("dark")
+      root.setAttribute("data-theme", "dark")
+      if (body) {
+        body.classList.add("dark")
+        body.setAttribute("data-theme", "dark")
+      }
+    } else {
+      root.classList.remove("dark")
+      root.setAttribute("data-theme", "light")
+      if (body) {
+        body.classList.remove("dark")
+        body.setAttribute("data-theme", "light")
+      }
+    }
+  }, [])
+
+  // Wrapper for setMode that also persists to localStorage and updates DOM
+  const setMode = useCallback(
+    (newMode: "light" | "dark") => {
+      setModeState(newMode)
+
+      // Persist mode separately
+      if (persist && typeof localStorage !== "undefined") {
+        localStorage.setItem(MODE_STORAGE_KEY, newMode)
+      }
+
+      // Apply mode to DOM immediately for responsiveness
+      applyModeToDOM(newMode)
+    },
+    [persist, applyModeToDOM],
+  )
+
+  // Toggle mode with radial animation using View Transitions API
+  const toggleMode = useCallback(async () => {
+    const newMode = mode === "light" ? "dark" : "light"
+
+    // Check if View Transitions API is supported
+    const doc = document as Document & {
+      startViewTransition?: (callback: () => void) => { ready: Promise<void> }
+    }
+
+    if (!doc.startViewTransition || typeof window === "undefined") {
+      // Fallback: switch mode without animation
+      setMode(newMode)
+      return
+    }
+
+    // Get button position for radial animation origin
+    let x = window.innerWidth / 2
+    let y = window.innerHeight / 2
+
+    if (buttonRef?.current) {
+      const rect = buttonRef.current.getBoundingClientRect()
+      x = rect.left + rect.width / 2
+      y = rect.top + rect.height / 2
+    }
+
+    // Calculate max radius to cover the entire screen
+    const maxRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y),
+    )
+
+    // Start view transition
+    const transition = doc.startViewTransition(() => {
+      setMode(newMode)
+    })
+
+    try {
+      await transition.ready
+
+      // Apply radial clip-path animation
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${maxRadius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration: 500,
+          easing: "ease-in-out",
+          pseudoElement: "::view-transition-new(root)",
+        },
+      )
+    } catch (err) {
+      // If animation fails, mode is already changed
+      console.error("View transition animation failed:", err)
+    }
+  }, [mode, setMode, buttonRef])
 
   const applyTheme = useCallback(
     async (url: string) => {
@@ -81,35 +184,67 @@ export function useTweakcnSwitcher(
     [mode, persist, storageKey],
   )
 
-  // Load persisted theme on mount
+  // Initialize from localStorage on mount
   useEffect(() => {
-    if (persist) {
-      const saved = localStorage.getItem(storageKey)
-      if (saved) {
-        try {
-          const savedTheme = JSON.parse(saved)
-          if (savedTheme.mode) {
-            setMode(savedTheme.mode)
-          }
-          if (savedTheme.url) {
-            // Apply theme after mode is set
-            setTimeout(() => {
-              applyTheme(savedTheme.url).catch(console.error)
-            }, 0)
-          }
-        } catch (e) {
-          console.error("Failed to load saved theme:", e)
+    if (!persist || typeof localStorage === "undefined") {
+      setIsInitialized(true)
+      return
+    }
+
+    // Load saved mode first
+    const savedMode = localStorage.getItem(MODE_STORAGE_KEY)
+    if (savedMode === "dark" || savedMode === "light") {
+      setModeState(savedMode)
+      // Apply mode to DOM immediately
+      applyModeToDOM(savedMode)
+    }
+
+    // Load saved theme
+    const saved = localStorage.getItem(storageKey)
+    if (saved) {
+      try {
+        const savedTheme = JSON.parse(saved)
+        if (savedTheme.url) {
+          // Apply theme after a short delay to ensure mode is set
+          setTimeout(() => {
+            applyTheme(savedTheme.url).catch(console.error)
+          }, 0)
         }
+      } catch (e) {
+        console.error("Failed to load saved theme:", e)
       }
     }
-  }, [persist, storageKey, applyTheme])
+
+    setIsInitialized(true)
+  }, [persist, storageKey, applyTheme, applyModeToDOM])
 
   // Apply mode changes to current theme
   useEffect(() => {
+    if (!isInitialized) return
+
     if (currentRegistryItem) {
       applyThemeFromRegistry(currentRegistryItem, mode).catch(console.error)
     }
-  }, [mode, currentRegistryItem])
+
+    // Update persisted theme with new mode
+    if (persist && currentTheme) {
+      localStorage.setItem(
+        storageKey,
+        JSON.stringify({
+          url: currentTheme.url,
+          mode,
+          name: currentTheme.name,
+        }),
+      )
+    }
+  }, [
+    mode,
+    currentRegistryItem,
+    isInitialized,
+    persist,
+    storageKey,
+    currentTheme,
+  ])
 
   const applyThemeOption = useCallback(
     async (theme: ThemeOption) => {
@@ -173,5 +308,6 @@ export function useTweakcnSwitcher(
     removeTheme,
     mode,
     setMode,
+    toggleMode,
   }
 }

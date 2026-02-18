@@ -96,6 +96,146 @@ function loadGoogleFont(url: string): Promise<void> {
 }
 
 /**
+ * Check if a value is a color function (oklch, hsl, rgb, etc.)
+ * This helps detect when we need to apply colors directly instead of through hsl(var())
+ */
+function isColorFunction(value: string): boolean {
+  // Detects: oklch(), hsl(), rgb(), rgba(), lab(), lch(), hwb(), color()
+  return /^(oklch|hsl|rgb|rgba|lab|lch|hwb|color)\(/i.test(value.trim())
+}
+
+/**
+ * Check if a CSS variable key is a color variable
+ */
+function isColorVariable(key: string): boolean {
+  const colorKeys = [
+    "background",
+    "foreground",
+    "primary",
+    "secondary",
+    "muted",
+    "accent",
+    "destructive",
+    "popover",
+    "card",
+    "border",
+    "input",
+    "ring",
+  ]
+  return colorKeys.some(
+    (colorKey) =>
+      key === colorKey ||
+      key.startsWith(`${colorKey}-`) ||
+      key.endsWith(`-${colorKey}`),
+  )
+}
+
+/**
+ * Apply theme colors to Starlight CSS variables
+ * Maps shadcn/tailwind variables to Starlight's --sl-color-* variables
+ */
+function applyThemeToStarlight(
+  cssVars: {
+    theme?: Record<string, string>
+    light?: Record<string, string>
+    dark?: Record<string, string>
+  },
+  root: HTMLElement,
+  mode: "light" | "dark",
+) {
+  const modeVars = cssVars[mode] || {}
+  const themeVars = cssVars.theme || {}
+
+  // Combine theme-level and mode-specific variables
+  // Mode-specific takes precedence
+  const allVars = { ...themeVars, ...modeVars }
+
+  // Helper to get color value
+  const getColor = (key: string): string | undefined => {
+    return allVars[key]
+  }
+
+  // Helper to ensure value is a valid CSS color
+  const toCssColor = (key: string): string | undefined => {
+    const value = getColor(key)
+    if (!value) return undefined
+
+    // If it's already a color function or hex, return as is
+    if (isColorFunction(value) || value.startsWith("#")) {
+      return value
+    }
+
+    // Otherwise, assume it's HSL channels (shadcn default) and wrap in hsl()
+    // This fixes issues where Starlight expects a color value but gets "0 0% 100%"
+    return `hsl(${value})`
+  }
+
+  // Core color mapping: shadcn -> Starlight
+  const starlightMapping: Record<string, string | undefined> = {
+    // Main backgrounds and text
+    "--sl-color-bg": toCssColor("background"),
+    "--sl-color-text": toCssColor("foreground"),
+    "--sl-color-text-accent": toCssColor("primary"),
+    "--sl-color-text-invert": toCssColor("primary-foreground"),
+
+    // Accent colors
+    "--sl-color-accent": toCssColor("primary"),
+    "--sl-color-accent-high": toCssColor("primary"),
+    "--sl-color-accent-low": toCssColor("secondary"),
+
+    // UI backgrounds
+    "--sl-color-bg-nav": toCssColor("card") || toCssColor("background"),
+    "--sl-color-bg-sidebar": toCssColor("card") || toCssColor("background"),
+    "--sl-color-bg-inline-code": toCssColor("muted"),
+    "--sl-color-bg-accent": toCssColor("accent"),
+
+    // Borders
+    "--sl-color-hairline-light": toCssColor("border"),
+    "--sl-color-hairline": toCssColor("border"),
+    "--sl-color-hairline-shade": toCssColor("border"),
+    "--sl-color-border-inline-code": toCssColor("border"),
+
+    // Grayscale mapping (Starlight uses gray-1 for text/high-contrast and gray-6 for bg/low-contrast)
+    // This mapping applies to BOTH Light and Dark modes:
+    // - Light Mode: gray-1 -> foreground (Black), gray-6 -> background (White)
+    // - Dark Mode: gray-1 -> foreground (White), gray-6 -> background (Black)
+    "--sl-color-white": toCssColor("foreground"), // Always high contrast (Text)
+    "--sl-color-gray-1": toCssColor("foreground"), // Main Text
+    "--sl-color-gray-2": toCssColor("muted-foreground"), // Secondary Text
+    "--sl-color-gray-3": toCssColor("muted-foreground"), // Tertiary Text (was border - too light for tabs/TOC)
+    "--sl-color-gray-4": toCssColor("border"), // Quaternary Text/Borders (was muted - too light)
+    "--sl-color-gray-5": toCssColor("muted"), // Surface / Card Backgrounds (was card)
+    "--sl-color-gray-6": toCssColor("background"), // Main Background
+    "--sl-color-gray-7": toCssColor("background"), // Deep Background
+    "--sl-color-black": toCssColor("background"), // Always low contrast (Background)
+
+    // Semantic colors (map to destructive/primary)
+    "--sl-color-red": toCssColor("destructive"),
+    "--sl-color-red-low": toCssColor("muted"),
+    "--sl-color-red-high": toCssColor("destructive"),
+    "--sl-color-blue": toCssColor("primary"),
+    "--sl-color-blue-low": toCssColor("secondary"),
+    "--sl-color-blue-high": toCssColor("primary"),
+    "--sl-color-green": toCssColor("primary"),
+    "--sl-color-green-low": toCssColor("secondary"),
+    "--sl-color-green-high": toCssColor("primary"),
+    "--sl-color-purple": toCssColor("accent"),
+    "--sl-color-purple-low": toCssColor("muted"),
+    "--sl-color-purple-high": toCssColor("accent"),
+    "--sl-color-orange": toCssColor("primary"),
+    "--sl-color-orange-low": toCssColor("secondary"),
+    "--sl-color-orange-high": toCssColor("primary"),
+  }
+
+  // Apply all Starlight variables
+  Object.entries(starlightMapping).forEach(([variable, value]) => {
+    if (value) {
+      root.style.setProperty(variable, value, "important")
+    }
+  })
+}
+
+/**
  * Try to load fonts from Google Fonts based on font-family value
  * This is best-effort - if it fails, the dev can handle it
  */
@@ -131,6 +271,7 @@ export async function applyThemeFromRegistry(
   }
 
   const root = document.documentElement
+  const body = document.body
   const { cssVars, css } = registryItem
 
   // Remove existing font variable override styles
@@ -141,11 +282,21 @@ export async function applyThemeFromRegistry(
     existingFontStyle.remove()
   }
 
-  // Apply theme-level variables (common to both light and dark)
+  // Apply theme-level variables (common to both light and dark) with higher specificity
   let fontSansValue: string | null = null
   if (cssVars.theme) {
     Object.entries(cssVars.theme).forEach(([key, value]) => {
+      // Apply to both :root and html for maximum compatibility
       applyCSSVariable(key, value, root)
+      // Also apply directly to style attribute for higher specificity
+      root.style.setProperty(`--${key}`, value, "important")
+
+      // Check if this is a color variable with a color function value
+      // This handles themes from tweakcn.com that use oklch() instead of HSL
+      if (isColorFunction(value) && isColorVariable(key)) {
+        // Apply color directly to the CSS variable that Tailwind uses
+        root.style.setProperty(`--color-${key}`, value, "important")
+      }
 
       // Track font-sans value for special handling
       if (key === "font-sans" && value) {
@@ -161,17 +312,18 @@ export async function applyThemeFromRegistry(
       // Silently fail - let the dev handle font loading if needed
     })
 
-    // Inject a style to override Tailwind's @theme variable with higher specificity
+    // Inject a style with maximum specificity to override Starlight and Tailwind
     const fontStyle = document.createElement("style")
     fontStyle.setAttribute("data-tweakcn-switcher-font-vars", "true")
     // Escape any quotes in the font value for CSS
     const escapedFontValue = (fontSansValue as string).replace(/"/g, '\\"')
     fontStyle.textContent = `
-      :root {
+      html, html[data-theme], html[data-theme="light"], html[data-theme="dark"] {
         --font-sans: ${escapedFontValue} !important;
-      }
-      html, body {
         font-family: ${escapedFontValue} !important;
+      }
+      html *, html[data-theme] *, html[data-theme="light"] *, html[data-theme="dark"] * {
+        font-family: inherit !important;
       }
     `
     document.head.appendChild(fontStyle)
@@ -179,12 +331,12 @@ export async function applyThemeFromRegistry(
     // If no font-sans in theme, remove any inline font-family styles we may have set
     removeFontLinks()
     root.style.removeProperty("font-family")
-    if (document.body) {
-      document.body.style.removeProperty("font-family")
+    if (body) {
+      body.style.removeProperty("font-family")
     }
   }
 
-  // Apply mode-specific variables (excluding theme-level variables)
+  // Apply mode-specific variables (excluding theme-level variables) with !important
   const modeVars = cssVars[mode]
   if (modeVars) {
     Object.entries(modeVars).forEach(([key, value]) => {
@@ -197,12 +349,24 @@ export async function applyThemeFromRegistry(
         !key.startsWith("tracking-") &&
         !key.startsWith("spacing")
       ) {
-        applyCSSVariable(key, value, root)
+        // Check if this is a color variable with a color function value
+        // This handles themes from tweakcn.com that use oklch() instead of HSL
+        if (isColorFunction(value) && isColorVariable(key)) {
+          // Apply color directly to the CSS variable that Tailwind uses
+          // e.g., --color-background instead of just --background
+          // This bypasses the hsl(var(--background)) issue
+          root.style.setProperty(`--color-${key}`, value, "important")
+        }
+        // Always apply the original variable as well for compatibility
+        root.style.setProperty(`--${key}`, value, "important")
       }
     })
   }
 
-  // Apply CSS layer base styles if present
+  // Apply theme colors to Starlight components
+  applyThemeToStarlight(cssVars, root, mode)
+
+  // Apply CSS layer base styles if present with higher specificity
   if (css?.["@layer base"]) {
     // Remove existing style elements
     const existing = document.querySelectorAll(
@@ -214,24 +378,41 @@ export async function applyThemeFromRegistry(
     const styleElement = document.createElement("style")
     styleElement.setAttribute("data-tweakcn-switcher", "true")
 
-    // Combine all selectors into one style element
+    // Combine all selectors into one style element with higher specificity
     const styleContent = Object.entries(baseStyles)
       .map(([selector, styles]) => {
         const props = Object.entries(styles)
-          .map(([prop, val]) => `${prop}: ${val};`)
+          .map(([prop, val]) => `${prop}: ${val} !important;`)
           .join(" ")
-        return `${selector} { ${props} }`
+        // Use html prefix for higher specificity
+        const enhancedSelector = selector === ":root"
+          ? 'html, html[data-theme], html[data-theme="light"], html[data-theme="dark"]'
+          : `html ${selector}, html[data-theme] ${selector}`
+        return `${enhancedSelector} { ${props} }`
       })
       .join("\n")
 
-    styleElement.textContent = `@layer base {\n${styleContent}\n}`
+    styleElement.textContent = `@layer base {
+${styleContent}
+}`
     document.head.appendChild(styleElement)
   }
 
+  // Handle dark mode class and data attribute
   if (mode === "dark") {
     root.classList.add("dark")
+    root.setAttribute("data-theme", "dark")
+    if (body) {
+      body.classList.add("dark")
+      body.setAttribute("data-theme", "dark")
+    }
   } else {
     root.classList.remove("dark")
+    root.setAttribute("data-theme", "light")
+    if (body) {
+      body.classList.remove("dark")
+      body.setAttribute("data-theme", "light")
+    }
   }
 }
 

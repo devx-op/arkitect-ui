@@ -1,0 +1,28 @@
+---
+// Override Starlight's ThemeSelect component with TweakcnSwitcher
+import { TweakcnSwitcher } from "@/components/ui/tweakcn-switcher";
+const defaultThemes = [
+    {
+      id: "Catppuccin",
+      name: "Catppuccin",
+      url: "https://tweakcn.com/r/themes/catppuccin.json",
+    },
+    {
+      id: "Claude",
+      name: "Claude",
+      url: "https://tweakcn.com/r/themes/claude.json",
+    },
+    {
+      id: "darkmatter",
+      name: "Darkmatter",
+      url: "https://tweakcn.com/r/themes/darkmatter.json",
+    },
+    {
+      id: "Mono",
+      name: "Mono",
+      url: "https://tweakcn.com/r/themes/mono.json",
+    },
+  ];
+---
+
+<TweakcnSwitcher client:load defaultThemes={defaultThemes} />

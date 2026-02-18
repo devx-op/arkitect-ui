@@ -15,7 +15,8 @@ import {
 import { useTweakcnSwitcher } from "@/components/hooks/use-tweakcn-switcher"
 import type { TweakcnSwitcherConfig } from "@/lib/types"
 import { cn } from "@/lib/utils"
-import { type KeyboardEvent, useState } from "react"
+import { type KeyboardEvent, useRef, useState } from "react"
+import * as React from "react"
 
 export interface TweakcnSwitcherProps extends TweakcnSwitcherConfig {
   className?: string
@@ -27,6 +28,7 @@ export function TweakcnSwitcher({
   align = "end",
   ...config
 }: TweakcnSwitcherProps) {
+  const modeButtonRef = useRef<HTMLButtonElement>(null)
   const {
     currentTheme,
     themes,
@@ -36,8 +38,8 @@ export function TweakcnSwitcher({
     addTheme,
     removeTheme,
     mode,
-    setMode,
-  } = useTweakcnSwitcher(config)
+    toggleMode,
+  } = useTweakcnSwitcher(config, modeButtonRef)
 
   const [urlInput, setUrlInput] = useState("")
   const [isAddingTheme, setIsAddingTheme] = useState(false)
@@ -80,7 +82,7 @@ export function TweakcnSwitcher({
           aria-label="Switch theme"
         >
           <Palette className="size-4" />
-          {currentTheme && <span className="absolute -top-1 -right-1 size-2 bg-primary rounded-full" />}
+          {currentTheme != null && <span className="absolute -top-1 -right-1 size-2 bg-primary rounded-full" />}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align={align} className="w-64">
@@ -89,11 +91,12 @@ export function TweakcnSwitcher({
             <span>Themes</span>
             <div className="flex items-center gap-1">
               <Button
+                ref={modeButtonRef}
                 variant="ghost"
                 size="sm"
                 onClick={(e) => {
                   e.stopPropagation()
-                  setMode(mode === "light" ? "dark" : "light")
+                  toggleMode()
                 }}
                 className="h-6 w-6"
                 aria-label={`Switch to ${mode === "light" ? "dark" : "light"} mode`}

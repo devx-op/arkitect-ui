@@ -92,6 +92,8 @@ export default defineConfig({
       ],
       components: {
         Sidebar: "./src/components/Sidebar.astro",
+        ThemeSelect: "./src/components/ui/theme-select.astro",
+        Hero: "./src/components/Hero.astro",
       },
       social: [
         {
