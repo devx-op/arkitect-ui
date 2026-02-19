@@ -126,17 +126,6 @@ export default defineConfig({
           ], */
       customCss: ["./src/styles/global.css", "@arkitect-ui/shared/css"],
       defaultLocale: "root",
-      locales: {
-        // English docs in `src/content/docs/en/`
-        root: {
-          label: "English",
-          lang: "en", // lang is required for root locales
-        },
-        es: {
-          label: "Español",
-          lang: "es-ES",
-        },
-      },
     }),
   ],
 })
