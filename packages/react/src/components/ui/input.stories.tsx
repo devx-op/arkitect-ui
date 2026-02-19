@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { Input } from "./input"
 
 const meta = {
-  title: "UI/Input",
+  title: "React/UI/Input",
   component: Input,
   tags: ["autodocs"],
   argTypes: {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "storybook-solidjs-vite"
 import { Button } from "./button"
 
 const meta = {
-  title: "UI/Button",
+  title: "Solid/UI/Button",
   component: Button,
   tags: ["autodocs"],
   argTypes: {

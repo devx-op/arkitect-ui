@@ -28,6 +28,20 @@
         "passWithNoTests": true,
         "reportsDirectory": "{workspaceRoot}/coverage/packages/solid"
       }
+    },
+    "serve:storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 4849,
+        "configDir": "packages/solid/.storybook"
+      }
+    },
+    "build:storybook": {
+      "executor": "@nx/storybook:build",
+      "options": {
+        "configDir": "packages/solid/.storybook",
+        "outputDir": "packages/solid/storybook-static"
+      }
     }
   }
 }

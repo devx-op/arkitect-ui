@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "storybook-solidjs-vite"
 import { Input } from "./input"
 
 const meta = {
-  title: "UI/Input",
+  title: "Solid/UI/Input",
   component: Input,
   tags: ["autodocs"],
   argTypes: {

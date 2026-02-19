@@ -17,7 +17,12 @@
     "publish:affected": "pnpm nx publish-affected",
     "release:affected": "pnpm nx release-affected",
     "release:affected:dry-run": "pnpm nx release-affected-dry-run",
-    "registry:build": "mkdir -p apps/docs/public/r/r apps/docs/public/r/s && pnpm exec shadcn build --output apps/docs/public/r && node scripts/registry-fix-paths.js && cp registry.json apps/docs/public/r/index.json"
+    "registry:build": "mkdir -p apps/docs/public/r/r apps/docs/public/r/s && pnpm exec shadcn build --output apps/docs/public/r && node scripts/registry-fix-paths.js && cp registry.json apps/docs/public/r/index.json",
+    "dev": "nx run-many -t dev -p @arkitect-ui/react @arkitect-ui/solid @arkitect-ui/docs --parallel",
+    "dev:all": "nx run-many -t dev serve:storybook -p @arkitect-ui/react @arkitect-ui/solid @arkitect-ui/docs --parallel",
+    "dev:storybooks": "nx run-many -t serve:storybook -p @arkitect-ui/react @arkitect-ui/solid --parallel",
+    "storybook:react": "nx serve:storybook @arkitect-ui/react",
+    "storybook:solid": "nx serve:storybook @arkitect-ui/solid"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [

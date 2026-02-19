@@ -17,7 +17,12 @@
     "dev": {
       "executor": "nx:run-script",
       "cache": false,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "target": "dev",
+          "projects": ["@arkitect-ui/react", "@arkitect-ui/solid"]
+        }
+      ],
       "options": {
         "script": "dev"
       }

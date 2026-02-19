@@ -156,6 +156,15 @@
         "^build"
       ]
     },
+    "serve:storybook": {
+      "cache": false,
+      "dependsOn": [
+        {
+          "target": "dev",
+          "projects": "self"
+        }
+      ]
+    },
     "storybook": {
       "outputs": [
         "{projectRoot}/storybook-static"
