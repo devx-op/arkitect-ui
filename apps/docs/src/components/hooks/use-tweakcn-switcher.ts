@@ -272,6 +272,20 @@ export function useTweakcnSwitcher(
     currentTheme,
   ])
 
+  // Emit custom event when theme or mode changes
+  useEffect(() => {
+    if (!isInitialized) return
+
+    const event = new CustomEvent("tweakcn-theme-change", {
+      detail: {
+        theme: currentTheme?.id || "default",
+        mode: mode,
+        themeName: currentTheme?.name || "Default",
+      },
+    })
+    window.dispatchEvent(event)
+  }, [currentTheme, mode, isInitialized])
+
   const applyThemeOption = useCallback(
     async (theme: ThemeOption) => {
       await applyTheme(theme?.url || "")

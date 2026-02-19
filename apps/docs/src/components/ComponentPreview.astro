@@ -37,43 +37,80 @@ const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=sto
 </div>
 
 <script>
-  // Function to get current mode from document
+  // Storage keys (must match tweakcn-switcher in docs)
+  const THEME_STORAGE_KEY = 'tweakcn-switcher-theme';
+  const MODE_STORAGE_KEY = 'tweakcn-switcher-mode';
+  
+  // Function to get current mode from localStorage or document
   function getCurrentMode() {
+    if (typeof localStorage !== 'undefined') {
+      const savedMode = localStorage.getItem(MODE_STORAGE_KEY);
+      if (savedMode) return savedMode;
+    }
     return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
   }
   
-  // Function to build iframe URL with mode
-  function buildIframeUrl(baseUrl, mode) {
+  // Function to get current theme from localStorage
+  function getCurrentTheme() {
+    if (typeof localStorage === 'undefined') return 'default';
+    const themeData = localStorage.getItem(THEME_STORAGE_KEY);
+    if (themeData) {
+      try {
+        const theme = JSON.parse(themeData);
+        // The theme is stored as { url, mode, name }
+        // Extract theme ID from name (e.g., "Catppuccin" -> "Catppuccin")
+        if (theme.name) {
+          return theme.name;
+        }
+        // Fallback: extract from URL (e.g., "https://tweakcn.com/r/themes/catppuccin.json" -> "catppuccin")
+        if (theme.url) {
+          const match = theme.url.match(/\/([^/]+)\.json$/);
+          if (match) {
+            return match[1];
+          }
+        }
+        return 'default';
+      } catch {
+        return 'default';
+      }
+    }
+    return 'default';
+  }
+  
+  // Function to build iframe URL with mode and theme
+  function buildIframeUrl(baseUrl: string, mode: string, theme: string) {
     // Check if URL already has globals parameter
     if (baseUrl.includes('&globals=')) {
-      // Replace existing mode
-      return baseUrl.replace(/globals=mode:[^;]*/, `globals=mode:${mode}`);
+      // Replace existing globals
+      return baseUrl.replace(/globals=[^&]*/, `globals=theme:${theme};mode:${mode}`);
     } else {
       // Add new globals parameter
-      return `${baseUrl}&globals=mode:${mode}`;
+      return `${baseUrl}&globals=theme:${theme};mode:${mode}`;
     }
   }
   
   // Function to update iframe src with current theme
   function updatePreviewThemes() {
     const mode = getCurrentMode();
+    const theme = getCurrentTheme();
     
-    document.querySelectorAll('[data-preview-iframe]').forEach((iframe) => {
+    document.querySelectorAll<HTMLIFrameElement>('[data-preview-iframe]').forEach((iframe) => {
       const currentSrc = iframe.getAttribute('src') || '';
       const baseUrl = currentSrc.split('&globals=')[0];
-      const newSrc = buildIframeUrl(baseUrl, mode);
-      
+      const newSrc = buildIframeUrl(baseUrl, mode, theme);
+
       if (currentSrc !== newSrc) {
         iframe.setAttribute('src', newSrc);
       }
-      
+
       // Also send postMessage for real-time updates without reload
       const framework = iframe.getAttribute('data-framework');
       const port = framework === 'react' ? '4848' : '4849';
-      
+
       try {
         iframe.contentWindow?.postMessage({
           type: 'THEME_CHANGE',
+          theme: theme,
           mode: mode
         }, `http://localhost:${port}`);
       } catch (e) {
@@ -85,7 +122,7 @@ const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=sto
   // Update on initial load
   updatePreviewThemes();
   
-  // Watch for theme changes
+  // Watch for theme changes (dark/light mode)
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.attributeName === 'class') {
@@ -99,6 +136,18 @@ const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=sto
     attributeFilter: ['class']
   });
   
+  // Watch for theme changes in localStorage (from other tabs)
+  window.addEventListener('storage', (e) => {
+    if (e.key === THEME_STORAGE_KEY || e.key === MODE_STORAGE_KEY) {
+      updatePreviewThemes();
+    }
+  });
+
+  // Listen for custom theme change events from tweakcn-switcher (same tab)
+  window.addEventListener('tweakcn-theme-change', () => {
+    updatePreviewThemes();
+  });
+
   // Also check periodically for theme changes (backup)
   setInterval(updatePreviewThemes, 1000);
 </script>

@@ -223,8 +223,11 @@ async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "li
   applyModeToDOM(mode)
 }
 
-// Main function to apply theme
-async function applyTheme(themeId: string, mode: "light" | "dark") {
+// Main function to apply theme synchronously (for cached themes)
+function applyThemeSync(themeId: string, mode: "light" | "dark") {
+  // Always apply mode first (synchronously)
+  applyModeToDOM(mode)
+
   if (themeId === "default") {
     // Remove tweakcn styles
     const existing = document.querySelectorAll('style[data-tweakcn-switcher="true"]')
@@ -233,29 +236,79 @@ async function applyTheme(themeId: string, mode: "light" | "dark") {
     if (existingFontStyle) {
       existingFontStyle.remove()
     }
-    // Just apply mode
-    applyModeToDOM(mode)
-  } else {
-    const registryItem = await loadTheme(themeId)
-    if (registryItem) {
-      await applyThemeFromRegistry(registryItem, mode)
-    } else {
-      // Fallback to default
-      applyModeToDOM(mode)
+    return true
+  }
+
+  // Try to get from cache synchronously
+  const cached = getRegistryItem(themeId)
+  if (cached) {
+    // Apply cached theme synchronously
+    applyThemeFromRegistry(cached, mode)
+    return true
+  }
+
+  // Not in cache, need to load async
+  return false
+}
+
+// Main function to apply theme (async for loading)
+async function applyThemeAsync(themeId: string, mode: "light" | "dark") {
+  if (themeId === "default") {
+    saveThemeToStorage(themeId, mode)
+    return
+  }
+
+  // Check if already applied from cache
+  const cached = getRegistryItem(themeId)
+  if (cached) {
+    saveThemeToStorage(themeId, mode)
+    return
+  }
+
+  // Load from URL
+  const registryItem = await loadTheme(themeId)
+  if (registryItem) {
+    await applyThemeFromRegistry(registryItem, mode)
+  }
+
+  saveThemeToStorage(themeId, mode)
+}
+
+// Parse globals from URL
+function getGlobalsFromURL(): { theme?: string; mode?: string } {
+  const urlParams = new URLSearchParams(window.location.search)
+  const globalsParam = urlParams.get("globals")
+
+  if (!globalsParam) return {}
+
+  // Parse format: "theme:Catppuccin;mode:dark"
+  const globals: { theme?: string; mode?: string } = {}
+  const pairs = globalsParam.split(";")
+
+  for (const pair of pairs) {
+    const [key, value] = pair.split(":")
+    if (key && value) {
+      globals[key.trim() as keyof typeof globals] = value.trim()
     }
   }
 
-  // Save to storage
-  saveThemeToStorage(themeId, mode)
+  return globals
 }
 
 // Theme decorator using createDecorator (for non-JSX decorators)
 const withTheme = createDecorator((Story, context) => {
-  const theme = context.globals.theme || "default"
-  const mode = context.globals.mode || "light"
+  // First try to get from URL, then from context/globals
+  const urlGlobals = getGlobalsFromURL()
+  const theme = urlGlobals.theme || context.globals.theme || "default"
+  const mode = (urlGlobals.mode || context.globals.mode || "light") as "light" | "dark"
 
-  // Apply theme (async but we don't wait for it)
-  applyTheme(theme, mode)
+  // Apply theme synchronously (for cached themes)
+  const applied = applyThemeSync(theme, mode)
+
+  // If not applied from cache, load async
+  if (!applied) {
+    applyThemeAsync(theme, mode)
+  }
 
   return Story()
 })
