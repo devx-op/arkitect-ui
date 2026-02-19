@@ -34,6 +34,10 @@ const config: StorybookConfig = {
             find: "@",
             replacement: resolve(__dirname, "../src"),
           },
+          {
+            find: "@arkitect-ui/shared",
+            replacement: resolve(__dirname, "../../shared/src"),
+          },
         ],
         conditions: ["browser", "default"],
       },

@@ -14,13 +14,19 @@ const storyId = `${framework}-ui-${component}--${storyPath}`
 const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=story`
 ---
 
-<div class="component-preview rounded-lg border border-border overflow-hidden bg-background" data-preview-framework={framework} data-preview-story={storyId}>
+<div 
+  class="component-preview rounded-lg border border-border overflow-hidden bg-background" 
+  data-preview-framework={framework} 
+  data-preview-story={storyId}
+  data-preview-port={port}
+>
   <div class="preview-header flex items-center justify-between px-4 py-2 bg-muted border-b border-border">
     <span class="text-sm font-medium text-muted-foreground">Preview</span>
     <span class="text-xs text-muted-foreground">{framework}</span>
   </div>
   <iframe
     data-preview-iframe
+    data-framework={framework}
     src={baseUrl}
     width="100%"
     height={height}
@@ -31,18 +37,47 @@ const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=sto
 </div>
 
 <script>
+  // Function to get current mode from document
+  function getCurrentMode() {
+    return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  }
+  
+  // Function to build iframe URL with mode
+  function buildIframeUrl(baseUrl, mode) {
+    // Check if URL already has globals parameter
+    if (baseUrl.includes('&globals=')) {
+      // Replace existing mode
+      return baseUrl.replace(/globals=mode:[^;]*/, `globals=mode:${mode}`);
+    } else {
+      // Add new globals parameter
+      return `${baseUrl}&globals=mode:${mode}`;
+    }
+  }
+  
   // Function to update iframe src with current theme
   function updatePreviewThemes() {
-    const isDark = document.documentElement.classList.contains('dark');
-    const theme = isDark ? 'dark' : 'light';
+    const mode = getCurrentMode();
     
     document.querySelectorAll('[data-preview-iframe]').forEach((iframe) => {
       const currentSrc = iframe.getAttribute('src') || '';
       const baseUrl = currentSrc.split('&globals=')[0];
-      const newSrc = `${baseUrl}&globals=theme:${theme}`;
+      const newSrc = buildIframeUrl(baseUrl, mode);
       
       if (currentSrc !== newSrc) {
         iframe.setAttribute('src', newSrc);
+      }
+      
+      // Also send postMessage for real-time updates without reload
+      const framework = iframe.getAttribute('data-framework');
+      const port = framework === 'react' ? '4848' : '4849';
+      
+      try {
+        iframe.contentWindow?.postMessage({
+          type: 'THEME_CHANGE',
+          mode: mode
+        }, `http://localhost:${port}`);
+      } catch (e) {
+        // Ignore cross-origin errors during initial load
       }
     });
   }
@@ -63,6 +98,9 @@ const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=sto
     attributes: true,
     attributeFilter: ['class']
   });
+  
+  // Also check periodically for theme changes (backup)
+  setInterval(updatePreviewThemes, 1000);
 </script>
 
 <style>

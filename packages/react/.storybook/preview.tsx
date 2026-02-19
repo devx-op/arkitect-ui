@@ -1,6 +1,6 @@
-import type { Preview } from "storybook-solidjs-vite"
-import { createDecorator } from "storybook-solidjs-vite"
-import "../src/index.css"
+import type { Preview } from "@storybook/react-vite"
+import { useEffect, useState } from "react"
+import "../src/app.css"
 
 // Default themes from tweakcn
 const DEFAULT_THEMES = [
@@ -51,12 +51,22 @@ interface ThemeRegistryItem {
 // Helper function to apply mode to DOM
 function applyModeToDOM(mode: "light" | "dark") {
   const root = document.documentElement
+  const body = document.body
+
   if (mode === "dark") {
     root.classList.add("dark")
     root.setAttribute("data-theme", "dark")
+    if (body) {
+      body.classList.add("dark")
+      body.setAttribute("data-theme", "dark")
+    }
   } else {
     root.classList.remove("dark")
     root.setAttribute("data-theme", "light")
+    if (body) {
+      body.classList.remove("dark")
+      body.setAttribute("data-theme", "light")
+    }
   }
 }
 
@@ -155,6 +165,7 @@ function applyCSSVariable(key: string, value: string, root: HTMLElement) {
 // Apply theme from registry
 async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "light" | "dark") {
   const root = document.documentElement
+  const body = document.body
   const { cssVars, css } = registryItem
 
   // Remove existing font variable override styles
@@ -164,6 +175,7 @@ async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "li
   }
 
   // Apply theme-level variables
+  let fontSansValue: string | null = null
   if (cssVars.theme) {
     Object.entries(cssVars.theme).forEach(([key, value]) => {
       applyCSSVariable(key, value, root)
@@ -171,6 +183,10 @@ async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "li
 
       if (isColorFunction(value) && isColorVariable(key)) {
         root.style.setProperty(`--color-${key}`, value, "important")
+      }
+
+      if (key === "font-sans" && value) {
+        fontSansValue = value
       }
     })
   }
@@ -249,16 +265,49 @@ async function applyTheme(themeId: string, mode: "light" | "dark") {
   saveThemeToStorage(themeId, mode)
 }
 
-// Theme decorator using createDecorator (for non-JSX decorators)
-const withTheme = createDecorator((Story, context) => {
-  const theme = context.globals.theme || "default"
-  const mode = context.globals.mode || "light"
+// Theme decorator for React
+const withTheme = (Story: React.FC, context: any) => {
+  const [isReady, setIsReady] = useState(false)
+  const { theme: themeId, mode } = context.globals
 
-  // Apply theme (async but we don't wait for it)
-  applyTheme(theme, mode)
+  useEffect(() => {
+    const initTheme = async () => {
+      // Get saved theme from storage
+      const saved = getThemeFromStorage()
 
-  return Story()
-})
+      // Use globals if provided, otherwise use saved
+      const finalTheme = themeId || saved.themeId
+      const finalMode = mode || saved.mode
+
+      // Apply theme
+      await applyTheme(finalTheme, finalMode)
+      setIsReady(true)
+    }
+
+    initTheme()
+  }, [themeId, mode])
+
+  // Listen for theme changes from parent window (docs)
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data.type === "THEME_CHANGE") {
+        const { theme: newTheme, mode: newMode } = event.data
+        if (newTheme && newMode) {
+          applyTheme(newTheme, newMode)
+        }
+      }
+    }
+
+    window.addEventListener("message", handleMessage)
+    return () => window.removeEventListener("message", handleMessage)
+  }, [])
+
+  if (!isReady) {
+    return <div>Loading theme...</div>
+  }
+
+  return <Story />
+}
 
 const preview: Preview = {
   globalTypes: {
@@ -299,6 +348,9 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+    },
+    a11y: {
+      test: "todo",
     },
   },
 }

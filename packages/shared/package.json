@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     "./utils": "./src/lib/utils.ts",
+    "./storybook-theme": "./src/lib/storybook-theme.ts",
     "./css": "./src/styles/global.css"
   },
   "dependencies": {

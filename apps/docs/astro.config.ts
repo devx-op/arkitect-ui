@@ -126,7 +126,7 @@ export default defineConfig({
                   autogenerate: { directory: 'reference' },
               },
           ], */
-      customCss: ["./src/styles/global.css", "@arkitect-ui/shared/css"],
+      customCss: ["./src/styles/global.css", "../../packages/shared/src/styles/global.css"],
       defaultLocale: "root",
     }),
   ],

@@ -1,9 +1,5 @@
-import type { Preview } from "storybook-solidjs-vite"
-import { createDecorator } from "storybook-solidjs-vite"
-import "../src/index.css"
-
 // Default themes from tweakcn
-const DEFAULT_THEMES = [
+export const DEFAULT_THEMES = [
   {
     id: "default",
     name: "Default",
@@ -35,7 +31,14 @@ const STORAGE_KEY = "storybook-theme"
 const MODE_STORAGE_KEY = "storybook-theme-mode"
 const REGISTRY_STORAGE_KEY = "storybook-theme-registry"
 
-interface ThemeRegistryItem {
+// Types
+export interface ThemeOption {
+  id: string
+  name: string
+  url: string
+}
+
+export interface ThemeRegistryItem {
   name: string
   type: string
   cssVars: {
@@ -49,19 +52,29 @@ interface ThemeRegistryItem {
 }
 
 // Helper function to apply mode to DOM
-function applyModeToDOM(mode: "light" | "dark") {
+export function applyModeToDOM(mode: "light" | "dark") {
   const root = document.documentElement
+  const body = document.body
+
   if (mode === "dark") {
     root.classList.add("dark")
     root.setAttribute("data-theme", "dark")
+    if (body) {
+      body.classList.add("dark")
+      body.setAttribute("data-theme", "dark")
+    }
   } else {
     root.classList.remove("dark")
     root.setAttribute("data-theme", "light")
+    if (body) {
+      body.classList.remove("dark")
+      body.setAttribute("data-theme", "light")
+    }
   }
 }
 
 // Fetch theme from URL
-async function fetchThemeFromUrl(url: string): Promise<ThemeRegistryItem> {
+export async function fetchThemeFromUrl(url: string): Promise<ThemeRegistryItem> {
   const response = await fetch(url)
   if (!response.ok) {
     throw new Error(`Failed to fetch theme: ${response.statusText}`)
@@ -70,36 +83,47 @@ async function fetchThemeFromUrl(url: string): Promise<ThemeRegistryItem> {
 }
 
 // Save theme to localStorage
-function saveThemeToStorage(themeId: string, mode: "light" | "dark") {
-  localStorage.setItem(STORAGE_KEY, themeId)
-  localStorage.setItem(MODE_STORAGE_KEY, mode)
+export function saveThemeToStorage(themeId: string, mode: "light" | "dark") {
+  if (typeof localStorage !== "undefined") {
+    localStorage.setItem(STORAGE_KEY, themeId)
+    localStorage.setItem(MODE_STORAGE_KEY, mode)
+  }
 }
 
 // Get theme from localStorage
-function getThemeFromStorage(): { themeId: string; mode: "light" | "dark" } {
+export function getThemeFromStorage(): { themeId: string; mode: "light" | "dark" } {
+  if (typeof localStorage === "undefined") {
+    return { themeId: "default", mode: "light" }
+  }
+
   const themeId = localStorage.getItem(STORAGE_KEY) || "default"
   const mode = (localStorage.getItem(MODE_STORAGE_KEY) as "light" | "dark") || "light"
   return { themeId, mode }
 }
 
 // Save registry item to localStorage
-function saveRegistryItem(themeId: string, registryItem: ThemeRegistryItem) {
-  const stored = localStorage.getItem(REGISTRY_STORAGE_KEY)
-  const registry = stored ? JSON.parse(stored) : {}
-  registry[themeId] = registryItem
-  localStorage.setItem(REGISTRY_STORAGE_KEY, JSON.stringify(registry))
+export function saveRegistryItem(themeId: string, registryItem: ThemeRegistryItem) {
+  if (typeof localStorage !== "undefined") {
+    const stored = localStorage.getItem(REGISTRY_STORAGE_KEY)
+    const registry = stored ? JSON.parse(stored) : {}
+    registry[themeId] = registryItem
+    localStorage.setItem(REGISTRY_STORAGE_KEY, JSON.stringify(registry))
+  }
 }
 
 // Get registry item from localStorage
-function getRegistryItem(themeId: string): ThemeRegistryItem | null {
+export function getRegistryItem(themeId: string): ThemeRegistryItem | null {
+  if (typeof localStorage === "undefined") return null
+
   const stored = localStorage.getItem(REGISTRY_STORAGE_KEY)
   if (!stored) return null
+
   const registry = JSON.parse(stored)
   return registry[themeId] || null
 }
 
 // Load theme (from localStorage or fetch)
-async function loadTheme(themeId: string): Promise<ThemeRegistryItem | null> {
+export async function loadTheme(themeId: string): Promise<ThemeRegistryItem | null> {
   if (themeId === "default") return null
 
   // Try to get from localStorage first
@@ -149,12 +173,19 @@ function isColorVariable(key: string): boolean {
 
 // Apply CSS variable
 function applyCSSVariable(key: string, value: string, root: HTMLElement) {
+  if (!root) return
   root.style.setProperty(`--${key}`, value)
 }
 
 // Apply theme from registry
-async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "light" | "dark") {
+export async function applyThemeFromRegistry(
+  registryItem: ThemeRegistryItem,
+  mode: "light" | "dark",
+) {
+  if (typeof document === "undefined") return
+
   const root = document.documentElement
+  const body = document.body
   const { cssVars, css } = registryItem
 
   // Remove existing font variable override styles
@@ -164,6 +195,7 @@ async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "li
   }
 
   // Apply theme-level variables
+  let fontSansValue: string | null = null
   if (cssVars.theme) {
     Object.entries(cssVars.theme).forEach(([key, value]) => {
       applyCSSVariable(key, value, root)
@@ -171,6 +203,10 @@ async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "li
 
       if (isColorFunction(value) && isColorVariable(key)) {
         root.style.setProperty(`--color-${key}`, value, "important")
+      }
+
+      if (key === "font-sans" && value) {
+        fontSansValue = value
       }
     })
   }
@@ -224,7 +260,7 @@ async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "li
 }
 
 // Main function to apply theme
-async function applyTheme(themeId: string, mode: "light" | "dark") {
+export async function applyTheme(themeId: string, mode: "light" | "dark") {
   if (themeId === "default") {
     // Remove tweakcn styles
     const existing = document.querySelectorAll('style[data-tweakcn-switcher="true"]')
@@ -248,59 +284,3 @@ async function applyTheme(themeId: string, mode: "light" | "dark") {
   // Save to storage
   saveThemeToStorage(themeId, mode)
 }
-
-// Theme decorator using createDecorator (for non-JSX decorators)
-const withTheme = createDecorator((Story, context) => {
-  const theme = context.globals.theme || "default"
-  const mode = context.globals.mode || "light"
-
-  // Apply theme (async but we don't wait for it)
-  applyTheme(theme, mode)
-
-  return Story()
-})
-
-const preview: Preview = {
-  globalTypes: {
-    theme: {
-      description: "Global theme for components",
-      toolbar: {
-        title: "Theme",
-        icon: "paintbrush",
-        items: DEFAULT_THEMES.map((t) => ({
-          value: t.id,
-          title: t.name,
-          icon: t.id === "default" ? "circlehollow" : "circle",
-        })),
-        dynamicTitle: true,
-      },
-    },
-    mode: {
-      description: "Color mode",
-      toolbar: {
-        title: "Mode",
-        icon: "mirror",
-        items: [
-          { value: "light", title: "Light", icon: "sun" },
-          { value: "dark", title: "Dark", icon: "moon" },
-        ],
-        dynamicTitle: true,
-      },
-    },
-  },
-  initialGlobals: {
-    theme: "default",
-    mode: "light",
-  },
-  decorators: [withTheme],
-  parameters: {
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/i,
-      },
-    },
-  },
-}
-
-export default preview

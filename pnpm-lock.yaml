@@ -6,66 +6,15 @@ settings:
 
 catalogs:
   default:
-    '@ark-ui/react':
-      specifier: ^4.9.2
-      version: 4.9.2
     '@ark-ui/solid':
       specifier: ^5.31.0
       version: 5.31.0
-    '@astrojs/react':
-      specifier: ^4.4.2
-      version: 4.4.2
-    '@astrojs/solid-js':
-      specifier: ^5.1.3
-      version: 5.1.3
-    '@astrojs/starlight':
-      specifier: 0.36.3
-      version: 0.36.3
-    '@astrojs/starlight-tailwind':
-      specifier: 4.0.2
-      version: 4.0.2
     '@chromatic-com/storybook':
       specifier: ^5.0.1
       version: 5.0.1
-    '@effect/cli':
-      specifier: 0.73.2
-      version: 0.73.2
-    '@effect/language-service':
-      specifier: 0.56.0
-      version: 0.56.0
-    '@effect/platform':
-      specifier: 0.94.0
-      version: 0.94.0
-    '@effect/platform-node':
-      specifier: 0.104.1
-      version: 0.104.1
-    '@effect/vitest':
-      specifier: 0.27.0
-      version: 0.27.0
-    '@nx/js':
-      specifier: 22.4.5
-      version: 22.4.5
-    '@nx/node':
-      specifier: 22.4.5
-      version: 22.4.5
-    '@nx/react':
-      specifier: 22.4.5
-      version: 22.4.5
-    '@nx/storybook':
-      specifier: 22.4.5
-      version: 22.4.5
     '@nx/vite':
       specifier: 22.4.5
       version: 22.4.5
-    '@nx/web':
-      specifier: 22.4.5
-      version: 22.4.5
-    '@radix-ui/react-dropdown-menu':
-      specifier: ^2.1.16
-      version: 2.1.16
-    '@radix-ui/react-slot':
-      specifier: ^1.2.4
-      version: 1.2.4
     '@solidjs/testing-library':
       specifier: 0.8.10
       version: 0.8.10
@@ -81,45 +30,12 @@ catalogs:
     '@storybook/addon-vitest':
       specifier: ^10.2.8
       version: 10.2.8
-    '@storybook/react':
-      specifier: ^10.2.8
-      version: 10.2.8
-    '@storybook/react-vite':
-      specifier: ^10.2.8
-      version: 10.2.8
-    '@swc-node/register':
-      specifier: 1.11.1
-      version: 1.11.1
-    '@swc/core':
-      specifier: 1.15.3
-      version: 1.15.3
-    '@swc/helpers':
-      specifier: 0.5.17
-      version: 0.5.17
     '@tabler/icons-solidjs':
       specifier: ^3.36.1
       version: 3.36.1
     '@tailwindcss/vite':
       specifier: 4.1.18
       version: 4.1.18
-    '@types/node':
-      specifier: 20.19.25
-      version: 20.19.25
-    '@vitejs/plugin-react':
-      specifier: 5.1.1
-      version: 5.1.1
-    '@vitest/browser-playwright':
-      specifier: ^4.0.18
-      version: 4.0.18
-    '@vitest/ui':
-      specifier: ^4.0.9
-      version: 4.0.18
-    astro:
-      specifier: 5.17.1
-      version: 5.17.1
-    astro-expressive-code:
-      specifier: 0.41.6
-      version: 0.41.6
     autoprefixer:
       specifier: 10.4.22
       version: 10.4.22
@@ -129,39 +45,12 @@ catalogs:
     clsx:
       specifier: 2.1.1
       version: 2.1.1
-    dprint:
-      specifier: 0.51.1
-      version: 0.51.1
-    effect:
-      specifier: 3.19.16
-      version: 3.19.16
-    glob:
-      specifier: ^11.0.0
-      version: 11.1.0
-    globals:
-      specifier: ^16.5.0
-      version: 16.5.0
-    husky:
-      specifier: 9.1.7
-      version: 9.1.7
-    jiti:
-      specifier: 2.6.1
-      version: 2.6.1
     jsdom:
       specifier: ^26.0.0
       version: 26.1.0
-    lint-staged:
-      specifier: 16.2.7
-      version: 16.2.7
-    lucide-react:
-      specifier: ^0.554.0
-      version: 0.554.0
     lucide-solid:
       specifier: ^0.554.0
       version: 0.554.0
-    nx-oxlint:
-      specifier: 0.1.1
-      version: 0.1.1
     postcss:
       specifier: 8.5.6
       version: 8.5.6
@@ -171,39 +60,9 @@ catalogs:
     react-dom:
       specifier: 19.2.4
       version: 19.2.4
-    react-router:
-      specifier: ^7.1.5
-      version: 7.13.0
-    react-use-measure:
-      specifier: ^2.1.1
-      version: 2.1.7
-    recharts:
-      specifier: ^2.15.1
-      version: 2.15.4
-    shadcn:
-      specifier: ^2.10.0
-      version: 2.10.0
-    sharp:
-      specifier: 0.34.5
-      version: 0.34.5
-    solid-devtools:
-      specifier: ^0.34.3
-      version: 0.34.5
     solid-js:
       specifier: ^1.9.9
       version: 1.9.11
-    sonner:
-      specifier: ^1.7.4
-      version: 1.7.4
-    starlight-sidebar-topics:
-      specifier: 0.6.2
-      version: 0.6.2
-    starlight-sidebar-topics-dropdown:
-      specifier: 0.5.2
-      version: 0.5.2
-    starlight-theme-nova:
-      specifier: 0.10.0
-      version: 0.10.0
     storybook:
       specifier: ^10.2.8
       version: 10.2.8
@@ -216,18 +75,9 @@ catalogs:
     tailwindcss:
       specifier: 4.1.18
       version: 4.1.18
-    ts-patch:
-      specifier: ^3.2.1
-      version: 3.3.0
-    tslib:
-      specifier: 2.8.1
-      version: 2.8.1
     tw-animate-css:
       specifier: 1.4.0
       version: 1.4.0
-    typescript:
-      specifier: 5.9.3
-      version: 5.9.3
     vite:
       specifier: 7.3.1
       version: 7.3.1
@@ -237,9 +87,6 @@ catalogs:
     vite-plugin-solid:
       specifier: ^2.11.10
       version: 2.11.10
-    vite-tsconfig-paths:
-      specifier: ^6.1.1
-      version: 6.1.1
     vitest:
       specifier: ^4.0.18
       version: 4.0.18
@@ -14944,7 +14791,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vitest: 4.0.18(@types/node@20.19.25)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(msw@2.12.10(@types/node@20.19.25)(typescript@5.9.3))(terser@5.46.0)(yaml@2.8.2)
+      vitest: 4.0.18(@types/node@25.2.3)(@vitest/browser-playwright@4.0.18)(@vitest/ui@4.0.18)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.30.2)(msw@2.12.10(@types/node@25.2.3)(typescript@5.9.3))(terser@5.46.0)(yaml@2.8.2)
 
   '@vitest/utils@3.2.4':
     dependencies:
@@ -16377,7 +16224,7 @@ snapshots:
 
   axios@1.13.5:
     dependencies:
-      follow-redirects: 1.15.11(debug@4.4.3)
+      follow-redirects: 1.15.11
       form-data: 4.0.5
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -17662,6 +17509,8 @@ snapshots:
   flatted@3.3.3: {}
 
   flattie@1.1.1: {}
+
+  follow-redirects@1.15.11: {}
 
   follow-redirects@1.15.11(debug@4.4.3):
     optionalDependencies:
