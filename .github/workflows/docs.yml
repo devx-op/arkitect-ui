@@ -1,4 +1,4 @@
-name: 📚 Docs
+name: 📚 Docs & Storybook
 
 on:
   push:
@@ -38,51 +38,70 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: 🏗️ Build Docs (Nx affected)
-        id: affected_build
+      - name: 🏗️ Build React Storybook
         run: |
-          set -eu
-          BASE="${{ github.event.before }}"
-          HEAD="${{ github.sha }}"
-          if [ -z "${BASE}" ] || [ "${BASE}" = "0000000000000000000000000000000000000000" ]; then
-            BASE="$(git rev-parse HEAD^ || echo "")"
-          fi
-          if [ -z "${BASE}" ]; then
-            echo "No valid BASE commit found, building unconditionally"
-            pnpm registry:build
-            pnpm nx build "@arkitect-ui/docs"
-          else
-            echo "Checking if `@arkitect-ui/docs` is affected between ${BASE}..${HEAD}"
-            if pnpm nx show projects --affected --base="${BASE}" --head="${HEAD}" | grep -q "@arkitect-ui/docs"; then
-              echo "@arkitect-ui/docs is affected. Building only docs..."
-              pnpm registry:build
-              pnpm nx build "@arkitect-ui/docs"
-            else
-              echo "@arkitect-ui/docs not affected. Skipping build."
-            fi
-          fi
-          if [ -d apps/docs/dist ]; then
-            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
-          fi
+          echo "Building React Storybook with base path..."
+          STORYBOOK_BASE_PATH=/arkitect-ui/react-storybook/ \
+            pnpm nx run @arkitect-ui/react:build:storybook
+
+      - name: 🏗️ Build Solid Storybook
+        run: |
+          echo "Building Solid Storybook with base path..."
+          STORYBOOK_BASE_PATH=/arkitect-ui/solid-storybook/ \
+            pnpm nx run @arkitect-ui/solid:build:storybook
+
+      - name: 🏗️ Build Docs
+        run: |
+          echo "Building docs..."
+          pnpm registry:build
+          pnpm nx build "@arkitect-ui/docs"
+
+      - name: 📁 Organize deployment
+        run: |
+          echo "Creating deployment structure..."
+          mkdir -p deploy
+
+          # Copy docs to root
+          echo "Copying docs..."
+          cp -r apps/docs/dist/* deploy/
+
+          # Copy React Storybook to subdirectory
+          echo "Copying React Storybook..."
+          mkdir -p deploy/react-storybook
+          cp -r packages/react/storybook-static/* deploy/react-storybook/
+
+          # Copy Solid Storybook to subdirectory
+          echo "Copying Solid Storybook..."
+          mkdir -p deploy/solid-storybook
+          cp -r packages/solid/storybook-static/* deploy/solid-storybook/
+
+          # List deployment structure
+          echo "Deployment structure:"
+          ls -la deploy/
+          echo ""
+          echo "React Storybook:"
+          ls -la deploy/react-storybook/ | head -20
+          echo ""
+          echo "Solid Storybook:"
+          ls -la deploy/solid-storybook/ | head -20
 
       - name: ⚙️ Configure Pages
-        if: steps.affected_build.outputs.should_deploy == 'true'
         uses: actions/configure-pages@v5
 
       - name: 📦 Upload Pages Artifact
-        if: steps.affected_build.outputs.should_deploy == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: apps/docs/dist
+          path: deploy
 
       - name: 🚀 Deploy to GitHub Pages
-        if: steps.affected_build.outputs.should_deploy == 'true'
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: ⏭️ Skip deploy (docs not affected)
-        if: steps.affected_build.outputs.should_deploy != 'true'
+      - name: ✅ Deployment Summary
         run: |
-          echo "Skipping deploy - `@arkitect-ui/docs` is not affected in this push."
+          echo "Deployed to: ${{ steps.deployment.outputs.page_url }}"
+          echo ""
+          echo "Available URLs:"
+          echo "  - Docs: ${{ steps.deployment.outputs.page_url }}"
+          echo "  - React Storybook: ${{ steps.deployment.outputs.page_url }}react-storybook/"
+          echo "  - Solid Storybook: ${{ steps.deployment.outputs.page_url }}solid-storybook/"

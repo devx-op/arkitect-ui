@@ -21,6 +21,7 @@ const config: StorybookConfig = {
 
   viteFinal: async (config) =>
     mergeConfig(config, {
+      base: process.env.STORYBOOK_BASE_PATH || "/",
       plugins: [tailwindcss()],
       resolve: {
         alias: [

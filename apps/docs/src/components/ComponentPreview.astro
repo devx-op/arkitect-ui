@@ -11,7 +11,16 @@ const { framework, component, story = "default", height = "400px" } = Astro.prop
 const port = framework === "react" ? "4848" : "4849"
 const storyPath = story.toLowerCase().replace(/\s+/g, "-")
 const storyId = `${framework}-ui-${component}--${storyPath}`
-const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=story`
+
+// Detect environment and set appropriate base URL
+const isProd = import.meta.env.PROD || import.meta.env.MODE === 'production'
+const baseUrl = isProd
+  ? `https://devx-op.github.io/arkitect-ui/${framework}-storybook/iframe.html?id=${storyId}&viewMode=story`
+  : `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=story`
+
+const storybookBaseUrl = isProd
+  ? `https://devx-op.github.io/arkitect-ui/${framework}-storybook`
+  : `http://localhost:${port}`
 ---
 
 <div 
@@ -27,6 +36,7 @@ const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=sto
   <iframe
     data-preview-iframe
     data-framework={framework}
+    data-storybook-base={storybookBaseUrl}
     src={baseUrl}
     width="100%"
     height={height}
@@ -89,11 +99,31 @@ const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=sto
     }
   }
   
+  // Get Storybook base URL from iframe data attribute
+  function getStorybookBaseUrl(iframe: HTMLIFrameElement): string {
+    // Use the data attribute set during server-side rendering
+    const baseFromData = iframe.getAttribute('data-storybook-base');
+    if (baseFromData) {
+      return baseFromData;
+    }
+
+    // Fallback: detect from src
+    const framework = iframe.getAttribute('data-framework');
+    const isLocal = iframe.getAttribute('src')?.includes('localhost') ?? false;
+
+    if (isLocal) {
+      const port = framework === 'react' ? '4848' : '4849';
+      return `http://localhost:${port}`;
+    } else {
+      return `https://devx-op.github.io/arkitect-ui/${framework}-storybook`;
+    }
+  }
+
   // Function to update iframe src with current theme
   function updatePreviewThemes() {
     const mode = getCurrentMode();
     const theme = getCurrentTheme();
-    
+
     document.querySelectorAll<HTMLIFrameElement>('[data-preview-iframe]').forEach((iframe) => {
       const currentSrc = iframe.getAttribute('src') || '';
       const baseUrl = currentSrc.split('&globals=')[0];
@@ -104,15 +134,14 @@ const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=sto
       }
 
       // Also send postMessage for real-time updates without reload
-      const framework = iframe.getAttribute('data-framework');
-      const port = framework === 'react' ? '4848' : '4849';
+      const storybookBase = getStorybookBaseUrl(iframe);
 
       try {
         iframe.contentWindow?.postMessage({
           type: 'THEME_CHANGE',
           theme: theme,
           mode: mode
-        }, `http://localhost:${port}`);
+        }, storybookBase);
       } catch (e) {
         // Ignore cross-origin errors during initial load
       }
