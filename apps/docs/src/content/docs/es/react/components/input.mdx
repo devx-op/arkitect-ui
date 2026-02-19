@@ -1,0 +1,137 @@
+---
+title: Input
+description: Un componente de campo de entrada para capturar texto del usuario.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import inputCode from "../../../../../../../../packages/react/src/components/ui/input.tsx?raw";
+import { Input } from "@arkitect-ui/react";
+
+<Tabs>
+  <TabItem label="Vista previa">
+    <div class="flex flex-col gap-4 max-w-sm">
+      <Input client:visible placeholder="Input por defecto" />
+      <Input client:visible variant="outline" placeholder="Input outline" />
+      <Input client:visible variant="soft" placeholder="Input soft" />
+      <Input client:visible variant="plain" placeholder="Input plain" />
+    </div>
+  </TabItem>
+  <TabItem label="Código">
+    ```tsx
+    import { Input } from "@/components/ui/input"
+
+    export function InputDemo() {
+      return (
+        <div className="flex flex-col gap-4 max-w-sm">
+          <Input placeholder="Input por defecto" />
+          <Input variant="outline" placeholder="Input outline" />
+          <Input variant="soft" placeholder="Input soft" />
+          <Input variant="plain" placeholder="Input plain" />
+        </div>
+      )
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## Variantes
+
+El componente Input soporta tres variantes visuales:
+
+### Outline
+
+La variante por defecto con borde.
+
+<Tabs>
+  <TabItem label="Vista previa">
+    <Input client:visible variant="outline" placeholder="Input outline" className="max-w-sm" />
+  </TabItem>
+  <TabItem label="Código">
+    ```tsx
+    <Input variant="outline" placeholder="Input outline" />
+    ```
+  </TabItem>
+</Tabs>
+
+### Soft
+
+Un input relleno con fondo sutil.
+
+<Tabs>
+  <TabItem label="Vista previa">
+    <Input client:visible variant="soft" placeholder="Input soft" className="max-w-sm" />
+  </TabItem>
+  <TabItem label="Código">
+    ```tsx
+    <Input variant="soft" placeholder="Input soft" />
+    ```
+  </TabItem>
+</Tabs>
+
+### Plain
+
+Un input transparente sin bordes ni fondo.
+
+<Tabs>
+  <TabItem label="Vista previa">
+    <Input client:visible variant="plain" placeholder="Input plain" className="max-w-sm" />
+  </TabItem>
+  <TabItem label="Código">
+    ```tsx
+    <Input variant="plain" placeholder="Input plain" />
+    ```
+  </TabItem>
+</Tabs>
+
+## Tamaños
+
+Elige entre tres tamaños: `sm`, `md` (por defecto), y `lg`.
+
+<Tabs>
+  <TabItem label="Vista previa">
+    <div class="flex flex-col gap-4 max-w-sm">
+      <Input client:visible size="sm" placeholder="Input pequeño" />
+      <Input client:visible size="md" placeholder="Input mediano" />
+      <Input client:visible size="lg" placeholder="Input grande" />
+    </div>
+  </TabItem>
+  <TabItem label="Código">
+    ```tsx
+    <div className="flex flex-col gap-4 max-w-sm">
+      <Input size="sm" placeholder="Input pequeño" />
+      <Input size="md" placeholder="Input mediano" />
+      <Input size="lg" placeholder="Input grande" />
+    </div>
+    ```
+  </TabItem>
+</Tabs>
+
+## Estados
+
+### Deshabilitado
+
+Deshabilita el input para prevenir la interacción del usuario.
+
+<Tabs>
+  <TabItem label="Vista previa">
+    <Input client:visible disabled placeholder="Input deshabilitado" className="max-w-sm" />
+  </TabItem>
+  <TabItem label="Código">
+    ```tsx
+    <Input disabled placeholder="Input deshabilitado" />
+    ```
+  </TabItem>
+</Tabs>
+
+## Instalación
+
+<Tabs>
+  <TabItem label="CLI">
+    ```bash
+    npx arkitect-ui add input
+    ```
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={inputCode} lang="tsx" title="components/ui/input.tsx" />
+  </TabItem>
+</Tabs>

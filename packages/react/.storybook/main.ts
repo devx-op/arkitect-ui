@@ -1,7 +1,5 @@
-import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin"
 import type { StorybookConfig } from "@storybook/react-vite"
 import tailwindcss from "@tailwindcss/vite"
-import react from "@vitejs/plugin-react"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { mergeConfig } from "vite"
@@ -9,7 +7,7 @@ import { mergeConfig } from "vite"
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.@(mdx|stories.@(js|jsx|ts|tsx))"],
+  stories: ["../src/**/*.stories.@(js|jsx|ts|tsx|mdx)"],
   addons: [
     "@chromatic-com/storybook",
     "@storybook/addon-vitest",
@@ -23,12 +21,21 @@ const config: StorybookConfig = {
 
   viteFinal: async (config) =>
     mergeConfig(config, {
-      plugins: [react(), nxViteTsPaths(), tailwindcss()],
+      plugins: [tailwindcss()],
       resolve: {
-        alias: {
-          "@/lib/utils": resolve(__dirname, "../../shared/src/lib/utils.ts"),
-          "@": resolve(__dirname, "../src"),
-        },
+        alias: [
+          {
+            find: "@/lib/utils",
+            replacement: resolve(__dirname, "../../shared/src/lib/utils.ts"),
+          },
+          {
+            find: "@",
+            replacement: resolve(__dirname, "../src"),
+          },
+        ],
+      },
+      optimizeDeps: {
+        include: ["@ark-ui/react", "@tabler/icons-react"],
       },
     }),
 }

@@ -69,6 +69,10 @@ export default defineConfig({
                 label: "Components",
                 items: ["react/components/button"],
               },
+              {
+                label: "Components",
+                items: ["react/components/input"],
+              },
             ],
           },
           {
@@ -84,6 +88,10 @@ export default defineConfig({
               {
                 label: "Components",
                 items: ["solid/components/button"],
+              },
+              {
+                label: "Components",
+                items: ["solid/components/input"],
               },
             ],
           },
