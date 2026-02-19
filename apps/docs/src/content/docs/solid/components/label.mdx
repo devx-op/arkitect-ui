@@ -1,0 +1,52 @@
+---
+title: Label
+description: A label component for form elements.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@components/ComponentPreview.astro";
+import labelCode from "../../../../../../../packages/solid/src/components/ui/label.tsx?raw";
+
+## Preview
+
+<ComponentPreview 
+  framework="solid"
+  component="label"
+  story="default"
+  height="150px"
+/>
+
+## With Input
+
+Use the Label component together with an input field.
+
+```tsx
+import { Label } from "@/components/ui/label"
+
+export function LabelWithInputDemo() {
+  return (
+    <div class="flex flex-col gap-2">
+      <Label for="email">Email</Label>
+      <input
+        id="email"
+        type="email"
+        placeholder="Enter your email"
+        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+      />
+    </div>
+  )
+}
+```
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    ```bash
+    npx arkitect-ui add label
+    ```
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={labelCode} lang="tsx" title="components/ui/label.tsx" />
+  </TabItem>
+</Tabs>

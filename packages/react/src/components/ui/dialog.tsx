@@ -1,9 +1,9 @@
 import { Dialog as DialogPrimitives } from "@ark-ui/react"
 import { IconX } from "@tabler/icons-react"
 import { cva, type VariantProps } from "class-variance-authority"
-import React, { type InputHTMLAttributes } from "react"
+import { type ComponentProps, type ComponentPropsWithoutRef, type ComponentRef, forwardRef } from "react"
+import { cn } from "@/lib/utils"
 import { Button, type ButtonProps } from "./button"
-import clsx from "clsx"
 
 const Dialog = (props: DialogPrimitives.RootProps) => <DialogPrimitives.Root data-slot="dialog" {...props} />
 
@@ -14,10 +14,10 @@ const DialogTrigger = (props: DialogPrimitives.TriggerProps) => (
 const DialogHeader = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+}: ComponentProps<"div">) => (
   <div
-    className={clsx(
-      "text-base-900 flex h-12 min-h-12 items-center gap-x-3 px-2 text-center",
+    className={cn(
+      "flex h-12 min-h-12 items-center gap-x-3 px-2 text-center",
       className,
     )}
     {...props}
@@ -26,49 +26,47 @@ const DialogHeader = ({
 
 DialogHeader.displayName = "DialogHeader"
 
-const DialogTitle = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitives.Title>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitives.Title>
+const DialogTitle = forwardRef<
+  ComponentRef<typeof DialogPrimitives.Title>,
+  ComponentPropsWithoutRef<typeof DialogPrimitives.Title>
 >(({ className, ...props }, ref) => (
   <DialogPrimitives.Title
     ref={ref}
-    className={clsx("flex-1 text-start text-lg font-semibold", className)}
+    className={cn("flex-1 text-start text-lg font-semibold", className)}
     {...props}
   />
 ))
 
 DialogTitle.displayName = "DialogTitle"
 
-const DialogDescription = React.forwardRef<
-  HTMLDivElement,
-  InputHTMLAttributes<HTMLInputElement>
->(({ className, children, ...props }, ref) => (
+const DialogDescription = forwardRef<
+  ComponentRef<typeof DialogPrimitives.Description>,
+  ComponentPropsWithoutRef<typeof DialogPrimitives.Description>
+>(({ className, ...props }, ref) => (
   <DialogPrimitives.Description
     ref={ref}
-    className={clsx(
-      "text-base-600 w-full flex-1 overflow-auto px-2",
+    className={cn(
+      "text-muted-foreground w-full flex-1 overflow-auto px-2",
       className,
     )}
     {...props}
-  >
-    {children}
-  </DialogPrimitives.Description>
+  />
 ))
 
 DialogDescription.displayName = "DialogDescription"
 
 const modalContentStyle = cva(
-  "duration-400 bg-base-0 flex w-full flex-col shadow-md transition-all data-[state=open]:visible data-[state=closed]:invisible data-[state=closed]:translate-y-4 data-[state=open]:translate-y-0 data-[state=closed]:opacity-0 data-[state=open]:opacity-100",
+  "bg-background flex w-full flex-col shadow-md transition-all data-[state=open]:visible data-[state=closed]:invisible data-[state=closed]:translate-y-4 data-[state=open]:translate-y-0 data-[state=closed]:opacity-0 data-[state=open]:opacity-100",
   {
     variants: {
       size: {
-        xs: "max-h-[70vh] max-w-xs sm:rounded",
-        sm: "max-h-[70vh] max-w-sm sm:rounded",
-        md: "max-h-[70vh] max-w-md sm:rounded",
-        lg: "max-h-[70vh] max-w-lg sm:rounded",
-        xl: "max-h-[70vh] max-w-xl sm:rounded",
-        "2xl": "max-h-[70vh] max-w-2xl sm:rounded",
-        "3xl": "max-h-[70vh] max-w-3xl sm:rounded",
+        xs: "max-h-[70vh] max-w-xs rounded-lg",
+        sm: "max-h-[70vh] max-w-sm rounded-lg",
+        md: "max-h-[70vh] max-w-md rounded-lg",
+        lg: "max-h-[70vh] max-w-lg rounded-lg",
+        xl: "max-h-[70vh] max-w-xl rounded-lg",
+        "2xl": "max-h-[70vh] max-w-2xl rounded-lg",
+        "3xl": "max-h-[70vh] max-w-3xl rounded-lg",
         fullscreen: "h-screen w-screen rounded-none",
       },
     },
@@ -80,17 +78,16 @@ const modalContentStyle = cva(
 
 interface DialogContentProps extends VariantProps<typeof modalContentStyle> {}
 
-const DialogContent = React.forwardRef<
-  React.ComponentRef<typeof DialogPrimitives.Content>,
-  & React.ComponentPropsWithoutRef<typeof DialogPrimitives.Content>
-  & DialogContentProps
+const DialogContent = forwardRef<
+  ComponentRef<typeof DialogPrimitives.Content>,
+  ComponentPropsWithoutRef<typeof DialogPrimitives.Content> & DialogContentProps
 >(({ className, size, ...props }, ref) => (
   <>
-    <DialogPrimitives.Backdrop className="duration-400 pointer-events-none fixed inset-0 z-50 block bg-neutral-800 bg-opacity-0 backdrop-blur-sm backdrop-brightness-50 transition-all data-[state=open]:visible data-[state=closed]:invisible data-[state=open]:bg-opacity-50" />
-    <DialogPrimitives.Positioner className="fixed left-0 top-0 z-50 flex h-screen w-screen items-center justify-center">
+    <DialogPrimitives.Backdrop className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/80" />
+    <DialogPrimitives.Positioner className="fixed left-0 top-0 z-50 flex h-screen w-screen items-center justify-center p-4">
       <DialogPrimitives.Content
         ref={ref}
-        className={modalContentStyle({ size, className })}
+        className={cn(modalContentStyle({ size }), className)}
         {...props}
       />
     </DialogPrimitives.Positioner>
@@ -102,15 +99,15 @@ DialogContent.displayName = "DialogContent"
 const DialogFooter = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => <div className={clsx("text-base-600 px-4 py-2.5", className)} {...props} />
+}: ComponentProps<"div">) => <div className={cn("flex items-center justify-end gap-2 p-4", className)} {...props} />
 
 DialogFooter.displayName = "DialogFooter"
 
-const DialogClose = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const DialogClose = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, ...props }, ref) => (
     <DialogPrimitives.CloseTrigger ref={ref} asChild>
-      <Button variant="icon" size="sm" {...props}>
-        {children ?? <IconX className="h-5 w-5" />}
+      <Button variant="ghost" size="icon" {...props}>
+        {children ?? <IconX className="h-4 w-4" />}
       </Button>
     </DialogPrimitives.CloseTrigger>
   ),

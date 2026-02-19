@@ -4,35 +4,17 @@ description: An input field component for capturing user text input.
 ---
 
 import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@components/ComponentPreview.astro";
 import inputCode from "../../../../../../../packages/solid/src/components/ui/input.tsx?raw";
-import { Input } from "@arkitect-ui/solid";
 
-<Tabs>
-  <TabItem label="Preview">
-    <div class="flex flex-col gap-4 max-w-sm">
-      <Input client:visible placeholder="Default input" />
-      <Input client:visible variant="outline" placeholder="Outline input" />
-      <Input client:visible variant="soft" placeholder="Soft input" />
-      <Input client:visible variant="plain" placeholder="Plain input" />
-    </div>
-  </TabItem>
-  <TabItem label="Code">
-    ```tsx
-    import { Input } from "@/components/ui/input"
+## Preview
 
-    export function InputDemo() {
-      return (
-        <div class="flex flex-col gap-4 max-w-sm">
-          <Input placeholder="Default input" />
-          <Input variant="outline" placeholder="Outline input" />
-          <Input variant="soft" placeholder="Soft input" />
-          <Input variant="plain" placeholder="Plain input" />
-        </div>
-      )
-    }
-    ```
-  </TabItem>
-</Tabs>
+<ComponentPreview 
+  framework="solid"
+  component="input"
+  story="default"
+  height="300px"
+/>
 
 ## Variants
 
@@ -42,69 +24,37 @@ The Input component supports three visual variants:
 
 The default variant with a border.
 
-<Tabs>
-  <TabItem label="Preview">
-    <Input client:visible variant="outline" placeholder="Outline input" class="max-w-sm" />
-  </TabItem>
-  <TabItem label="Code">
-    ```tsx
-    <Input variant="outline" placeholder="Outline input" />
-    ```
-  </TabItem>
-</Tabs>
+```tsx
+<Input variant="outline" placeholder="Outline input" />
+```
 
 ### Soft
 
 A filled input with a subtle background.
 
-<Tabs>
-  <TabItem label="Preview">
-    <Input client:visible variant="soft" placeholder="Soft input" class="max-w-sm" />
-  </TabItem>
-  <TabItem label="Code">
-    ```tsx
-    <Input variant="soft" placeholder="Soft input" />
-    ```
-  </TabItem>
-</Tabs>
+```tsx
+<Input variant="soft" placeholder="Soft input" />
+```
 
 ### Plain
 
 A transparent input without borders or background.
 
-<Tabs>
-  <TabItem label="Preview">
-    <Input client:visible variant="plain" placeholder="Plain input" class="max-w-sm" />
-  </TabItem>
-  <TabItem label="Code">
-    ```tsx
-    <Input variant="plain" placeholder="Plain input" />
-    ```
-  </TabItem>
-</Tabs>
+```tsx
+<Input variant="plain" placeholder="Plain input" />
+```
 
 ## Sizes
 
 Choose from three sizes: `sm`, `md` (default), and `lg`.
 
-<Tabs>
-  <TabItem label="Preview">
-    <div class="flex flex-col gap-4 max-w-sm">
-      <Input client:visible size="sm" placeholder="Small input" />
-      <Input client:visible size="md" placeholder="Medium input" />
-      <Input client:visible size="lg" placeholder="Large input" />
-    </div>
-  </TabItem>
-  <TabItem label="Code">
-    ```tsx
-    <div class="flex flex-col gap-4 max-w-sm">
-      <Input size="sm" placeholder="Small input" />
-      <Input size="md" placeholder="Medium input" />
-      <Input size="lg" placeholder="Large input" />
-    </div>
-    ```
-  </TabItem>
-</Tabs>
+```tsx
+<div class="flex flex-col gap-4 max-w-sm">
+  <Input size="sm" placeholder="Small input" />
+  <Input size="md" placeholder="Medium input" />
+  <Input size="lg" placeholder="Large input" />
+</div>
+```
 
 ## States
 
@@ -112,16 +62,9 @@ Choose from three sizes: `sm`, `md` (default), and `lg`.
 
 Disable the input to prevent user interaction.
 
-<Tabs>
-  <TabItem label="Preview">
-    <Input client:visible disabled placeholder="Disabled input" class="max-w-sm" />
-  </TabItem>
-  <TabItem label="Code">
-    ```tsx
-    <Input disabled placeholder="Disabled input" />
-    ```
-  </TabItem>
-</Tabs>
+```tsx
+<Input disabled placeholder="Disabled input" />
+```
 
 ## Installation
 

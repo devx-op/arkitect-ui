@@ -21,7 +21,7 @@
     "@radix-ui/react-slot": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "astro": "catalog:",
-
+    "@ark-ui/react": "catalog:",
     "lucide-react": "catalog:",
     "astro-expressive-code": "catalog:",
     "class-variance-authority": "catalog:",

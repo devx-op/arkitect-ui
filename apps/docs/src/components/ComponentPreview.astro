@@ -1,0 +1,76 @@
+---
+interface Props {
+  framework: "react" | "solid"
+  component: string
+  story?: string
+  height?: string
+}
+
+const { framework, component, story = "default", height = "400px" } = Astro.props
+
+const port = framework === "react" ? "4848" : "4849"
+const storyPath = story.toLowerCase().replace(/\s+/g, "-")
+const storyId = `${framework}-ui-${component}--${storyPath}`
+const baseUrl = `http://localhost:${port}/iframe.html?id=${storyId}&viewMode=story`
+---
+
+<div class="component-preview rounded-lg border border-border overflow-hidden bg-background" data-preview-framework={framework} data-preview-story={storyId}>
+  <div class="preview-header flex items-center justify-between px-4 py-2 bg-muted border-b border-border">
+    <span class="text-sm font-medium text-muted-foreground">Preview</span>
+    <span class="text-xs text-muted-foreground">{framework}</span>
+  </div>
+  <iframe
+    data-preview-iframe
+    src={baseUrl}
+    width="100%"
+    height={height}
+    class="border-0"
+    title={`${component} ${story} preview`}
+    loading="lazy"
+  />
+</div>
+
+<script>
+  // Function to update iframe src with current theme
+  function updatePreviewThemes() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const theme = isDark ? 'dark' : 'light';
+    
+    document.querySelectorAll('[data-preview-iframe]').forEach((iframe) => {
+      const currentSrc = iframe.getAttribute('src') || '';
+      const baseUrl = currentSrc.split('&globals=')[0];
+      const newSrc = `${baseUrl}&globals=theme:${theme}`;
+      
+      if (currentSrc !== newSrc) {
+        iframe.setAttribute('src', newSrc);
+      }
+    });
+  }
+  
+  // Update on initial load
+  updatePreviewThemes();
+  
+  // Watch for theme changes
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'class') {
+        updatePreviewThemes();
+      }
+    });
+  });
+  
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class']
+  });
+</script>
+
+<style>
+  .component-preview {
+    margin: 1rem 0;
+  }
+  
+  .preview-header {
+    background-color: hsl(var(--muted));
+  }
+</style>

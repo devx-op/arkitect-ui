@@ -1,0 +1,111 @@
+---
+title: Dialog
+description: A dialog component for displaying modal content.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import dialogCode from "../../../../../../../packages/react/src/components/ui/dialog.tsx?raw";
+
+## Preview
+
+<ComponentPreview 
+  framework="react"
+  component="dialog"
+  story="default"
+  height="400px"
+/>
+
+## Basic Usage
+
+```tsx
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+
+export function DialogDemo() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">Open Dialog</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Dialog Title</DialogTitle>
+          <DialogClose />
+        </DialogHeader>
+        <DialogDescription>
+          This is a description of the dialog content.
+        </DialogDescription>
+        <DialogFooter>
+          <Button variant="outline">Cancel</Button>
+          <Button>Continue</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+```
+
+## Sizes
+
+The Dialog component supports multiple sizes through the `size` prop.
+
+<ComponentPreview 
+  framework="react"
+  component="dialog"
+  story="with-size"
+  height="400px"
+/>
+
+```tsx
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Small</Button>
+  </DialogTrigger>
+  <DialogContent size="sm">
+    {/* Content */}
+  </DialogContent>
+</Dialog>
+
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Large</Button>
+  </DialogTrigger>
+  <DialogContent size="lg">  
+    {/* Content */}
+  </DialogContent>
+</Dialog>
+```
+
+## Available Sizes
+
+- `xs` - Extra small dialog
+- `sm` - Small dialog
+- `md` - Medium dialog (default)
+- `lg` - Large dialog
+- `xl` - Extra large dialog
+- `2xl` - 2X large dialog
+- `3xl` - 3X large dialog
+- `fullscreen` - Fullscreen dialog
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    ```bash
+    npx arkitect-ui add dialog
+    ```
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={dialogCode} lang="tsx" title="components/ui/dialog.tsx" />
+  </TabItem>
+</Tabs>
