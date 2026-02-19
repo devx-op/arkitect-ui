@@ -1,13 +1,39 @@
 ---
 import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import { Icon } from "@astrojs/starlight/components";
 import type { Props } from "@astrojs/starlight/props";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
+interface HeroImage {
+  alt?: string;
+  file?: ImageMetadata;
+  dark?: ImageMetadata;
+  light?: ImageMetadata;
+}
+
+interface HeroAction {
+  text: string;
+  link: string;
+  icon?: string;
+  variant?: "primary" | "secondary" | "minimal";
+}
+
+interface HeroData {
+  title?: string;
+  tagline?: string;
+  image?: HeroImage;
+  actions?: HeroAction[];
+}
+
 // @ts-ignore - Accessing internal Starlight locals
 const { data } = Astro.locals.starlightRoute.entry;
-const { title = data.title, tagline, image, actions = [] } = data.hero || {};
+const heroData = (data.hero || {}) as HeroData;
+const title = heroData.title ?? data.title;
+const tagline = heroData.tagline;
+const image: HeroImage | undefined = heroData.image;
+const actions: HeroAction[] = heroData.actions ?? [];
 
 const imageAttrs = {
   loading: "eager" as const,
@@ -22,14 +48,10 @@ let lightImage: ImageMetadata | undefined;
 let rawImage: ImageMetadata | undefined;
 
 if (image) {
-  // @ts-ignore
   if (image.file) {
-    // @ts-ignore
     rawImage = image.file;
   } else if (image.dark || image.light) {
-    // @ts-ignore
     darkImage = image.dark;
-    // @ts-ignore
     lightImage = image.light;
   }
 }
@@ -49,7 +71,7 @@ if (image) {
 
     {actions.length > 0 && (
       <div class="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
-        {actions.map((action: { text: string; link: string; icon?: string; variant?: "primary" | "secondary" | "minimal" }) => (
+        {actions.map((action) => (
           <a
             href={action.link}
             class={cn(

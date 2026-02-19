@@ -8,6 +8,31 @@ import { ClientRouter } from "astro:transitions"
 <ClientRouter />
 
 <!--
+  IMMEDIATELY set the correct theme before CSS loads to prevent flickering.
+  This runs synchronously on every page load/navigation.
+  
+  Priority:
+  1. Respect data-theme if already set (e.g., by astro:before-swap during SPA navs)
+  2. Fall back to localStorage value
+  
+  This prevents Expressive Code from briefly showing the wrong theme colors
+  while the CSS loads and applies.
+-->
+<script is:inline>
+  ;(function () {
+    var root = document.documentElement
+    var key = "tweakcn-switcher-mode"
+    // If data-theme is already set (by before-swap script), respect it
+    if (!root.getAttribute("data-theme")) {
+      var theme = localStorage.getItem(key)
+      if (theme === "light" || theme === "dark") {
+        root.setAttribute("data-theme", theme)
+      }
+    }
+  })()
+</script>
+
+<!--
   Persist tweakcn theme styles across view transitions (SPA navigation).
   This script runs BEFORE the DOM swap to copy theme state from the current
   document to the incoming document, preventing any CSS flickering.
@@ -53,7 +78,21 @@ import { ClientRouter } from "astro:transitions"
       }
     }
 
-    // 5. Copy body attributes (dark class, data-theme) if set
+    // 5. Hoist Expressive Code stylesheets into <head> of the new document.
+    // EC renders <link rel="stylesheet"> inside the body (within .expressive-code).
+    // During a view-transition swap the body is replaced atomically, but the
+    // stylesheet may not be parsed in time, causing a brief FOUC on code blocks.
+    // By cloning them into <head> early we guarantee they are available before paint.
+    var ecLinks = event.newDocument.querySelectorAll('.expressive-code link[rel="stylesheet"]')
+    for (var k = 0; k < ecLinks.length; k++) {
+      var href = ecLinks[k].getAttribute("href")
+      // Avoid duplicates — only add if not already present in the new head
+      if (href && !event.newDocument.head.querySelector('link[href="' + href + '"]')) {
+        event.newDocument.head.appendChild(ecLinks[k].cloneNode(true))
+      }
+    }
+
+    // 6. Copy body attributes (dark class, data-theme) if set
     var currentBody = document.body
     var newBody = event.newDocument.body
     if (currentBody && newBody) {
