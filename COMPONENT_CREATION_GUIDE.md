@@ -405,17 +405,17 @@ export function YourComponentDemo() {
     <Tabs>
       <TabItem label="npm">
         ```bash
-        npx arkitect-ui add your-component
+        npx @arkitect-ui/cli add your-component
         ```
       </TabItem>
       <TabItem label="pnpm">
         ```bash
-        pnpm dlx arkitect-ui add your-component
+        pnpm dlx @arkitect-ui/cli add your-component
         ```
       </TabItem>
       <TabItem label="bun">
         ```bash
-        bunx arkitect-ui add your-component
+        bunx @arkitect-ui/cli add your-component
         ```
       </TabItem>
     </Tabs>

@@ -8,7 +8,7 @@ description: Install arkitect-ui for React using the CLI or manually.
 If you already have a React project with Tailwind configured, the easiest way to install and wire up arkitect-ui is through the CLI:
 
 ```bash
-npx arkitect-ui init
+npx @arkitect-ui/cli init
 ```
 
 This will:
@@ -22,7 +22,7 @@ This will:
 Then install your first component:
 
 ```bash
-npx arkitect-ui add button
+npx @arkitect-ui/cli add button
 ```
 
 You can repeat the `add` command for any other components you want to install.
