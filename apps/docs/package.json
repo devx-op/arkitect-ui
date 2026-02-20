@@ -10,6 +10,8 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@ark-ui/react": "catalog:",
+    "@ark-ui/solid": "catalog:",
     "@arkitect-ui/react": "workspace:*",
     "@arkitect-ui/shared": "workspace:*",
     "@arkitect-ui/solid": "workspace:*",
@@ -19,10 +21,9 @@
     "@astrojs/starlight-tailwind": "catalog:",
     "@radix-ui/react-dropdown-menu": "catalog:",
     "@radix-ui/react-slot": "catalog:",
+    "@tabler/icons-solidjs": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "astro": "catalog:",
-    "@ark-ui/react": "catalog:",
-    "lucide-react": "catalog:",
     "astro-expressive-code": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",

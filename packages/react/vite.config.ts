@@ -47,7 +47,6 @@ export default {
         "class-variance-authority",
         "clsx",
         "framer-motion",
-        "lucide-react",
         "motion",
         "tailwind-merge",
         "tw-animate-css",

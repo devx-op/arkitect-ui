@@ -1,6 +1,6 @@
 ---
 // Override Starlight's ThemeSelect component with TweakcnSwitcher
-import { TweakcnSwitcher } from "@/components/ui/tweakcn-switcher";
+import { TweakcnSwitcher } from "./tweakcn-switcher";
 const defaultThemes = [
     {
       id: "Catppuccin",
@@ -25,4 +25,4 @@ const defaultThemes = [
   ];
 ---
 
-<TweakcnSwitcher client:load defaultThemes={defaultThemes} />
+<TweakcnSwitcher client:only="solid-js" defaultThemes={defaultThemes} />

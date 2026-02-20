@@ -1,17 +1,17 @@
-import { type RefObject, useCallback, useEffect, useState } from "react"
+import { createEffect, createSignal, onMount } from "solid-js"
 import type { ThemeOption, ThemeRegistryItem, TweakcnSwitcherConfig } from "@/lib/types"
 import { applyThemeFromRegistry, extractThemeNameFromUrl, fetchThemeFromUrl } from "@/lib/utils"
 
-export interface UseTweakcnSwitcherReturn {
-  currentTheme: ThemeOption | null
-  themes: ThemeOption[]
-  isLoading: boolean
-  error: string | null
+export interface TweakcnSwitcherReturn {
+  currentTheme: () => ThemeOption | null
+  themes: () => ThemeOption[]
+  isLoading: () => boolean
+  error: () => string | null
   applyTheme: (url: string) => Promise<void>
   applyThemeOption: (theme: ThemeOption) => Promise<void>
   addTheme: (url: string, name?: string) => Promise<ThemeOption | null>
   removeTheme: (themeId: string) => void
-  mode: "light" | "dark"
+  mode: () => "light" | "dark"
   setMode: (mode: "light" | "dark") => void
   toggleMode: () => Promise<void>
 }
@@ -19,26 +19,28 @@ export interface UseTweakcnSwitcherReturn {
 const DEFAULT_STORAGE_KEY = "tweakcn-switcher-theme"
 const MODE_STORAGE_KEY = "tweakcn-switcher-mode"
 
-export function useTweakcnSwitcher(
+export function createTweakcnSwitcher(
   config: TweakcnSwitcherConfig = {},
-  buttonRef?: RefObject<HTMLElement | null>,
-): UseTweakcnSwitcherReturn {
+  buttonRef?: HTMLElement | (() => HTMLElement | undefined),
+): TweakcnSwitcherReturn {
   const {
     defaultThemes = [],
     persist = true,
     storageKey = DEFAULT_STORAGE_KEY,
   } = config
 
-  const [themes, setThemes] = useState<ThemeOption[]>(defaultThemes)
-  const [currentTheme, setCurrentTheme] = useState<ThemeOption | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [mode, setModeState] = useState<"light" | "dark">("light")
-  const [currentRegistryItem, setCurrentRegistryItem] = useState<ThemeRegistryItem | null>(null)
-  const [isInitialized, setIsInitialized] = useState(false)
+  const [themes, setThemes] = createSignal<ThemeOption[]>(defaultThemes)
+  const [currentTheme, setCurrentTheme] = createSignal<ThemeOption | null>(
+    null,
+  )
+  const [isLoading, setIsLoading] = createSignal(false)
+  const [error, setError] = createSignal<string | null>(null)
+  const [mode, setModeState] = createSignal<"light" | "dark">("light")
+  const [currentRegistryItem, setCurrentRegistryItem] = createSignal<ThemeRegistryItem | null>(null)
+  const [isInitialized, setIsInitialized] = createSignal(false)
 
   // Apply mode to DOM without animation (used for initialization)
-  const applyModeToDOM = useCallback((newMode: "light" | "dark") => {
+  const applyModeToDOM = (newMode: "light" | "dark") => {
     if (typeof document === "undefined") return
 
     const root = document.documentElement
@@ -59,27 +61,24 @@ export function useTweakcnSwitcher(
         body.setAttribute("data-theme", "light")
       }
     }
-  }, [])
+  }
 
   // Wrapper for setMode that also persists to localStorage and updates DOM
-  const setMode = useCallback(
-    (newMode: "light" | "dark") => {
-      setModeState(newMode)
+  const setMode = (newMode: "light" | "dark") => {
+    setModeState(newMode)
 
-      // Persist mode separately
-      if (persist && typeof localStorage !== "undefined") {
-        localStorage.setItem(MODE_STORAGE_KEY, newMode)
-      }
+    // Persist mode separately
+    if (persist && typeof localStorage !== "undefined") {
+      localStorage.setItem(MODE_STORAGE_KEY, newMode)
+    }
 
-      // Apply mode to DOM immediately for responsiveness
-      applyModeToDOM(newMode)
-    },
-    [persist, applyModeToDOM],
-  )
+    // Apply mode to DOM immediately for responsiveness
+    applyModeToDOM(newMode)
+  }
 
   // Toggle mode with radial animation using View Transitions API
-  const toggleMode = useCallback(async () => {
-    const newMode = mode === "light" ? "dark" : "light"
+  const toggleMode = async () => {
+    const newMode = mode() === "light" ? "dark" : "light"
 
     // Check if View Transitions API is supported
     const doc = document as Document & {
@@ -96,8 +95,9 @@ export function useTweakcnSwitcher(
     let x = window.innerWidth / 2
     let y = window.innerHeight / 2
 
-    if (buttonRef?.current) {
-      const rect = buttonRef.current.getBoundingClientRect()
+    const ref = typeof buttonRef === "function" ? buttonRef() : buttonRef
+    if (ref) {
+      const rect = ref.getBoundingClientRect()
       x = rect.left + rect.width / 2
       y = rect.top + rect.height / 2
     }
@@ -134,58 +134,55 @@ export function useTweakcnSwitcher(
       // If animation fails, mode is already changed
       console.error("View transition animation failed:", err)
     }
-  }, [mode, setMode, buttonRef])
+  }
 
-  const applyTheme = useCallback(
-    async (url: string) => {
-      setIsLoading(true)
-      setError(null)
+  const applyTheme = async (url: string) => {
+    setIsLoading(true)
+    setError(null)
 
-      try {
-        const registryItem = await fetchThemeFromUrl(url)
-        setCurrentRegistryItem(registryItem)
-        await applyThemeFromRegistry(registryItem, mode)
+    try {
+      const registryItem = await fetchThemeFromUrl(url)
+      setCurrentRegistryItem(registryItem)
+      await applyThemeFromRegistry(registryItem, mode())
 
-        // Find or create theme option
-        const themeName = registryItem.name || extractThemeNameFromUrl(url)
-        const themeId = `theme-${themeName}`
+      // Find or create theme option
+      const themeName = registryItem.name || extractThemeNameFromUrl(url)
+      const themeId = `theme-${themeName}`
 
-        setThemes((prev) => {
-          let themeOption = prev.find((t) => t.url === url)
-          if (!themeOption) {
-            themeOption = {
-              id: themeId,
-              name: themeName,
-              url,
-            }
-            const updated = [...prev, themeOption]
-            setCurrentTheme(themeOption)
-            return updated
+      setThemes((prev) => {
+        let themeOption = prev.find((t) => t.url === url)
+        if (!themeOption) {
+          themeOption = {
+            id: themeId,
+            name: themeName,
+            url,
           }
+          const updated = [...prev, themeOption]
           setCurrentTheme(themeOption)
-          return prev
-        })
-
-        // Persist if enabled
-        if (persist) {
-          localStorage.setItem(
-            storageKey,
-            JSON.stringify({ url, mode, name: themeName }),
-          )
+          return updated
         }
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Failed to apply theme"
-        setError(errorMessage)
-        console.error("Failed to apply theme:", err)
-      } finally {
-        setIsLoading(false)
+        setCurrentTheme(themeOption)
+        return prev
+      })
+
+      // Persist if enabled
+      if (persist) {
+        localStorage.setItem(
+          storageKey,
+          JSON.stringify({ url, mode: mode(), name: themeName }),
+        )
       }
-    },
-    [mode, persist, storageKey],
-  )
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to apply theme"
+      setError(errorMessage)
+      console.error("Failed to apply theme:", err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // Initialize from localStorage on mount
-  useEffect(() => {
+  onMount(() => {
     if (!persist || typeof localStorage === "undefined") {
       setIsInitialized(true)
       return
@@ -207,18 +204,27 @@ export function useTweakcnSwitcher(
         if (savedTheme.url) {
           // Check if tweakcn styles already exist in the DOM (e.g. preserved
           // across view-transition swaps by the before-swap persistence script).
-          // If they do we only need to sync React state and cache the registry
+          // If they do we only need to sync Solid state and cache the registry
           // item for future mode toggles — no need to re-apply CSS or re-fetch.
-          const existingStyles = document.querySelector('style[data-tweakcn-switcher="true"]')
+          const existingStyles = document.querySelector(
+            'style[data-tweakcn-switcher="true"]',
+          )
           const existingInlineVars = document.documentElement.getAttribute("style")
-          const stylesAlreadyApplied = !!(existingStyles || (existingInlineVars && existingInlineVars.includes("--")))
+          const stylesAlreadyApplied = !!(
+            existingStyles ||
+            (existingInlineVars && existingInlineVars.includes("--"))
+          )
 
           if (stylesAlreadyApplied) {
-            // Sync React state with the already-applied theme
-            const themeName = savedTheme.name || savedTheme.url.match(/\/([^/]+)\.json$/)?.[1] || "custom-theme"
+            // Sync Solid state with the already-applied theme
+            const themeName = savedTheme.name ||
+              savedTheme.url.match(/\/([^/]+)\.json$/)?.[1] ||
+              "custom-theme"
             const themeId = `theme-${themeName}`
-            const themeOption = themes.find((t) => t.url === savedTheme.url)
-              || { id: themeId, name: themeName, url: savedTheme.url }
+            const currentThemes = themes()
+            const themeOption = currentThemes.find(
+              (t) => t.url === savedTheme.url,
+            ) || { id: themeId, name: themeName, url: savedTheme.url }
 
             setCurrentTheme(themeOption)
             setThemes((prev) => {
@@ -241,101 +247,91 @@ export function useTweakcnSwitcher(
     }
 
     setIsInitialized(true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [persist, storageKey, applyTheme, applyModeToDOM])
+  })
 
   // Apply mode changes to current theme
-  useEffect(() => {
-    if (!isInitialized) return
+  createEffect(() => {
+    if (!isInitialized()) return
 
-    if (currentRegistryItem) {
-      applyThemeFromRegistry(currentRegistryItem, mode).catch(console.error)
+    const registryItem = currentRegistryItem()
+    if (registryItem) {
+      applyThemeFromRegistry(registryItem, mode()).catch(console.error)
     }
 
     // Update persisted theme with new mode
-    if (persist && currentTheme) {
+    const current = currentTheme()
+    if (persist && current) {
       localStorage.setItem(
         storageKey,
         JSON.stringify({
-          url: currentTheme.url,
-          mode,
-          name: currentTheme.name,
+          url: current.url,
+          mode: mode(),
+          name: current.name,
         }),
       )
     }
-  }, [
-    mode,
-    currentRegistryItem,
-    isInitialized,
-    persist,
-    storageKey,
-    currentTheme,
-  ])
+  })
 
   // Emit custom event when theme or mode changes
-  useEffect(() => {
-    if (!isInitialized) return
+  createEffect(() => {
+    if (!isInitialized()) return
 
+    const current = currentTheme()
     const event = new CustomEvent("tweakcn-theme-change", {
       detail: {
-        theme: currentTheme?.id || "default",
-        mode: mode,
-        themeName: currentTheme?.name || "Default",
+        theme: current?.id || "default",
+        mode: mode(),
+        themeName: current?.name || "Default",
       },
     })
     window.dispatchEvent(event)
-  }, [currentTheme, mode, isInitialized])
+  })
 
-  const applyThemeOption = useCallback(
-    async (theme: ThemeOption) => {
-      await applyTheme(theme?.url || "")
-    },
-    [applyTheme],
-  )
+  const applyThemeOption = async (theme: ThemeOption) => {
+    await applyTheme(theme?.url || "")
+  }
 
-  const addTheme = useCallback(
-    async (url: string, name?: string): Promise<ThemeOption | null> => {
-      try {
-        const registryItem = await fetchThemeFromUrl(url)
-        const themeName = name || registryItem.name || extractThemeNameFromUrl(url)
-        const themeId = `theme-${themeName}`
+  const addTheme = async (
+    url: string,
+    name?: string,
+  ): Promise<ThemeOption | null> => {
+    try {
+      const registryItem = await fetchThemeFromUrl(url)
+      const themeName = name || registryItem.name || extractThemeNameFromUrl(url)
+      const themeId = `theme-${themeName}`
 
-        const newTheme: ThemeOption = {
-          id: themeId,
-          name: themeName,
-          url,
-        }
-
-        setThemes((prev) => {
-          if (prev.some((t) => t.url === url)) {
-            return prev
-          }
-          return [...prev, newTheme]
-        })
-
-        return newTheme
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Failed to add theme"
-        setError(errorMessage)
-        throw err
+      const newTheme: ThemeOption = {
+        id: themeId,
+        name: themeName,
+        url,
       }
-    },
-    [],
-  )
 
-  const removeTheme = useCallback(
-    (themeId: string) => {
-      setThemes((prev) => prev.filter((t) => t.id !== themeId))
-      if (currentTheme?.id === themeId) {
-        setCurrentTheme(null)
-        setCurrentRegistryItem(null)
-        if (persist) {
-          localStorage.removeItem(storageKey)
+      setThemes((prev) => {
+        if (prev.some((t) => t.url === url)) {
+          return prev
         }
+        return [...prev, newTheme]
+      })
+
+      return newTheme
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to add theme"
+      setError(errorMessage)
+      throw err
+    }
+  }
+
+  const removeTheme = (themeId: string) => {
+    setThemes((prev) => prev.filter((t) => t.id !== themeId))
+    const current = currentTheme()
+    if (current?.id === themeId) {
+      setCurrentTheme(null)
+      setCurrentRegistryItem(null)
+      if (persist) {
+        localStorage.removeItem(storageKey)
       }
-    },
-    [currentTheme, persist, storageKey],
-  )
+    }
+  }
 
   return {
     currentTheme,

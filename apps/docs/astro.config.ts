@@ -25,10 +25,6 @@ export default defineConfig({
     ],
     resolve: {
       alias: {
-        // "@/lib/utils": resolve(
-        //   __dirname,
-        //   "../../packages/shared/src/lib/utils.ts",
-        // ),
         "@": resolve(__dirname, "./src"),
         "@arkitect-ui/react": resolve(__dirname, "../../packages/react/src"),
         "@arkitect-ui/solid": resolve(__dirname, "../../packages/solid/src"),
@@ -41,7 +37,7 @@ export default defineConfig({
       include: ["**/packages/react/**", "**/react/**"],
     }),
     solid({
-      include: ["**/packages/solid/**", "**/solid/**"],
+      include: ["**/packages/solid/**", "**/apps/docs/src/components/ui/**"],
     }),
     starlight({
       title: "",
@@ -61,10 +57,6 @@ export default defineConfig({
                 label: "Getting Started",
                 items: ["react/getting-started", "react/installation"],
               },
-              /*{
-              label: "Packages",
-              items: ["react/packages/react-query", "react/packages/react-ui", "react/packages/chat-react"],
-            },*/
               {
                 label: "Components",
                 items: [
@@ -115,20 +107,10 @@ export default defineConfig({
           href: "https://github.com/devx-op/arkitect-ui",
         },
       ],
-      /* 			sidebar: [
-              {
-                  label: 'Guides',
-                  items: [
-                      // Each item here is one entry in the navigation menu.
-                      { label: 'Example Guide', slug: 'guides/example' },
-                  ],
-              },
-              {
-                  label: 'Reference',
-                  autogenerate: { directory: 'reference' },
-              },
-          ], */
-      customCss: ["./src/styles/global.css", "../../packages/shared/src/styles/global.css"],
+      customCss: [
+        "./src/styles/global.css",
+        "../../packages/shared/src/styles/global.css",
+      ],
       defaultLocale: "root",
     }),
   ],

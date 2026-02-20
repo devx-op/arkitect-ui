@@ -1,6 +1,6 @@
-import { Loader2, Moon, Palette, Plus, Sun, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { IconLoader2, IconMoon, IconPalette, IconPlus, IconSun, IconX } from "@tabler/icons-solidjs"
+import { Button } from "./button"
+import { Input } from "./input"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,24 +11,21 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useTweakcnSwitcher } from "@/components/hooks/use-tweakcn-switcher"
+} from "./dropdown-menu"
+import { createTweakcnSwitcher } from "../hooks/use-tweakcn-switcher"
 import type { TweakcnSwitcherConfig } from "@/lib/types"
 import { cn } from "@/lib/utils"
-import { type KeyboardEvent, useRef, useState } from "react"
-import * as React from "react"
+import { createSignal, splitProps } from "solid-js"
 
 export interface TweakcnSwitcherProps extends TweakcnSwitcherConfig {
-  className?: string
-  align?: "start" | "center" | "end"
+  class?: string
 }
 
-export function TweakcnSwitcher({
-  className,
-  align = "end",
-  ...config
-}: TweakcnSwitcherProps) {
-  const modeButtonRef = useRef<HTMLButtonElement>(null)
+export function TweakcnSwitcher(props: TweakcnSwitcherProps) {
+  const [local, config] = splitProps(props, ["class"])
+
+  let modeButtonRef: HTMLButtonElement | undefined
+
   const {
     currentTheme,
     themes,
@@ -39,18 +36,19 @@ export function TweakcnSwitcher({
     removeTheme,
     mode,
     toggleMode,
-  } = useTweakcnSwitcher(config, modeButtonRef)
+  } = createTweakcnSwitcher(config, () => modeButtonRef)
 
-  const [urlInput, setUrlInput] = useState("")
-  const [isAddingTheme, setIsAddingTheme] = useState(false)
-  const [showUrlInput, setShowUrlInput] = useState(false)
+  const [urlInput, setUrlInput] = createSignal("")
+  const [isAddingTheme, setIsAddingTheme] = createSignal(false)
+  const [showUrlInput, setShowUrlInput] = createSignal(false)
 
   const handleAddTheme = async () => {
-    if (!urlInput.trim()) return
+    const input = urlInput().trim()
+    if (!input) return
 
     setIsAddingTheme(true)
     try {
-      const newTheme = await addTheme(urlInput.trim())
+      const newTheme = await addTheme(input)
       if (newTheme !== null) {
         await applyThemeOption(newTheme)
       }
@@ -74,61 +72,66 @@ export function TweakcnSwitcher({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger
+        class={cn("relative", local.class)}
+        aria-label="Switch theme"
+      >
         <Button
           variant="outline"
           size="icon"
-          className={cn("relative", className)}
+          class="relative"
           aria-label="Switch theme"
         >
-          <Palette className="size-4" />
-          {currentTheme != null && <span className="absolute -top-1 -right-1 size-2 bg-primary rounded-full" />}
+          <IconPalette class="size-4" />
+          {currentTheme() != null && <span class="absolute -top-1 -right-1 size-2 bg-primary rounded-full" />}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align={align} className="w-64">
+      <DropdownMenuContent class="w-64">
         <DropdownMenuGroup>
-          <DropdownMenuLabel className="flex items-center justify-between">
+          <DropdownMenuLabel class="flex items-center justify-between">
             <span>Themes</span>
-            <div className="flex items-center gap-1">
+            <div class="flex items-center gap-1">
               <Button
-                ref={modeButtonRef}
+                ref={(el) => {
+                  modeButtonRef = el
+                }}
                 variant="ghost"
-                size="sm"
-                onClick={(e) => {
+                size="icon"
+                onClick={(e: MouseEvent) => {
                   e.stopPropagation()
                   toggleMode()
                 }}
-                className="h-6 w-6"
-                aria-label={`Switch to ${mode === "light" ? "dark" : "light"} mode`}
+                class="h-6 w-6"
+                aria-label={`Switch to ${mode() === "light" ? "dark" : "light"} mode`}
               >
-                {mode === "light" ? <Moon className="size-3" /> : <Sun className="size-3" />}
+                {mode() === "light" ? <IconMoon class="size-3" /> : <IconSun class="size-3" />}
               </Button>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
 
-          {error && <div className="px-2 py-1.5 text-xs text-destructive">{error}</div>}
+          {error() && <div class="px-2 py-1.5 text-xs text-destructive">{error()}</div>}
 
-          {showUrlInput ?
+          {showUrlInput() ?
             (
-              <div className="px-2 py-1.5 space-y-2">
+              <div class="px-2 py-1.5 space-y-2">
                 <Input
                   placeholder="https://tweakcn.com/r/themes/..."
-                  value={urlInput}
-                  onChange={(e) => setUrlInput(e.target.value)}
+                  value={urlInput()}
+                  onInput={(e) => setUrlInput(e.currentTarget.value)}
                   onKeyDown={handleKeyDown}
-                  className="h-7 text-xs"
-                  autoFocus
+                  class="h-7 text-xs"
+                  autofocus
                 />
-                <div className="flex gap-1">
+                <div class="flex gap-1">
                   <Button
                     variant="default"
                     size="sm"
                     onClick={handleAddTheme}
-                    disabled={isAddingTheme || !urlInput.trim()}
-                    className="flex-1 h-6"
+                    disabled={isAddingTheme() || !urlInput().trim()}
+                    class="flex-1 h-6"
                   >
-                    {isAddingTheme ? <Loader2 className="size-3 animate-spin" /> : <Plus className="size-3" />}
+                    {isAddingTheme() ? <IconLoader2 class="size-3 animate-spin" /> : <IconPlus class="size-3" />}
                     Add
                   </Button>
                   <Button
@@ -138,7 +141,7 @@ export function TweakcnSwitcher({
                       setShowUrlInput(false)
                       setUrlInput("")
                     }}
-                    className="h-6"
+                    class="h-6"
                   >
                     Cancel
                   </Button>
@@ -147,36 +150,36 @@ export function TweakcnSwitcher({
             ) :
             (
               <>
-                {themes.length > 0 ?
+                {themes().length > 0 ?
                   (
                     <DropdownMenuRadioGroup
-                      value={currentTheme?.id}
+                      value={currentTheme()?.id}
                       onValueChange={(value) => {
-                        const theme = themes.find((t) => t.id === value)
+                        const theme = themes().find((t) => t.id === value.value)
                         if (theme) {
                           applyThemeOption(theme)
                         }
                       }}
                     >
-                      {themes.map((theme) => (
+                      {themes().map((theme) => (
                         <DropdownMenuRadioItem
-                          key={theme.id}
                           value={theme.id}
-                          className="flex items-center justify-between group"
+                          class="flex items-center justify-between group"
                         >
-                          <span className="truncate flex-1">{theme.name}</span>
-                          {themes.length > (config.defaultThemes?.length || 0) && (
+                          <span class="truncate flex-1">{theme.name}</span>
+                          {themes().length >
+                              (config.defaultThemes?.length || 0) && (
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={(e) => {
+                              onClick={(e: MouseEvent) => {
                                 e.stopPropagation()
                                 removeTheme(theme.id)
                               }}
-                              className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity"
+                              class="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity"
                               aria-label={`Remove ${theme.name}`}
                             >
-                              <X className="size-3" />
+                              <IconX class="size-3" />
                             </Button>
                           )}
                         </DropdownMenuRadioItem>
@@ -184,29 +187,30 @@ export function TweakcnSwitcher({
                     </DropdownMenuRadioGroup>
                   ) :
                   (
-                    <div className="px-2 py-4 text-xs text-muted-foreground text-center">
+                    <div class="px-2 py-4 text-xs text-muted-foreground text-center">
                       No themes available
                     </div>
                   )}
               </>
             )}
 
-          {isLoading && (
-            <div className="px-2 py-1.5 flex items-center gap-2 text-xs text-muted-foreground">
-              <Loader2 className="size-3 animate-spin" />
+          {isLoading() && (
+            <div class="px-2 py-1.5 flex items-center gap-2 text-xs text-muted-foreground">
+              <IconLoader2 class="size-3 animate-spin" />
               Loading theme...
             </div>
           )}
         </DropdownMenuGroup>
 
-        {!showUrlInput && (
+        {!showUrlInput() && (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem
+              value="add-theme"
               onClick={() => setShowUrlInput(true)}
-              className="cursor-pointer"
+              class="cursor-pointer"
             >
-              <Plus className="size-4 mr-2" />
+              <IconPlus class="size-4 mr-2" />
               Add theme from URL
             </DropdownMenuItem>
           </>
