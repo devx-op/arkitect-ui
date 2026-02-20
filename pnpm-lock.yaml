@@ -27,21 +27,6 @@ catalogs:
     '@chromatic-com/storybook':
       specifier: ^5.0.1
       version: 5.0.1
-    '@effect/cli':
-      specifier: 0.73.2
-      version: 0.73.2
-    '@effect/language-service':
-      specifier: 0.56.0
-      version: 0.56.0
-    '@effect/platform':
-      specifier: 0.94.0
-      version: 0.94.0
-    '@effect/platform-node':
-      specifier: 0.104.1
-      version: 0.104.1
-    '@effect/vitest':
-      specifier: 0.27.0
-      version: 0.27.0
     '@nx/js':
       specifier: 22.4.5
       version: 22.4.5
@@ -132,9 +117,6 @@ catalogs:
     dprint:
       specifier: 0.51.1
       version: 0.51.1
-    effect:
-      specifier: 3.19.16
-      version: 3.19.16
     glob:
       specifier: ^11.0.0
       version: 11.1.0
@@ -240,6 +222,25 @@ catalogs:
     vitest:
       specifier: ^4.0.18
       version: 4.0.18
+  effect-3:
+    '@effect/cli':
+      specifier: 0.73.2
+      version: 0.73.2
+    '@effect/language-service':
+      specifier: 0.56.0
+      version: 0.56.0
+    '@effect/platform':
+      specifier: 0.94.0
+      version: 0.94.0
+    '@effect/platform-node':
+      specifier: 0.104.1
+      version: 0.104.1
+    '@effect/vitest':
+      specifier: 0.27.0
+      version: 0.27.0
+    effect:
+      specifier: 3.19.16
+      version: 3.19.16
 
 overrides:
   '@types/react': 19.1.13
@@ -256,7 +257,7 @@ importers:
         version: 6.1.1(typescript@5.9.3)(vite@7.3.1(@types/node@20.19.25)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2))
     devDependencies:
       '@effect/language-service':
-        specifier: 'catalog:'
+        specifier: catalog:effect-3
         version: 0.56.0
       '@nx/js':
         specifier: 'catalog:'
@@ -346,19 +347,19 @@ importers:
   apps/cli:
     dependencies:
       '@effect/cli':
-        specifier: 'catalog:'
+        specifier: catalog:effect-3
         version: 0.73.2(@effect/platform@0.94.0(effect@3.19.16))(@effect/printer-ansi@0.47.0(@effect/typeclass@0.38.0(effect@3.19.16))(effect@3.19.16))(@effect/printer@0.47.0(@effect/typeclass@0.38.0(effect@3.19.16))(effect@3.19.16))(effect@3.19.16)
       '@effect/platform':
-        specifier: 'catalog:'
+        specifier: catalog:effect-3
         version: 0.94.0(effect@3.19.16)
       '@effect/platform-node':
-        specifier: 'catalog:'
+        specifier: catalog:effect-3
         version: 0.104.1(@effect/cluster@0.56.3(@effect/platform@0.94.0(effect@3.19.16))(@effect/rpc@0.73.0(@effect/platform@0.94.0(effect@3.19.16))(effect@3.19.16))(@effect/sql@0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.0(effect@3.19.16))(effect@3.19.16))(@effect/platform@0.94.0(effect@3.19.16))(effect@3.19.16))(@effect/workflow@0.16.0(@effect/experimental@0.58.0(@effect/platform@0.94.0(effect@3.19.16))(effect@3.19.16))(@effect/platform@0.94.0(effect@3.19.16))(@effect/rpc@0.73.0(@effect/platform@0.94.0(effect@3.19.16))(effect@3.19.16))(effect@3.19.16))(effect@3.19.16))(@effect/platform@0.94.0(effect@3.19.16))(@effect/rpc@0.73.0(@effect/platform@0.94.0(effect@3.19.16))(effect@3.19.16))(@effect/sql@0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.0(effect@3.19.16))(effect@3.19.16))(@effect/platform@0.94.0(effect@3.19.16))(effect@3.19.16))(effect@3.19.16)
       chalk:
         specifier: ^5.3.0
         version: 5.6.2
       effect:
-        specifier: 'catalog:'
+        specifier: catalog:effect-3
         version: 3.19.16
       handlebars:
         specifier: ^4.7.8
@@ -368,7 +369,7 @@ importers:
         version: 7.5.7
     devDependencies:
       '@effect/vitest':
-        specifier: 'catalog:'
+        specifier: catalog:effect-3
         version: 0.27.0(effect@3.19.16)(vitest@4.0.18)
       '@types/handlebars':
         specifier: ^4.1.0

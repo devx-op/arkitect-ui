@@ -31,7 +31,7 @@
     ]
   },
   "devDependencies": {
-    "@effect/language-service": "catalog:",
+    "@effect/language-service": "catalog:effect-3",
     "@nx/js": "catalog:",
     "@nx/node": "catalog:",
     "@nx/react": "catalog:",
