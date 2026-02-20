@@ -34,6 +34,138 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "r/dropdown-menu",
+      "type": "registry:ui",
+      "title": "React dropdown-menu",
+      "description": "dropdown-menu component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react",
+        "@tabler/icons-react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/dropdown-menu",
+      "type": "registry:ui",
+      "title": "Solid dropdown-menu",
+      "description": "dropdown-menu component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid",
+        "@tabler/icons-solidjs"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/dialog",
+      "type": "registry:ui",
+      "title": "React dialog",
+      "description": "dialog component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react",
+        "@tabler/icons-react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/dialog",
+      "type": "registry:ui",
+      "title": "Solid dialog",
+      "description": "dialog component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid",
+        "@tabler/icons-solidjs"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/input",
+      "type": "registry:ui",
+      "title": "React input",
+      "description": "input component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/input",
+      "type": "registry:ui",
+      "title": "Solid input",
+      "description": "input component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/label",
+      "type": "registry:ui",
+      "title": "React label",
+      "description": "label component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/label",
+      "type": "registry:ui",
+      "title": "Solid label",
+      "description": "label component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

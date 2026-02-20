@@ -1,0 +1,478 @@
+# Component Creation Guide
+
+This guide helps you create new components that maintain compatibility with Shadcn UI's API and styling while using Ark UI internally.
+
+## Overview
+
+When creating a new component, you'll:
+
+1. Analyze the Shadcn/Radix reference code
+2. Map Radix primitives to Ark UI equivalents
+3. Maintain the same CSS classes and API
+4. Use Tabler Icons instead of Lucide
+5. Create stories and documentation
+6. Update exports and registry
+
+## Step-by-Step Process
+
+### 1. Analyze the Reference Code
+
+Get the Shadcn component code (usually from shadcn/ui website or registry).
+
+**Key things to identify:**
+
+- Component structure and hierarchy
+- Props and their types
+- CSS classes (especially data attributes like `data-[state=open]`)
+- Icons used
+- Ref forwarding patterns
+
+### 2. Map Radix → Ark UI
+
+Common mappings:
+
+| Radix                                | Ark UI                |
+| ------------------------------------ | --------------------- |
+| `DropdownMenuPrimitive.Root`         | `Menu.Root`           |
+| `DropdownMenuPrimitive.Trigger`      | `Menu.Trigger`        |
+| `DropdownMenuPrimitive.Content`      | `Menu.Content`        |
+| `DropdownMenuPrimitive.Item`         | `Menu.Item`           |
+| `DropdownMenuPrimitive.CheckboxItem` | `Menu.CheckboxItem`   |
+| `DropdownMenuPrimitive.RadioItem`    | `Menu.RadioItem`      |
+| `DropdownMenuPrimitive.RadioGroup`   | `Menu.RadioItemGroup` |
+| `DropdownMenuPrimitive.Separator`    | `Menu.Separator`      |
+| `DropdownMenuPrimitive.Label`        | `Menu.ItemGroupLabel` |
+| `DropdownMenuPrimitive.Portal`       | `Menu.Positioner`     |
+
+**Important differences:**
+
+- Ark UI `Menu.Item` requires a `value` prop (Radix doesn't)
+- Ark UI uses `Menu.RadioItemGroup` instead of `Menu.RadioGroup`
+- Ark UI positioning is handled differently (via `Menu.Positioner`)
+
+### 3. Create the Component
+
+#### React Pattern
+
+```tsx
+import { Menu } from "@ark-ui/react"
+import { IconCheck, IconChevronRight } from "@tabler/icons-react"
+import { type ComponentPropsWithoutRef, type ComponentRef, forwardRef } from "react"
+import { cn } from "@/lib/utils"
+
+// Root component
+const DropdownMenu = (props: Menu.RootProps) => <Menu.Root {...props} />
+
+// Trigger with ref forwarding
+const DropdownMenuTrigger = forwardRef<
+  ComponentRef<typeof Menu.Trigger>,
+  ComponentPropsWithoutRef<typeof Menu.Trigger>
+>(({ className, ...props }, ref) => (
+  <Menu.Trigger
+    ref={ref}
+    className={cn("cursor-pointer", className)}
+    {...props}
+  />
+))
+DropdownMenuTrigger.displayName = Menu.Trigger.displayName
+
+// Content with Positioner
+const DropdownMenuContent = forwardRef<
+  ComponentRef<typeof Menu.Content>,
+  ComponentPropsWithoutRef<typeof Menu.Content>
+>(({ className, ...props }, ref) => (
+  <Menu.Positioner>
+    <Menu.Content
+      ref={ref}
+      className={cn(
+        "z-50 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out",
+        className,
+      )}
+      {...props}
+    />
+  </Menu.Positioner>
+))
+
+// Item with required value prop
+const DropdownMenuItem = forwardRef<
+  ComponentRef<typeof Menu.Item>,
+  ComponentPropsWithoutRef<typeof Menu.Item>
+>(({ className, ...props }, ref) => (
+  <Menu.Item
+    ref={ref}
+    className={cn(
+      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5",
+      "focus:bg-accent focus:text-accent-foreground",
+      className,
+    )}
+    {...props}
+  />
+))
+
+// Export all components
+export {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  // ... others
+}
+```
+
+#### Solid Pattern
+
+```tsx
+import { Menu } from "@ark-ui/solid"
+import { IconCheck } from "@tabler/icons-solidjs"
+import { type ComponentProps, splitProps } from "solid-js"
+import { cn } from "@/lib/utils"
+
+const DropdownMenu = (props: Menu.RootProps) => <Menu.Root {...props} />
+
+const DropdownMenuTrigger = (props: Menu.TriggerProps) => {
+  const [local, rest] = splitProps(props, ["class"])
+  return (
+    <Menu.Trigger
+      class={cn("cursor-pointer", local.class)}
+      {...rest}
+    />
+  )
+}
+
+const DropdownMenuContent = (props: Menu.ContentProps) => {
+  const [local, rest] = splitProps(props, ["class"])
+  return (
+    <Menu.Positioner>
+      <Menu.Content
+        class={cn(
+          "z-50 min-w-[8rem] rounded-md border bg-popover p-1 shadow-md",
+          local.class,
+        )}
+        {...rest}
+      />
+    </Menu.Positioner>
+  )
+}
+
+// Export all components
+export {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  // ... others
+}
+```
+
+### 4. Key Differences to Handle
+
+#### Storybook Context Error with Ark UI
+
+If you encounter errors like:
+
+```
+useMenuItemGroupContext returned `undefined`. Seems you forgot to wrap component within <MenuItemGroupProvider />
+```
+
+**Solution:** Ensure your stories have the complete component tree structure:
+
+```tsx
+// ✅ CORRECT - Full component tree
+export const Default: Story = {
+  render: () => (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Button>Open</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuGroup>
+          <DropdownMenuItem value="item1">Item 1</DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ),
+}
+
+// ❌ INCORRECT - Missing parent context
+export const Default: Story = {
+  render: () => (
+    <DropdownMenuItem value="item1">Item 1</DropdownMenuItem> // Error!
+  ),
+}
+```
+
+**Important:** Ark UI components (like Menu) require their full parent hierarchy to provide context. Always include Root, Trigger, and Content in your stories.
+
+#### Required `value` prop in Ark UI
+
+```tsx
+// Radix (no value needed)
+<DropdownMenuItem>Profile</DropdownMenuItem>
+
+// Ark UI (value required)
+<DropdownMenuItem value="profile">Profile</DropdownMenuItem>
+```
+
+#### Event handlers
+
+```tsx
+// Radix
+onCheckedChange={(checked) => setChecked(checked)}
+
+// Ark UI - may be different
+onCheckedChange={(details) => setChecked(details.checked)}
+// or
+onCheckedChange={(checked) => setChecked(checked as boolean)}
+```
+
+#### Radio Group
+
+```tsx
+// Radix
+<DropdownMenuPrimitive.RadioGroup>
+  <DropdownMenuPrimitive.RadioItem />
+</DropdownMenuPrimitive.RadioGroup>
+
+// Ark UI
+<Menu.RadioItemGroup>
+  <Menu.RadioItem />
+</Menu.RadioItemGroup>
+```
+
+#### DropdownMenuLabel / ItemGroupLabel Limitation
+
+**⚠️ Known Issue:** `DropdownMenuLabel` (which maps to `Menu.ItemGroupLabel` in Ark UI) requires being inside a `Menu.ItemGroup`, which causes context errors in Storybook:
+
+```
+useMenuItemGroupContext returned `undefined`. Seems you forgot to wrap component within <MenuItemGroupProvider />
+```
+
+**Workaround:** Avoid using `DropdownMenuLabel` in stories until this is resolved. The component still works perfectly in production when properly wrapped in `DropdownMenuGroup`.
+
+#### DropdownMenuGroup / ItemGroup Limitation
+
+**⚠️ Known Issue:** `DropdownMenuGroup` (which maps to `Menu.ItemGroup` in Ark UI) may also cause context errors in Storybook.
+
+**Workaround:** Avoid using `DropdownMenuGroup` in stories until this is resolved. Instead, use `DropdownMenuSeparator` to visually group items:
+
+```tsx
+// ❌ May cause context error in Storybook
+<DropdownMenuGroup>
+  <DropdownMenuItem value="item1">Item 1</DropdownMenuItem>
+  <DropdownMenuItem value="item2">Item 2</DropdownMenuItem>
+</DropdownMenuGroup>
+
+// ✅ Use separator instead
+<DropdownMenuItem value="item1">Item 1</DropdownMenuItem>
+<DropdownMenuItem value="item2">Item 2</DropdownMenuItem>
+<DropdownMenuSeparator />
+<DropdownMenuItem value="item3">Item 3</DropdownMenuItem>
+```
+
+**Note:** This limitation only affects Storybook. In production usage within your application, `DropdownMenuGroup` works correctly when properly wrapped in the full component tree.
+
+### 5. Create Stories
+
+#### React Stories
+
+```tsx
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu"
+
+const meta: Meta<typeof DropdownMenu> = {
+  title: "React/UI/DropdownMenu", // Note: Use "React/UI/" prefix
+  component: DropdownMenu,
+}
+
+export default meta
+type Story = StoryObj<typeof DropdownMenu>
+
+export const Default: Story = {
+  render: () => (
+    <DropdownMenu>
+      <DropdownMenuItem value="item1">Item 1</DropdownMenuItem>
+    </DropdownMenu>
+  ),
+}
+```
+
+#### Solid Stories
+
+```tsx
+import type { Meta, StoryObj } from "storybook-solidjs-vite"
+import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu"
+
+const meta: Meta<typeof DropdownMenu> = {
+  title: "Solid/UI/DropdownMenu", // Note: Use "Solid/UI/" prefix
+  component: DropdownMenu,
+}
+
+export default meta
+type Story = StoryObj<typeof DropdownMenu>
+
+export const Default: Story = {
+  render: () => (
+    <DropdownMenu>
+      <DropdownMenuItem value="item1">Item 1</DropdownMenuItem>
+    </DropdownMenu>
+  ),
+}
+```
+
+### 6. Update Exports
+
+Add to `packages/react/src/index.ts`:
+
+```ts
+export * from "./components/ui/your-component"
+```
+
+Add to `packages/solid/src/index.tsx`:
+
+```ts
+export * from "./components/ui/your-component"
+```
+
+### 7. Update Registry
+
+Add to `registry.json`:
+
+```json
+{
+  "name": "r/your-component",
+  "type": "registry:ui",
+  "title": "React your-component",
+  "description": "your-component for react",
+  "dependencies": ["@ark-ui/react", "@tabler/icons-react"],
+  "files": [
+    {
+      "path": "packages/react/src/components/ui/your-component.tsx",
+      "type": "registry:ui"
+    }
+  ]
+},
+{
+  "name": "s/your-component",
+  "type": "registry:ui",
+  "title": "Solid your-component",
+  "description": "your-component for solid",
+  "dependencies": ["@ark-ui/solid", "@tabler/icons-solidjs"],
+  "files": [
+    {
+      "path": "packages/solid/src/components/ui/your-component.tsx",
+      "type": "registry:ui"
+    }
+  ]
+}
+```
+
+### 8. Create Documentation
+
+Create `apps/docs/src/content/docs/react/components/your-component.mdx`:
+
+````mdx
+---
+title: Your Component
+description: Description of your component.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import yourComponentCode from "../../../../../../../packages/react/src/components/ui/your-component.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="react"
+  component="your-component"
+  story="default"
+  height="400px"
+  code={`import { YourComponent } from "@/components/ui/your-component"
+
+export function YourComponentDemo() {
+  return (
+    <YourComponent>
+      {/* Example usage */}
+    </YourComponent>
+  )
+}`}
+/>
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx arkitect-ui add your-component
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx arkitect-ui add your-component
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx arkitect-ui add your-component
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={yourComponentCode} lang="tsx" title="components/ui/your-component.tsx" />
+  </TabItem>
+</Tabs>
+````
+
+### 9. Update Astro Config
+
+Add the component to the sidebar navigation in `apps/docs/astro.config.ts`:
+
+For React:
+
+```typescript
+{
+  label: "Components",
+  items: [
+    "react/components/button",
+    "react/components/dialog",
+    "react/components/your-component",  // Add here
+    "react/components/input",
+    "react/components/label",
+  ],
+}
+```
+
+For Solid:
+
+```typescript
+{
+  label: "Components",
+  items: [
+    "solid/components/button",
+    "solid/components/dialog",
+    "solid/components/your-component",  // Add here
+    "solid/components/input",
+    "solid/components/label",
+  ],
+}
+
+## Checklist
+
+- [ ] Component created for React
+- [ ] Component created for Solid
+- [ ] Stories created for React
+- [ ] Stories created for Solid
+- [ ] Exports added to index.ts (React)
+- [ ] Exports added to index.tsx (Solid)
+- [ ] Registry entries added
+- [ ] Documentation created for React
+- [ ] Documentation created for Solid
+- [ ] **Astro config updated (sidebar navigation)**
+- [ ] Tested in Storybook
+- [ ] Icons use Tabler (not Lucide)
+- [ ] CSS classes match Shadcn reference
+- [ ] All props from Shadcn are supported
+```

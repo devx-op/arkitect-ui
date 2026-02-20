@@ -7,28 +7,14 @@ import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 import ComponentPreview from "@/components/ComponentPreview.astro";
 import buttonCode from "../../../../../../../packages/solid/src/components/ui/button.tsx?raw";
 
-## Preview
+## Component
 
 <ComponentPreview 
   framework="solid"
   component="button"
   story="default"
   height="200px"
-/>
-
-## Installation
-
-<Tabs>
-  <TabItem label="CLI">```bash npx arkitect-ui add button ```</TabItem>
-  <TabItem label="Manual">
-    <Code code={buttonCode} lang="tsx" title="components/ui/button.tsx" />
-  </TabItem>
-</Tabs>
-
-## Usage
-
-```tsx
-import { Button } from "@/components/ui/button"
+  code={`import { Button } from "@/components/ui/button"
 
 export function ButtonDemo() {
   return (
@@ -41,5 +27,32 @@ export function ButtonDemo() {
       <Button variant="link">Link</Button>
     </div>
   )
-}
-```
+}`}
+/>
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx arkitect-ui add button
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx arkitect-ui add button
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx arkitect-ui add button
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={buttonCode} lang="tsx" title="components/ui/button.tsx" />
+  </TabItem>
+</Tabs>

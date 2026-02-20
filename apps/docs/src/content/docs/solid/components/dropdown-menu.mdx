@@ -1,0 +1,70 @@
+---
+title: Dropdown Menu
+description: Displays a menu to the user — such as a set of actions or functions — triggered by a button.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import dropdownMenuCode from "../../../../../../../packages/solid/src/components/ui/dropdown-menu.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="dropdownmenu"
+  story="default"
+  height="600px"
+  code={`import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button"
+
+export function DropdownMenuDemo() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Button variant="outline">Open Menu</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent class="w-56">
+        <DropdownMenuItem value="profile">Profile</DropdownMenuItem>
+        <DropdownMenuItem value="billing">Billing</DropdownMenuItem>
+        <DropdownMenuItem value="settings">Settings</DropdownMenuItem>
+        <DropdownMenuItem value="keyboard">Keyboard shortcuts</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem value="logout">Log out</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}`}
+/>
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx arkitect-ui add dropdown-menu
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx arkitect-ui add dropdown-menu
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx arkitect-ui add dropdown-menu
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={dropdownMenuCode} lang="tsx" title="components/ui/dropdown-menu.tsx" />
+  </TabItem>
+</Tabs>

@@ -1,12 +1,15 @@
 ---
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+
 interface Props {
   framework: "react" | "solid"
   component: string
   story?: string
   height?: string
+  code?: string
 }
 
-const { framework, component, story = "default", height = "400px" } = Astro.props
+const { framework, component, story = "default", height = "400px", code } = Astro.props
 
 const port = framework === "react" ? "4848" : "4849"
 const storyPath = story.toLowerCase().replace(/\s+/g, "-")
@@ -23,27 +26,39 @@ const storybookBaseUrl = isProd
   : `http://localhost:${port}`
 ---
 
-<div 
-  class="component-preview rounded-lg border border-border overflow-hidden bg-background" 
-  data-preview-framework={framework} 
-  data-preview-story={storyId}
-  data-preview-port={port}
->
-  <div class="preview-header flex items-center justify-between px-4 py-2 bg-muted border-b border-border">
-    <span class="text-sm font-medium text-muted-foreground">Preview</span>
-    <span class="text-xs text-muted-foreground">{framework}</span>
-  </div>
-  <iframe
-    data-preview-iframe
-    data-framework={framework}
-    data-storybook-base={storybookBaseUrl}
-    src={baseUrl}
-    width="100%"
-    height={height}
-    class="border-0"
-    title={`${component} ${story} preview`}
-    loading="lazy"
-  />
+<div class="component-preview-wrapper">
+  <Tabs>
+    <TabItem label="Preview">
+      <div 
+        class="component-preview rounded-lg border border-border overflow-hidden bg-background" 
+        data-preview-framework={framework} 
+        data-preview-story={storyId}
+        data-preview-port={port}
+        style={`height: ${height}`}
+      >
+        <div class="preview-header flex items-center justify-between px-4 py-2 bg-muted border-b border-border">
+          <span class="text-sm font-medium text-muted-foreground">Preview</span>
+          <span class="text-xs text-muted-foreground">{framework}</span>
+        </div>
+        <iframe
+          data-preview-iframe
+          data-framework={framework}
+          data-storybook-base={storybookBaseUrl}
+          src={baseUrl}
+          width="100%"
+          height="100%"
+          class="border-0"
+          title={`${component} ${story} preview`}
+          loading="lazy"
+        />
+      </div>
+    </TabItem>
+    {code && (
+      <TabItem label="Usage">
+        <Code code={code} lang="tsx" />
+      </TabItem>
+    )}
+  </Tabs>
 </div>
 
 <script>
@@ -182,11 +197,22 @@ const storybookBaseUrl = isProd
 </script>
 
 <style>
-  .component-preview {
+  .component-preview-wrapper {
     margin: 1rem 0;
+  }
+  
+  .component-preview {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .component-preview iframe {
+    flex: 1;
+    min-height: 0;
   }
   
   .preview-header {
     background-color: hsl(var(--muted));
+    flex-shrink: 0;
   }
 </style>

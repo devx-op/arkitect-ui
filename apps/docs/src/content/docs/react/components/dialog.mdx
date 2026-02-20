@@ -7,19 +7,14 @@ import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 import ComponentPreview from "@/components/ComponentPreview.astro";
 import dialogCode from "../../../../../../../packages/react/src/components/ui/dialog.tsx?raw";
 
-## Preview
+## Component
 
 <ComponentPreview 
   framework="react"
   component="dialog"
   story="default"
   height="400px"
-/>
-
-## Basic Usage
-
-```tsx
-import {
+  code={`import {
   Dialog,
   DialogClose,
   DialogContent,
@@ -52,58 +47,30 @@ export function DialogDemo() {
       </DialogContent>
     </Dialog>
   )
-}
-```
-
-## Sizes
-
-The Dialog component supports multiple sizes through the `size` prop.
-
-<ComponentPreview 
-  framework="react"
-  component="dialog"
-  story="with-size"
-  height="400px"
+}`}
 />
-
-```tsx
-<Dialog>
-  <DialogTrigger asChild>
-    <Button variant="outline">Small</Button>
-  </DialogTrigger>
-  <DialogContent size="sm">
-    {/* Content */}
-  </DialogContent>
-</Dialog>
-
-<Dialog>
-  <DialogTrigger asChild>
-    <Button variant="outline">Large</Button>
-  </DialogTrigger>
-  <DialogContent size="lg">  
-    {/* Content */}
-  </DialogContent>
-</Dialog>
-```
-
-## Available Sizes
-
-- `xs` - Extra small dialog
-- `sm` - Small dialog
-- `md` - Medium dialog (default)
-- `lg` - Large dialog
-- `xl` - Extra large dialog
-- `2xl` - 2X large dialog
-- `3xl` - 3X large dialog
-- `fullscreen` - Fullscreen dialog
 
 ## Installation
 
 <Tabs>
   <TabItem label="CLI">
-    ```bash
-    npx arkitect-ui add dialog
-    ```
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx arkitect-ui add dialog
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx arkitect-ui add dialog
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx arkitect-ui add dialog
+        ```
+      </TabItem>
+    </Tabs>
   </TabItem>
   <TabItem label="Manual">
     <Code code={dialogCode} lang="tsx" title="components/ui/dialog.tsx" />

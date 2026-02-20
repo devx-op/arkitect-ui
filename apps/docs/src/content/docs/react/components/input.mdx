@@ -7,72 +7,47 @@ import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
 import ComponentPreview from "@/components/ComponentPreview.astro";
 import inputCode from "../../../../../../../packages/react/src/components/ui/input.tsx?raw";
 
-## Preview
+## Component
 
 <ComponentPreview 
   framework="react"
   component="input"
   story="default"
   height="300px"
+  code={`import { Input } from "@/components/ui/input"
+
+export function InputDemo() {
+  return (
+    <div className="flex flex-col gap-4 max-w-sm">
+      <Input placeholder="Enter your email" />
+      <Input placeholder="Enter your password" type="password" />
+      <Input placeholder="Disabled input" disabled />
+    </div>
+  )
+}`}
 />
-
-## Variants
-
-The Input component supports three visual variants:
-
-### Outline
-
-The default variant with a border.
-
-```tsx
-<Input variant="outline" placeholder="Outline input" />
-```
-
-### Soft
-
-A filled input with a subtle background.
-
-```tsx
-<Input variant="soft" placeholder="Soft input" />
-```
-
-### Plain
-
-A transparent input without borders or background.
-
-```tsx
-<Input variant="plain" placeholder="Plain input" />
-```
-
-## Sizes
-
-Choose from three sizes: `sm`, `md` (default), and `lg`.
-
-```tsx
-<div className="flex flex-col gap-4 max-w-sm">
-  <Input size="sm" placeholder="Small input" />
-  <Input size="md" placeholder="Medium input" />
-  <Input size="lg" placeholder="Large input" />
-</div>
-```
-
-## States
-
-### Disabled
-
-Disable the input to prevent user interaction.
-
-```tsx
-<Input disabled placeholder="Disabled input" />
-```
 
 ## Installation
 
 <Tabs>
   <TabItem label="CLI">
-    ```bash
-    npx arkitect-ui add input
-    ```
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx arkitect-ui add input
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx arkitect-ui add input
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx arkitect-ui add input
+        ```
+      </TabItem>
+    </Tabs>
   </TabItem>
   <TabItem label="Manual">
     <Code code={inputCode} lang="tsx" title="components/ui/input.tsx" />
