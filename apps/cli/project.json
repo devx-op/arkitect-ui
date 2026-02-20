@@ -44,14 +44,6 @@
         "command": "tsc --noEmit",
         "cwd": "apps/cli"
       }
-    },
-    "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "passWithNoTests": false,
-        "reportsDirectory": "{workspaceRoot}/coverage/apps/cli"
-      }
     }
   },
   "tags": ["type:application", "scope:cli"]

@@ -458,6 +458,7 @@ For Solid:
     "solid/components/label",
   ],
 }
+```
 
 ## Checklist
 
@@ -475,4 +476,3 @@ For Solid:
 - [ ] Icons use Tabler (not Lucide)
 - [ ] CSS classes match Shadcn reference
 - [ ] All props from Shadcn are supported
-```

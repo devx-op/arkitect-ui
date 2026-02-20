@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@arkitect-ui/monorepo-tools/tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",

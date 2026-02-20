@@ -15,6 +15,7 @@ catalog:
   '@astrojs/starlight': 0.36.3
   '@astrojs/starlight-tailwind': 4.0.2
   '@chromatic-com/storybook': ^5.0.1
+  '@effect/language-service': 0.75.1
   '@nx/js': 22.4.5
   '@nx/node': 22.4.5
   '@nx/react': 22.4.5
@@ -82,16 +83,17 @@ catalog:
   vite-plugin-solid: ^2.11.10
   vite-tsconfig-paths: ^6.1.1
   vitest: ^4.0.18
-catalogs:
-  effect-3:
-    '@effect/cli': 0.73.2
-    '@effect/language-service': 0.56.0
-    '@effect/platform': 0.94.0
-    '@effect/platform-node': 0.104.1
-    '@effect/vitest': 0.27.0
-    effect: 3.19.16
+
 catalogMode: prefer
+
+catalogs:
+  effect-4:
+    '@effect/platform-node': 4.0.0-beta.8
+    '@effect/vitest': 4.0.0-beta.8
+    effect: 4.0.0-beta.8
+
 cleanupUnusedCatalogs: true
+
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - '@swc/core'

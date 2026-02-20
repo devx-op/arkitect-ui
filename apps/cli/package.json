@@ -12,19 +12,18 @@
     "registry"
   ],
   "dependencies": {
-    "@effect/cli": "catalog:effect-3",
-    "@effect/platform": "catalog:effect-3",
-    "@effect/platform-node": "catalog:effect-3",
+    "@effect/platform-node": "catalog:effect-4",
     "chalk": "^5.3.0",
-    "effect": "catalog:effect-3",
+    "effect": "catalog:effect-4",
     "handlebars": "^4.7.8",
     "tar": "^7.4.3"
   },
   "devDependencies": {
+    "@arkitect-ui/monorepo-tools": "workspace:*",
     "@types/handlebars": "^4.1.0",
     "@types/node": "catalog:",
     "@types/tar": "^6.1.13",
-    "@effect/vitest": "catalog:effect-3",
+    "@effect/vitest": "catalog:effect-4",
     "typescript": "catalog:"
   },
   "keywords": [
