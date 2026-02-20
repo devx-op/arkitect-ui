@@ -153,7 +153,10 @@ function isColorVariable(key: string): boolean {
     "ring",
   ]
   return colorKeys.some(
-    (colorKey) => key === colorKey || key.startsWith(`${colorKey}-`) || key.endsWith(`-${colorKey}`),
+    (colorKey) =>
+      key === colorKey ||
+      key.startsWith(`${colorKey}-`) ||
+      key.endsWith(`-${colorKey}`),
   )
 }
 
@@ -163,19 +166,22 @@ function applyCSSVariable(key: string, value: string, root: HTMLElement) {
 }
 
 // Apply theme from registry
-async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "light" | "dark") {
+async function applyThemeFromRegistry(
+  registryItem: ThemeRegistryItem,
+  mode: "light" | "dark",
+) {
   const root = document.documentElement
-  const body = document.body
   const { cssVars, css } = registryItem
 
   // Remove existing font variable override styles
-  const existingFontStyle = document.querySelector('style[data-tweakcn-switcher-font-vars="true"]')
+  const existingFontStyle = document.querySelector(
+    'style[data-tweakcn-switcher-font-vars="true"]',
+  )
   if (existingFontStyle) {
     existingFontStyle.remove()
   }
 
   // Apply theme-level variables
-  let fontSansValue: string | null = null
   if (cssVars.theme) {
     Object.entries(cssVars.theme).forEach(([key, value]) => {
       applyCSSVariable(key, value, root)
@@ -183,10 +189,6 @@ async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "li
 
       if (isColorFunction(value) && isColorVariable(key)) {
         root.style.setProperty(`--color-${key}`, value, "important")
-      }
-
-      if (key === "font-sans" && value) {
-        fontSansValue = value
       }
     })
   }
@@ -212,7 +214,9 @@ async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "li
 
   // Apply CSS layer base styles if present
   if (css?.["@layer base"]) {
-    const existing = document.querySelectorAll('style[data-tweakcn-switcher="true"]')
+    const existing = document.querySelectorAll(
+      'style[data-tweakcn-switcher="true"]',
+    )
     existing.forEach((el: Element) => el.remove())
 
     const baseStyles = css["@layer base"]
@@ -243,9 +247,13 @@ async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "li
 async function applyTheme(themeId: string, mode: "light" | "dark") {
   if (themeId === "default") {
     // Remove tweakcn styles
-    const existing = document.querySelectorAll('style[data-tweakcn-switcher="true"]')
+    const existing = document.querySelectorAll(
+      'style[data-tweakcn-switcher="true"]',
+    )
     existing.forEach((el: Element) => el.remove())
-    const existingFontStyle = document.querySelector('style[data-tweakcn-switcher-font-vars="true"]')
+    const existingFontStyle = document.querySelector(
+      'style[data-tweakcn-switcher-font-vars="true"]',
+    )
     if (existingFontStyle) {
       existingFontStyle.remove()
     }

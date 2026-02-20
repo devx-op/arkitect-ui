@@ -74,7 +74,9 @@ export function applyModeToDOM(mode: "light" | "dark") {
 }
 
 // Fetch theme from URL
-export async function fetchThemeFromUrl(url: string): Promise<ThemeRegistryItem> {
+export async function fetchThemeFromUrl(
+  url: string,
+): Promise<ThemeRegistryItem> {
   const response = await fetch(url)
   if (!response.ok) {
     throw new Error(`Failed to fetch theme: ${response.statusText}`)
@@ -91,7 +93,10 @@ export function saveThemeToStorage(themeId: string, mode: "light" | "dark") {
 }
 
 // Get theme from localStorage
-export function getThemeFromStorage(): { themeId: string; mode: "light" | "dark" } {
+export function getThemeFromStorage(): {
+  themeId: string
+  mode: "light" | "dark"
+} {
   if (typeof localStorage === "undefined") {
     return { themeId: "default", mode: "light" }
   }
@@ -102,7 +107,10 @@ export function getThemeFromStorage(): { themeId: string; mode: "light" | "dark"
 }
 
 // Save registry item to localStorage
-export function saveRegistryItem(themeId: string, registryItem: ThemeRegistryItem) {
+export function saveRegistryItem(
+  themeId: string,
+  registryItem: ThemeRegistryItem,
+) {
   if (typeof localStorage !== "undefined") {
     const stored = localStorage.getItem(REGISTRY_STORAGE_KEY)
     const registry = stored ? JSON.parse(stored) : {}
@@ -123,7 +131,9 @@ export function getRegistryItem(themeId: string): ThemeRegistryItem | null {
 }
 
 // Load theme (from localStorage or fetch)
-export async function loadTheme(themeId: string): Promise<ThemeRegistryItem | null> {
+export async function loadTheme(
+  themeId: string,
+): Promise<ThemeRegistryItem | null> {
   if (themeId === "default") return null
 
   // Try to get from localStorage first
@@ -167,7 +177,10 @@ function isColorVariable(key: string): boolean {
     "ring",
   ]
   return colorKeys.some(
-    (colorKey) => key === colorKey || key.startsWith(`${colorKey}-`) || key.endsWith(`-${colorKey}`),
+    (colorKey) =>
+      key === colorKey ||
+      key.startsWith(`${colorKey}-`) ||
+      key.endsWith(`-${colorKey}`),
   )
 }
 
@@ -185,17 +198,16 @@ export async function applyThemeFromRegistry(
   if (typeof document === "undefined") return
 
   const root = document.documentElement
-  const body = document.body
   const { cssVars, css } = registryItem
 
   // Remove existing font variable override styles
-  const existingFontStyle = document.querySelector('style[data-tweakcn-switcher-font-vars="true"]')
+  const existingFontStyle = document.querySelector(
+    'style[data-tweakcn-switcher-font-vars="true"]',
+  )
   if (existingFontStyle) {
     existingFontStyle.remove()
   }
 
-  // Apply theme-level variables
-  let fontSansValue: string | null = null
   if (cssVars.theme) {
     Object.entries(cssVars.theme).forEach(([key, value]) => {
       applyCSSVariable(key, value, root)
@@ -203,10 +215,6 @@ export async function applyThemeFromRegistry(
 
       if (isColorFunction(value) && isColorVariable(key)) {
         root.style.setProperty(`--color-${key}`, value, "important")
-      }
-
-      if (key === "font-sans" && value) {
-        fontSansValue = value
       }
     })
   }
@@ -232,7 +240,9 @@ export async function applyThemeFromRegistry(
 
   // Apply CSS layer base styles if present
   if (css?.["@layer base"]) {
-    const existing = document.querySelectorAll('style[data-tweakcn-switcher="true"]')
+    const existing = document.querySelectorAll(
+      'style[data-tweakcn-switcher="true"]',
+    )
     existing.forEach((el: Element) => el.remove())
 
     const baseStyles = css["@layer base"]
@@ -263,9 +273,13 @@ export async function applyThemeFromRegistry(
 export async function applyTheme(themeId: string, mode: "light" | "dark") {
   if (themeId === "default") {
     // Remove tweakcn styles
-    const existing = document.querySelectorAll('style[data-tweakcn-switcher="true"]')
+    const existing = document.querySelectorAll(
+      'style[data-tweakcn-switcher="true"]',
+    )
     existing.forEach((el: Element) => el.remove())
-    const existingFontStyle = document.querySelector('style[data-tweakcn-switcher-font-vars="true"]')
+    const existingFontStyle = document.querySelector(
+      'style[data-tweakcn-switcher-font-vars="true"]',
+    )
     if (existingFontStyle) {
       existingFontStyle.remove()
     }

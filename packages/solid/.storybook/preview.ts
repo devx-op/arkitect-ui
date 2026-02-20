@@ -75,13 +75,6 @@ function saveThemeToStorage(themeId: string, mode: "light" | "dark") {
   localStorage.setItem(MODE_STORAGE_KEY, mode)
 }
 
-// Get theme from localStorage
-function getThemeFromStorage(): { themeId: string; mode: "light" | "dark" } {
-  const themeId = localStorage.getItem(STORAGE_KEY) || "default"
-  const mode = (localStorage.getItem(MODE_STORAGE_KEY) as "light" | "dark") || "light"
-  return { themeId, mode }
-}
-
 // Save registry item to localStorage
 function saveRegistryItem(themeId: string, registryItem: ThemeRegistryItem) {
   const stored = localStorage.getItem(REGISTRY_STORAGE_KEY)
@@ -143,7 +136,10 @@ function isColorVariable(key: string): boolean {
     "ring",
   ]
   return colorKeys.some(
-    (colorKey) => key === colorKey || key.startsWith(`${colorKey}-`) || key.endsWith(`-${colorKey}`),
+    (colorKey) =>
+      key === colorKey ||
+      key.startsWith(`${colorKey}-`) ||
+      key.endsWith(`-${colorKey}`),
   )
 }
 
@@ -153,12 +149,17 @@ function applyCSSVariable(key: string, value: string, root: HTMLElement) {
 }
 
 // Apply theme from registry
-async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "light" | "dark") {
+async function applyThemeFromRegistry(
+  registryItem: ThemeRegistryItem,
+  mode: "light" | "dark",
+) {
   const root = document.documentElement
   const { cssVars, css } = registryItem
 
   // Remove existing font variable override styles
-  const existingFontStyle = document.querySelector('style[data-tweakcn-switcher-font-vars="true"]')
+  const existingFontStyle = document.querySelector(
+    'style[data-tweakcn-switcher-font-vars="true"]',
+  )
   if (existingFontStyle) {
     existingFontStyle.remove()
   }
@@ -196,7 +197,9 @@ async function applyThemeFromRegistry(registryItem: ThemeRegistryItem, mode: "li
 
   // Apply CSS layer base styles if present
   if (css?.["@layer base"]) {
-    const existing = document.querySelectorAll('style[data-tweakcn-switcher="true"]')
+    const existing = document.querySelectorAll(
+      'style[data-tweakcn-switcher="true"]',
+    )
     existing.forEach((el: Element) => el.remove())
 
     const baseStyles = css["@layer base"]
@@ -230,9 +233,13 @@ function applyThemeSync(themeId: string, mode: "light" | "dark") {
 
   if (themeId === "default") {
     // Remove tweakcn styles
-    const existing = document.querySelectorAll('style[data-tweakcn-switcher="true"]')
+    const existing = document.querySelectorAll(
+      'style[data-tweakcn-switcher="true"]',
+    )
     existing.forEach((el: Element) => el.remove())
-    const existingFontStyle = document.querySelector('style[data-tweakcn-switcher-font-vars="true"]')
+    const existingFontStyle = document.querySelector(
+      'style[data-tweakcn-switcher-font-vars="true"]',
+    )
     if (existingFontStyle) {
       existingFontStyle.remove()
     }
@@ -300,7 +307,9 @@ const withTheme = createDecorator((Story, context) => {
   // First try to get from URL, then from context/globals
   const urlGlobals = getGlobalsFromURL()
   const theme = urlGlobals.theme || context.globals.theme || "default"
-  const mode = (urlGlobals.mode || context.globals.mode || "light") as "light" | "dark"
+  const mode = (urlGlobals.mode || context.globals.mode || "light") as
+    | "light"
+    | "dark"
 
   // Apply theme synchronously (for cached themes)
   const applied = applyThemeSync(theme, mode)
