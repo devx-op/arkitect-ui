@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [master, dev]
   push:
-    branches: [master. dev]
+    branches: [master, dev]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.number }}
@@ -103,7 +103,11 @@ jobs:
       - name: 🏗️ Build affected projects
         id: build
         run: |
-          BASE=$(git merge-base HEAD origin/dev)
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="origin/${{ github.base_ref }}"
+          else
+            BASE="HEAD~1"
+          fi
 
           # Build affected projects with caching
           pnpm nx affected --target=build --base=$BASE --head=HEAD --parallel=3 --verbose
@@ -166,7 +170,11 @@ jobs:
 
       - name: 🧪 Test affected projects
         run: |
-          BASE=$(git merge-base HEAD origin/dev)
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="origin/${{ github.base_ref }}"
+          else
+            BASE="HEAD~1"
+          fi
           pnpm nx affected --target=test --base=$BASE --head=HEAD --parallel=3 --verbose --passWithNoTests
   # Summary job
   ci-summary:
