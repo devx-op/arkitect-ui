@@ -55,7 +55,7 @@ export default defineConfig({
             items: [
               {
                 label: "Getting Started",
-                items: ["react/getting-started", "react/installation"],
+                items: ["react/getting-started"],
               },
               {
                 label: "Components",
@@ -77,7 +77,7 @@ export default defineConfig({
             items: [
               {
                 label: "Getting Started",
-                items: ["solid/getting-started", "solid/installation"],
+                items: ["solid/getting-started"],
               },
               {
                 label: "Components",

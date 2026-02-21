@@ -1,46 +1,46 @@
-import * as Args from "@effect/cli/Args"
-import * as Command from "@effect/cli/Command"
-import * as Options from "@effect/cli/Options"
-import * as PlatformCommand from "@effect/platform/Command"
+import * as Argument from "effect/unstable/cli/Argument"
+import * as Command from "effect/unstable/cli/Command"
+import * as Flag from "effect/unstable/cli/Flag"
+import * as ChildProcess from "effect/unstable/process/ChildProcess"
 import * as Console from "effect/Console"
 import * as Effect from "effect/Effect"
 import * as Option from "effect/Option"
-import * as FileSystem from "@effect/platform/FileSystem"
-import * as Path from "@effect/platform/Path"
+import * as FileSystem from "effect/FileSystem"
+import * as Path from "effect/Path"
 import * as Schema from "effect/Schema"
-import * as HttpClient from "@effect/platform/HttpClient"
-import * as HttpClientResponse from "@effect/platform/HttpClientResponse"
+import * as HttpClient from "effect/unstable/http/HttpClient"
+import * as HttpClientResponse from "effect/unstable/http/HttpClientResponse"
 import * as Config from "effect/Config"
 import { ComponentsConfig } from "../schemas/components-config.js"
 
 const DEFAULT_REGISTRY_BASE_URL = "https://devx-op.github.io/arkitect-ui/r"
 
 // Arguments and options for add command
-const componentNameArg = Args.text({ name: "component-name" }).pipe(
-  Args.withDescription("Name of the Component to add"),
-  Args.optional,
+const componentNameArg = Argument.string("component-name").pipe(
+  Argument.withDescription("Name of the Component to add"),
+  Argument.optional,
 )
 
-const allOption = Options.boolean("all").pipe(
-  Options.withAlias("a"),
-  Options.withDescription("Install all available Components"),
-  Options.withDefault(false),
+const allOption = Flag.boolean("all").pipe(
+  Flag.withAlias("a"),
+  Flag.withDescription("Install all available Components"),
+  Flag.withDefault(false),
 )
 
-const overwriteOption = Options.boolean("overwrite").pipe(
-  Options.withAlias("o"),
-  Options.withDescription("Overwrite existing files"),
-  Options.withDefault(false),
+const overwriteOption = Flag.boolean("overwrite").pipe(
+  Flag.withAlias("o"),
+  Flag.withDescription("Overwrite existing files"),
+  Flag.withDefault(false),
 )
 
-const cwdOption = Options.text("cwd").pipe(
-  Options.withDescription("Current working directory"),
-  Options.withDefault(process.cwd()),
+const cwdOption = Flag.string("cwd").pipe(
+  Flag.withDescription("Current working directory"),
+  Flag.withDefault(process.cwd()),
 )
 
-const dryRunOption = Options.boolean("dry-run").pipe(
-  Options.withDescription("Simulate installation without running commands"),
-  Options.withDefault(false),
+const dryRunOption = Flag.boolean("dry-run").pipe(
+  Flag.withDescription("Simulate installation without running commands"),
+  Flag.withDefault(false),
 )
 
 type AddOptions = {
@@ -70,8 +70,11 @@ export const addCommand = Command.make(
       )
 
       const registryBaseUrlRaw = yield* Config.string("REGISTRY_URL").pipe(
-        Config.withDefault(DEFAULT_REGISTRY_BASE_URL),
+        Config.withDefault(() => DEFAULT_REGISTRY_BASE_URL),
       )
+
+      yield* Console.log(`🔗 Using registry URL: ${registryBaseUrlRaw}`)
+
       const registryBaseUrl = registryBaseUrlRaw.endsWith("/")
         ? registryBaseUrlRaw.slice(0, -1)
         : registryBaseUrlRaw
@@ -86,8 +89,8 @@ export const addCommand = Command.make(
       }
 
       const configContent = yield* fs.readFileString(configPath)
-      const config = yield* Schema.decodeUnknown(
-        Schema.parseJson(ComponentsConfig),
+      const config = yield* Schema.decodeUnknownOption(
+        Schema.fromJsonString(ComponentsConfig),
       )(configContent)
 
       // Detect framework from package.json (solid-js vs react dependency)
@@ -130,7 +133,7 @@ export const addCommand = Command.make(
               item.type === "registry:ui" &&
               item.name.startsWith(frameworkPrefix),
           )
-          .map((item) => item.name.split("/")[1])
+          .map((item) => item.name.split("/")[1] || "") as string[]
 
         if (componentsToInstall.length === 0) {
           return yield* Console.log("⚠️  No components found to install.")
@@ -154,26 +157,56 @@ export const addCommand = Command.make(
 
       // Install sequentially to avoid race conditions in shadcn
       for (const name of componentsToInstall) {
+        let runnerBin = "npx"
+        let runnerPreArgs: Array<string> = []
+
+        const resolveAliasPathForArgs = (alias: string) => {
+          return alias.startsWith("@/")
+            ? path.join(options.cwd, "src", alias.replace("@/", ""))
+            : path.join(options.cwd, alias)
+        }
+        const componentsBaseDirAbs = resolveAliasPathForArgs(
+          config.aliases.components,
+        )
+        const componentsBaseDirRel = path.relative(options.cwd, componentsBaseDirAbs)
+
         const args = [
           "shadcn@latest",
           "add",
           `${registryBaseUrl}/${frameworkPath}/${name}.json`,
+          "-y",
+          "-s",
+          "-p",
+          componentsBaseDirRel,
         ]
         if (options.overwrite) args.push("--overwrite")
 
-        const command = PlatformCommand.make("npx", ...args).pipe(
-          PlatformCommand.workingDirectory(options.cwd),
-        )
+        const finalArgs = [...runnerPreArgs, ...args]
+        const command = ChildProcess.make({
+          cwd: options.cwd,
+        })`${runnerBin} ${finalArgs.join(" ")}`
 
         yield* Console.log(`Installing ${name}...`)
+        yield* Console.log(`CWD: ${options.cwd}`)
+        yield* Console.log(`Command: ${runnerBin} ${finalArgs.join(" ")}`)
 
         if (options.dryRun) {
-          yield* Console.log(`[Dry Run] Would execute: npx ${args.join(" ")}`)
-        } else {
-          const output = yield* PlatformCommand.string(command).pipe(
-            Effect.catchAll((err) => Effect.fail(new Error(`Failed to install ${name}: ${err}`))),
+          yield* Console.log(
+            `[Dry Run] Would execute: ${runnerBin} ${finalArgs.join(" ")}`,
           )
-          if (output && output.length > 0) {
+        } else {
+          const output = yield* ChildProcess.string(command).pipe(
+            Effect.catch((err) =>
+              Console.log(
+                `⚠️ Failed to run shadcn command (${
+                  String(
+                    err,
+                  )
+                }). Falling back to registry JSON.`,
+              )
+            ),
+          )
+          if (output && typeof output === "string" && output.length > 0) {
             yield* Console.log(output)
           }
           // Verify created files; if not found, fallback to writing from registry JSON
@@ -224,8 +257,11 @@ export const addCommand = Command.make(
             }
           })
 
+          yield* Effect.forEach(targetPaths, (p) => Console.log(`Target path: ${p}`))
+
           const existsResults = yield* Effect.forEach(targetPaths, (p) => fs.exists(p))
 
+          yield* Console.log(`Exists results: ${existsResults}`)
           const missingIndexes: Array<number> = []
           for (let i = 0; i < existsResults.length; i++) {
             if (!existsResults[i]) {
@@ -240,12 +276,12 @@ export const addCommand = Command.make(
             for (const index of missingIndexes) {
               const file = itemJson.files[index]
               const target = targetPaths[index]
-              const dir = path.dirname(target)
+              const dir = path.dirname(target!)
               const hasDir = yield* fs.exists(dir)
               if (!hasDir) {
                 yield* fs.makeDirectory(dir, { recursive: true })
               }
-              yield* fs.writeFileString(target, file.content)
+              yield* fs.writeFileString(target!, file?.content ?? "")
               yield* Console.log(`✚ Created ${target}`)
             }
             yield* Console.log("✅ Fallback write completed.")
@@ -284,12 +320,15 @@ export const addCommand = Command.make(
                 else if (hasBunLock) pm = "bun"
                 const installCmd = pm === "npm" ? "install" : "add"
                 const installArgs = [installCmd, ...missing]
-                const installCommand = PlatformCommand.make(
-                  pm,
-                  ...installArgs,
-                ).pipe(PlatformCommand.workingDirectory(options.cwd))
-                yield* PlatformCommand.string(installCommand).pipe(
-                  Effect.catchAll((err) =>
+                // const installCommand = ChildProcess.make(
+                //   pm,
+                //   ...installArgs,
+                // ).pipe(ChildProcess.workingDirectory(options.cwd));
+                const installCommand = ChildProcess.make({
+                  cwd: options.cwd,
+                })`${pm} ${installArgs.join(" ")}`
+                yield* ChildProcess.string(installCommand).pipe(
+                  Effect.catch((err) =>
                     Effect.fail(
                       new Error(`Failed to install dependencies: ${err}`),
                     )

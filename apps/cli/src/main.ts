@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import * as Command from "@effect/cli/Command"
-import * as NodeContext from "@effect/platform-node/NodeContext"
+import * as Command from "effect/unstable/cli/Command"
+import * as NodeServices from "@effect/platform-node/NodeServices"
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime"
 import * as NodeHttpClient from "@effect/platform-node/NodeHttpClient"
 import * as Console from "effect/Console"
@@ -19,12 +19,11 @@ const arkitectUiCommand = Command.make(
 
 // Run the CLI
 const cli = Command.run(arkitectUiCommand, {
-  name: "arkitect-ui CLI",
   version: "0.1.0",
 })
 
-cli(process.argv).pipe(
-  Effect.provide(NodeContext.layer),
-  Effect.provide(NodeHttpClient.layer),
+cli.pipe(
+  Effect.provide(NodeServices.layer),
+  Effect.provide(NodeHttpClient.layerFetch),
   NodeRuntime.runMain,
 )

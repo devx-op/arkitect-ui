@@ -1,8 +1,8 @@
-import * as Command from "@effect/cli/Command"
-import * as Options from "@effect/cli/Options"
-import * as Prompt from "@effect/cli/Prompt"
-import * as PlatformCommand from "@effect/platform/Command"
-import * as FileSystem from "@effect/platform/FileSystem"
+import * as Command from "effect/unstable/cli/Command"
+import * as Flag from "effect/unstable/cli/Flag"
+import * as Prompt from "effect/unstable/cli/Prompt"
+import * as ChildProcess from "effect/unstable/process/ChildProcess"
+import * as FileSystem from "effect/FileSystem"
 import * as Console from "effect/Console"
 import * as Effect from "effect/Effect"
 import * as Option from "effect/Option"
@@ -14,50 +14,50 @@ import { fileURLToPath } from "node:url"
 const here = NodePath.dirname(fileURLToPath(import.meta.url))
 const cssTemplatePath = NodePath.resolve(here, "../../templates/global.css")
 
-// Options for the init command
-const cwdOption = Options.text("cwd").pipe(
-  Options.withDescription("Current working directory"),
-  Options.withDefault(process.cwd()),
+// Flag for the init command
+const cwdOption = Flag.string("cwd").pipe(
+  Flag.withDescription("Current working directory"),
+  Flag.withDefault(process.cwd()),
 )
 
-const frameworkOption = Options.choice("framework", ["react", "solid"]).pipe(
-  Options.withDescription("Framework to use"),
-  Options.optional,
+const frameworkOption = Flag.choice("framework", ["react", "solid"]).pipe(
+  Flag.withDescription("Framework to use"),
+  Flag.optional,
 )
 
-const srcDirOption = Options.text("src-dir").pipe(
-  Options.withDescription("Source directory"),
-  Options.optional,
+const srcDirOption = Flag.string("src-dir").pipe(
+  Flag.withDescription("Source directory"),
+  Flag.optional,
 )
 
-const componentsDirOption = Options.text("components-dir").pipe(
-  Options.withDescription("Components directory"),
-  Options.optional,
+const componentsDirOption = Flag.string("components-dir").pipe(
+  Flag.withDescription("Components directory"),
+  Flag.optional,
 )
 
-const utilsPathOption = Options.text("utils-path").pipe(
-  Options.withDescription("Utils file path"),
-  Options.optional,
+const utilsPathOption = Flag.string("utils-path").pipe(
+  Flag.withDescription("Utils file path"),
+  Flag.optional,
 )
 
-const cssPathOption = Options.text("css-path").pipe(
-  Options.withDescription("Global CSS file path"),
-  Options.optional,
+const cssPathOption = Flag.string("css-path").pipe(
+  Flag.withDescription("Global CSS file path"),
+  Flag.optional,
 )
 
-const yesOption = Options.boolean("yes").pipe(
-  Options.withAlias("y"),
-  Options.withDescription("Skip prompts and use defaults/flags"),
+const yesOption = Flag.boolean("yes").pipe(
+  Flag.withAlias("y"),
+  Flag.withDescription("Skip prompts and use defaults/flags"),
 )
 
-const installDepsOption = Options.choice("install-deps", [
+const installDepsOption = Flag.choice("install-deps", [
   "yes",
   "no",
   "true",
   "false",
 ]).pipe(
-  Options.withDescription("Install dependencies after setup: yes or no"),
-  Options.optional,
+  Flag.withDescription("Install dependencies after setup: yes or no"),
+  Flag.optional,
 )
 
 type InitOptions = {
@@ -129,7 +129,9 @@ export const initCommand = Command.make(
                   selected: detectedFramework === "solid",
                 },
               ],
-            }).pipe(Effect.map((f) => f as "react" | "solid")),
+            })
+              .asEffect()
+              .pipe(Effect.map((f) => f as "react" | "solid")),
         onSome: (f) => Effect.succeed(f as "react" | "solid"),
       })
 
@@ -192,7 +194,7 @@ export const initCommand = Command.make(
         },
       })
 
-      const encodedConfig = yield* Schema.encode(ComponentsConfig)(componentsConfig)
+      const encodedConfig = yield* Schema.encodeEffect(ComponentsConfig)(componentsConfig)
       const encodedJson = JSON.stringify(encodedConfig, null, 2)
 
       yield* fs.writeFileString(
@@ -463,12 +465,12 @@ export const initCommand = Command.make(
 
         const args = [installCmd, ...depArgs]
 
-        const command = PlatformCommand.make(pm, ...args).pipe(
-          PlatformCommand.workingDirectory(options.cwd),
-        )
+        const command = ChildProcess.make({
+          cwd: options.cwd,
+        })`${pm} ${args.join(" ")}`
 
-        yield* PlatformCommand.string(command).pipe(
-          Effect.catchAll((err) => Effect.fail(new Error(`Failed to install dependencies: ${err}`))),
+        yield* ChildProcess.string(command).pipe(
+          Effect.catch((err) => Effect.fail(new Error(`Failed to install dependencies: ${err}`))),
         )
 
         yield* Console.log("✅ Dependencies installed successfully.")

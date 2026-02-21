@@ -4,7 +4,7 @@ export class ComponentsConfig extends Schema.Class<ComponentsConfig>(
   "ComponentsConfig",
 )({
   $schema: Schema.String,
-  style: Schema.Literal(
+  style: Schema.Literals([
     "default",
     "new-york",
     "radix-vega",
@@ -17,7 +17,7 @@ export class ComponentsConfig extends Schema.Class<ComponentsConfig>(
     "base-maia",
     "base-lyra",
     "base-mira",
-  ),
+  ]),
   rsc: Schema.Boolean,
   tsx: Schema.optional(Schema.Boolean),
   tailwind: Schema.Struct({
@@ -35,29 +35,25 @@ export class ComponentsConfig extends Schema.Class<ComponentsConfig>(
     hooks: Schema.optional(Schema.String),
   }),
   iconLibrary: Schema.optional(Schema.String),
-  menuColor: Schema.optional(Schema.Literal("default", "inverted")),
-  menuAccent: Schema.optional(Schema.Literal("subtle", "bold")),
+  menuColor: Schema.optional(Schema.Literals(["default", "inverted"])),
+  menuAccent: Schema.optional(Schema.Literals(["subtle", "bold"])),
   rtl: Schema.optional(Schema.Boolean),
   registries: Schema.optional(
-    Schema.Record({
-      key: Schema.String,
-      value: Schema.Union(
+    Schema.Record(
+      Schema.String,
+      Schema.Union([
         Schema.String,
         Schema.Struct({
           url: Schema.String,
-          params: Schema.optional(
-            Schema.Record({ key: Schema.String, value: Schema.String }),
-          ),
-          headers: Schema.optional(
-            Schema.Record({ key: Schema.String, value: Schema.String }),
-          ),
+          params: Schema.optional(Schema.Record(Schema.String, Schema.String)),
+          headers: Schema.optional(Schema.Record(Schema.String, Schema.String)),
         }),
-      ),
-    }),
+      ]),
+    ),
   ),
   arkitect: Schema.optional(
     Schema.Struct({
-      framework: Schema.Literal("react", "solid"),
+      framework: Schema.Literals(["react", "solid"]),
     }),
   ),
 }) {}

@@ -1,6 +1,6 @@
 ---
 title: Getting Started (React)
-description: Set up Tailwind CSS and Ark UI for React, then add arkitect-ui components via CLI or manually.
+description: Set up your React project and add arkitect-ui components via shadcn.
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components";
@@ -9,29 +9,14 @@ import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 - Node.js and pnpm installed
 - A React project (Vite, Next.js, or similar)
-- Tailwind CSS (v4) setup — see official docs: https://tailwindcss.com/docs
-- Ark UI for React
 
-## 1) Install Tailwind CSS
+## 1) Initialize with shadcn
 
-Follow Tailwind’s guide for your framework. Typical steps:
+Follow the official shadcn/ui installation guide to set up your project:
 
-```bash
-pnpm add -D tailwindcss
-npx tailwindcss init
-```
+[https://ui.shadcn.com/docs/installation](https://ui.shadcn.com/docs/installation)
 
-Add Tailwind to your global stylesheet:
-
-```css
-@import "tailwindcss";
-```
-
-Ensure Tailwind scans your React source files (adjust paths as needed):
-
-```txt
-src/**/*.{ts,tsx}
-```
+This will configure Tailwind CSS, TypeScript path aliases, and the `cn` utility.
 
 ## 2) Install Ark UI (React)
 
@@ -39,48 +24,37 @@ src/**/*.{ts,tsx}
 pnpm add @ark-ui/react
 ```
 
-Ark UI provides accessible primitives and logic; arkitect-ui builds styled components using Tailwind on top of these primitives.
+Ark UI provides accessible primitives; arkitect-ui builds styled components on top.
 
 ## 3) Add arkitect-ui components
 
-Choose your workflow: CLI or Manual.
+Use shadcn to install components from the arkitect-ui registry:
 
 <Tabs>
-  <TabItem label="CLI (Recommended)">
-
-Run the initializer to scaffold config and core utilities:
-
-```bash
-npx @arkitect-ui/cli init
-```
-
-This will:
-
-- Create `components.json` with aliases like `@/components/ui` and `@/lib/utils`
-- Generate a global CSS file if it is missing
-- Create a `cn` helper in `src/lib/utils.ts`
-- Update your TypeScript config to support the `@/*` path alias
-- Add a `@` alias to your Vite config when using Vite
-
-Then add specific components when you need them:
-
-```bash
-npx @arkitect-ui/cli add button
-```
-
-The CLI copies the component source into your project so you have full control (styles, variants, code).
-
+  <TabItem label="npm">
+    ```bash
+    npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/button.json
+    ```
   </TabItem>
-  <TabItem label="Manual">
+  <TabItem label="pnpm">
+    ```bash
+    pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/button.json
+    ```
+  </TabItem>
+  <TabItem label="bun">
+    ```bash
+    bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/button.json
+    ```
+  </TabItem>
+</Tabs>
 
-If you prefer a manual setup:
+Replace `button` with any component name (input, dialog, label, dropdown-menu, etc.)
 
-- Configure Tailwind CSS for your project
-- Ensure your TypeScript config has `baseUrl: "."` and `paths["@/*"] = ["./src/*"]`
-- Add a `@` alias to your bundler config (e.g. Vite) pointing to `./src`
-- Create a `src/lib/utils.ts` file with a `cn` helper if you want to reuse Arkitect UI patterns
+The command copies the component source into your project so you have full control.
 
-Then copy components directly from the documentation (e.g., Button) into `src/components/ui/`. Import and use:
+## 4) Manual alternative
+
+If you prefer, copy components directly from the documentation into `src/components/ui/`:
 
 ```tsx
 import { Button } from "@/components/ui/button";
@@ -90,18 +64,13 @@ export function Example() {
 }
 ```
 
-Manual copy-paste gives you complete ownership over styles and behavior, just like shadcn/ui.
+## 5) Verify setup
 
-  </TabItem>
-</Tabs>
-
-## 4) Verify setup
-
-- Import your global stylesheet (Tailwind) once in your app entry
-- Render a sample component (Button) to confirm styles and behavior
+- Import your global stylesheet (Tailwind) in your app entry
+- Render a sample component to confirm styles work
 
 ## Next steps
 
 - Browse React components: /arkitect-ui/react/
-- Add more components via CLI or copy-paste
+- Add more components via shadcn or copy-paste
 - Customize Tailwind tokens to match your brand
