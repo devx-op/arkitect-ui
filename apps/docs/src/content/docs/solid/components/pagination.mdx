@@ -1,0 +1,72 @@
+---
+title: Pagination
+description: A pagination component for navigating through pages of data.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import paginationCode from "../../../../../../../packages/solid/src/components/ui/pagination.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="pagination"
+  story="default"
+  height="100px"
+  code={`import { createSignal } from "solid-js"
+import { Pagination } from "@/components/ui/pagination"
+
+export function PaginationDemo() {
+  const [page, setPage] = createSignal(1)
+
+  return (
+    <Pagination
+      page={page()}
+      totalPages={10}
+      onPageChange={setPage}
+    />
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/pagination.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/pagination.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/pagination.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={paginationCode} lang="tsx" title="components/ui/pagination.tsx" />
+  </TabItem>
+</Tabs>
+
+## API Reference
+
+### Pagination
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `page` | `number` | - | Current page number |
+| `totalPages` | `number` | - | Total number of pages |
+| `pageSize` | `number` | 10 | Number of items per page |
+| `pageSizeOptions` | `number[]` | [10, 25, 50, 100] | Available page size options |
+| `onPageChange` | `(page: number) => void` | - | Callback when page changes |
+| `onPageSizeChange` | `(pageSize: number) => void` | - | Callback when page size changes |
+| `class` | `string` | - | Additional CSS classes |

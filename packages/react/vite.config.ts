@@ -55,7 +55,6 @@ export default {
         "react-use-measure",
         "recharts",
         "shadcn",
-        "sonner",
       ],
     },
   },

@@ -1,0 +1,95 @@
+---
+title: Sidebar
+description: A vertical navigation component that can collapse and expand.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import sidebarCode from "../../../../../../../packages/solid/src/components/ui/sidebar.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="sidebar"
+  story="default"
+  height="400px"
+  code={`import { createSignal } from "solid-js"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupTitle,
+  SidebarHeader,
+  SidebarItem,
+  SidebarToggle,
+} from "@/components/ui/sidebar"
+import { IconHome, IconSettings, IconUsers } from "@tabler/icons-react"
+
+export function SidebarDemo() {
+  const [collapsed, setCollapsed] = createSignal(false)
+
+  return (
+    <div class="h-96 w-full border rounded-lg overflow-hidden">
+      <Sidebar collapsed={collapsed()}>
+        <SidebarHeader>
+          <SidebarToggle 
+            collapsed={collapsed()} 
+            onClick={() => setCollapsed(!collapsed())} 
+          />
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupTitle>Navigation</SidebarGroupTitle>
+            <SidebarGroupContent>
+              <SidebarItem>
+                <IconHome class="w-4 h-4 mr-2" />
+                <span>Home</span>
+              </SidebarItem>
+              <SidebarItem>
+                <IconUsers class="w-4 h-4 mr-2" />
+                <span>Users</span>
+              </SidebarItem>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter>
+          <SidebarItem>
+            <IconSettings class="w-4 h-4 mr-2" />
+            <span>Settings</span>
+          </SidebarItem>
+        </SidebarFooter>
+      </Sidebar>
+    </div>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/sidebar.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/sidebar.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/sidebar.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={sidebarCode} lang="tsx" title="components/ui/sidebar.tsx" />
+  </TabItem>
+</Tabs>

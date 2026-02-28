@@ -1,0 +1,162 @@
+---
+title: Table
+description: A table component for displaying data in rows and columns.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import tableCode from "../../../../../../../packages/solid/src/components/ui/table.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="table"
+  story="default"
+  height="300px"
+  code={`import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+export function TableDemo() {
+  return (
+    <Table>
+      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead class="w-[100px]">Invoice</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Method</TableHead>
+          <TableHead class="text-right">Amount</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell class="font-medium">INV001</TableCell>
+          <TableCell>Paid</TableCell>
+          <TableCell>Credit Card</TableCell>
+          <TableCell class="text-right">$250.00</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell class="font-medium">INV002</TableCell>
+          <TableCell>Pending</TableCell>
+          <TableCell>PayPal</TableCell>
+          <TableCell class="text-right">$150.00</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell class="font-medium">INV003</TableCell>
+          <TableCell>Paid</TableCell>
+          <TableCell>Bank Transfer</TableCell>
+          <TableCell class="text-right">$350.00</TableCell>
+        </TableRow>
+      </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TableCell colSpan={3}>Total</TableCell>
+          <TableCell class="text-right">$750.00</TableCell>
+        </TableRow>
+      </TableFooter>
+    </Table>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/table.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/table.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/table.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={tableCode} lang="tsx" title="components/ui/table.tsx" />
+  </TabItem>
+</Tabs>
+
+## API Reference
+
+### Table
+
+The main table container component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `class` | `string` | - | Additional CSS classes |
+
+### TableHeader
+
+The table header container.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `class` | `string` | - | Additional CSS classes |
+
+### TableBody
+
+The table body container.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `class` | `string` | - | Additional CSS classes |
+
+### TableFooter
+
+The table footer container.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `class` | `string` | - | Additional CSS classes |
+
+### TableRow
+
+A table row component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `class` | `string` | - | Additional CSS classes |
+
+### TableHead
+
+A table header cell component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `class` | `string` | - | Additional CSS classes |
+
+### TableCell
+
+A table cell component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `class` | `string` | - | Additional CSS classes |
+
+### TableCaption
+
+A table caption component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `class` | `string` | - | Additional CSS classes |

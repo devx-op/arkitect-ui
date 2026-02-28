@@ -1,0 +1,60 @@
+---
+title: Select
+description: Displays a select component with options.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import selectCode from "../../../../../../../packages/solid/src/components/ui/select.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="select"
+  story="default"
+  height="250px"
+  code={`import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+export function SelectDemo() {
+  return (
+    <Select>
+      <SelectTrigger>
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="apple">Apple</SelectItem>
+        <SelectItem value="banana">Banana</SelectItem>
+        <SelectItem value="orange">Orange</SelectItem>
+      </SelectContent>
+    </Select>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/select.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/select.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/select.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={selectCode} lang="tsx" title="components/ui/select.tsx" />
+  </TabItem>
+</Tabs>

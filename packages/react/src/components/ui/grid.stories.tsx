@@ -1,0 +1,34 @@
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { Grid } from "./grid"
+
+const meta: Meta<typeof Grid> = {
+  title: "React/UI/Grid",
+  component: Grid,
+}
+
+export default meta
+type Story = StoryObj<typeof Grid>
+
+export const Default: Story = {
+  render: () => (
+    <Grid columns={3} className="w-96">
+      <div className="bg-muted p-4 rounded">1</div>
+      <div className="bg-muted p-4 rounded">2</div>
+      <div className="bg-muted p-4 rounded">3</div>
+      <div className="bg-muted p-4 rounded">4</div>
+      <div className="bg-muted p-4 rounded">5</div>
+      <div className="bg-muted p-4 rounded">6</div>
+    </Grid>
+  ),
+}
+
+export const WithGap: Story = {
+  render: () => (
+    <Grid columns={2} gap={4} className="w-96">
+      <div className="bg-muted p-4 rounded">1</div>
+      <div className="bg-muted p-4 rounded">2</div>
+      <div className="bg-muted p-4 rounded">3</div>
+      <div className="bg-muted p-4 rounded">4</div>
+    </Grid>
+  ),
+}

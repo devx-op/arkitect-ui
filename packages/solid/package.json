@@ -19,6 +19,8 @@
     "@ark-ui/solid": "catalog:",
     "@arkitect-ui/shared": "workspace:*",
     "@tabler/icons-solidjs": "catalog:",
+    "@tanstack/solid-table": "catalog:",
+    "chart.js": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "lucide-solid": "catalog:",

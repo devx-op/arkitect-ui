@@ -1,0 +1,62 @@
+---
+title: Card
+description: Displays a card with header, content, and footer.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import cardCode from "../../../../../../../packages/solid/src/components/ui/card.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="card"
+  story="default"
+  height="300px"
+  code={`import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+
+export function CardDemo() {
+  return (
+    <Card class="w-[350px]">
+      <CardHeader>
+        <CardTitle>Card Title</CardTitle>
+        <CardDescription>Card description goes here.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p>Card content goes here.</p>
+      </CardContent>
+      <CardFooter>
+        <p>Card footer</p>
+      </CardFooter>
+    </Card>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/card.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/card.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/card.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={cardCode} lang="tsx" title="components/ui/card.tsx" />
+  </TabItem>
+</Tabs>

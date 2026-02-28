@@ -1,0 +1,55 @@
+---
+title: Stack
+description: A layout component that stacks its children vertically or horizontally.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import stackCode from "../../../../../../../packages/solid/src/components/ui/stack.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="stack"
+  story="default"
+  height="200px"
+  code={`import { Stack } from "@/components/ui/stack"
+
+export function StackDemo() {
+  return (
+    <Stack gap={4}>
+      <div class="border rounded-md p-4 text-sm">Item 1</div>
+      <div class="border rounded-md p-4 text-sm">Item 2</div>
+      <div class="border rounded-md p-4 text-sm">Item 3</div>
+    </Stack>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/stack.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/stack.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/stack.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={stackCode} lang="tsx" title="components/ui/stack.tsx" />
+  </TabItem>
+</Tabs>

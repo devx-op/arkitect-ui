@@ -1,0 +1,54 @@
+---
+title: Textarea
+description: A component for entering multi-line text.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import textareaCode from "../../../../../../../packages/react/src/components/ui/textarea.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="react"
+  component="textarea"
+  story="default"
+  height="150px"
+  code={`import { Textarea } from "@/components/ui/textarea"
+
+export function TextareaDemo() {
+  return (
+    <Textarea 
+      placeholder="Type your message here..." 
+      className="w-full max-w-sm" 
+    />
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/textarea.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/textarea.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/textarea.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={textareaCode} lang="tsx" title="components/ui/textarea.tsx" />
+  </TabItem>
+</Tabs>

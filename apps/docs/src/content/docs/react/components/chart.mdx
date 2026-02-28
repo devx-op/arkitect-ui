@@ -1,0 +1,63 @@
+---
+title: Chart
+description: A component that displays data in charts using Recharts.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import chartCode from "../../../../../../../packages/react/src/components/ui/chart.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="react"
+  component="chart"
+  story="default"
+  height="300px"
+  code={`import { Chart } from "@/components/ui/chart"
+
+const data = [
+  { name: "Jan", value: 400 },
+  { name: "Feb", value: 300 },
+  { name: "Mar", value: 600 },
+  { name: "Apr", value: 800 },
+  { name: "May", value: 500 },
+]
+
+export function ChartDemo() {
+  return (
+    <Chart data={data} width={400} height={250}>
+      <Chart.Line type="monotone" dataKey="value" stroke="var(--color-primary)" />
+      <Chart.XAxis dataKey="name" />
+      <Chart.YAxis />
+    </Chart>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/chart.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/chart.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/chart.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={chartCode} lang="tsx" title="components/ui/chart.tsx" />
+  </TabItem>
+</Tabs>

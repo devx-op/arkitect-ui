@@ -1,0 +1,57 @@
+---
+title: Marquee
+description: A slider component that scrolls infinitely.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import marqueeCode from "../../../../../../../packages/solid/src/components/ui/marquee.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="marquee"
+  story="default"
+  height="150px"
+  code={`import { Marquee } from "@/components/ui/marquee"
+
+export function MarqueeDemo() {
+  return (
+    <Marquee gap={24}>
+      <div class="w-32 h-20 bg-muted rounded-md flex items-center justify-center text-sm">Slide 1</div>
+      <div class="w-32 h-20 bg-muted rounded-md flex items-center justify-center text-sm">Slide 2</div>
+      <div class="w-32 h-20 bg-muted rounded-md flex items-center justify-center text-sm">Slide 3</div>
+      <div class="w-32 h-20 bg-muted rounded-md flex items-center justify-center text-sm">Slide 4</div>
+      <div class="w-32 h-20 bg-muted rounded-md flex items-center justify-center text-sm">Slide 5</div>
+    </Marquee>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/marquee.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/marquee.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/marquee.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={marqueeCode} lang="tsx" title="components/ui/marquee.tsx" />
+  </TabItem>
+</Tabs>

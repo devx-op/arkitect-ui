@@ -1,0 +1,58 @@
+---
+title: Grid
+description: A layout component that displays items in a grid.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import gridCode from "../../../../../../../packages/react/src/components/ui/grid.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="react"
+  component="grid"
+  story="default"
+  height="200px"
+  code={`import { Grid } from "@/components/ui/grid"
+
+export function GridDemo() {
+  return (
+    <Grid columns={3} className="gap-4">
+      <div className="border rounded-md p-4 text-sm">Item 1</div>
+      <div className="border rounded-md p-4 text-sm">Item 2</div>
+      <div className="border rounded-md p-4 text-sm">Item 3</div>
+      <div className="border rounded-md p-4 text-sm">Item 4</div>
+      <div className="border rounded-md p-4 text-sm">Item 5</div>
+      <div className="border rounded-md p-4 text-sm">Item 6</div>
+    </Grid>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/grid.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/grid.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/grid.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={gridCode} lang="tsx" title="components/ui/grid.tsx" />
+  </TabItem>
+</Tabs>

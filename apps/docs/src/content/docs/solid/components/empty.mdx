@@ -1,0 +1,60 @@
+---
+title: Empty
+description: A component for displaying empty states with optional image, title, and description.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import emptyCode from "../../../../../../../packages/solid/src/components/ui/empty.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="empty"
+  story="default"
+  height="200px"
+  code={`import { Empty, EmptyDescription, EmptyImage, EmptyTitle } from "@/components/ui/empty"
+import { IconFolderOff } from "@tabler/icons-react"
+
+export function EmptyDemo() {
+  return (
+    <Empty class="h-40">
+      <EmptyImage>
+        <IconFolderOff class="h-12 w-12 text-muted-foreground" />
+      </EmptyImage>
+      <EmptyTitle>No files found</EmptyTitle>
+      <EmptyDescription>
+        Try adjusting your search or filter to find what you're looking for.
+      </EmptyDescription>
+    </Empty>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/empty.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/empty.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/empty.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={emptyCode} lang="tsx" title="components/ui/empty.tsx" />
+  </TabItem>
+</Tabs>

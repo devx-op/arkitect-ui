@@ -1,0 +1,53 @@
+---
+title: Center
+description: A layout component that centers its content.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import centerCode from "../../../../../../../packages/react/src/components/ui/center.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="react"
+  component="center"
+  story="default"
+  height="200px"
+  code={`import { Center } from "@/components/ui/center"
+
+export function CenterDemo() {
+  return (
+    <Center className="border rounded-md h-32 w-full">
+      <span className="text-sm text-muted-foreground">Centered Content</span>
+    </Center>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/center.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/center.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/center.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={centerCode} lang="tsx" title="components/ui/center.tsx" />
+  </TabItem>
+</Tabs>

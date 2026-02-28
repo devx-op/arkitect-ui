@@ -1,0 +1,59 @@
+---
+title: Separator
+description: Displays a separator between content.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import separatorCode from "../../../../../../../packages/solid/src/components/ui/separator.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="separator"
+  story="default"
+  height="150px"
+  code={`import { Separator } from "@/components/ui/separator"
+
+export function SeparatorDemo() {
+  return (
+    <div class="w-full max-w-md">
+      <div class="pb-4">
+        Content above separator
+      </div>
+      <Separator />
+      <div class="pt-4">
+        Content below separator
+      </div>
+    </div>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/separator.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/separator.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/separator.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={separatorCode} lang="tsx" title="components/ui/separator.tsx" />
+  </TabItem>
+</Tabs>

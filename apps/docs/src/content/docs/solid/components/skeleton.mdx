@@ -1,0 +1,57 @@
+---
+title: Skeleton
+description: A placeholder preview while content is loading.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import skeletonCode from "../../../../../../../packages/solid/src/components/ui/skeleton.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="skeleton"
+  story="default"
+  height="100px"
+  code={`import { Skeleton } from "@/components/ui/skeleton"
+
+export function SkeletonDemo() {
+  return (
+    <div class="flex items-center space-x-4">
+      <Skeleton class="h-12 w-12 rounded-full" />
+      <div class="space-y-2">
+        <Skeleton class="h-4 w-[250px]" />
+        <Skeleton class="h-4 w-[200px]" />
+      </div>
+    </div>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/skeleton.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/skeleton.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/skeleton.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={skeletonCode} lang="tsx" title="components/ui/skeleton.tsx" />
+  </TabItem>
+</Tabs>

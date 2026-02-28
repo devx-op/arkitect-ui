@@ -1,0 +1,125 @@
+---
+title: Toast
+description: A toast component for displaying notifications using Ark UI.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import toastCode from "../../../../../../../packages/solid/src/components/ui/toast.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="toast"
+  story="default"
+  height="200px"
+  code={`import { Toaster, toast } from "@/components/ui/toast"
+
+export function ToastDemo() {
+  return (
+    <div class="flex gap-2 flex-wrap">
+      <button
+        type="button"
+        onClick={() => toast({ title: "Event has been created" })}
+        class="px-4 py-2 bg-primary text-primary-foreground rounded-md"
+      >
+        Show Toast
+      </button>
+      <button
+        type="button"
+        onClick={() => toast.success("Event has been created")}
+        class="px-4 py-2 bg-green-500 text-white rounded-md"
+      >
+        Success
+      </button>
+      <button
+        type="button"
+        onClick={() => toast.error("Event has failed")}
+        class="px-4 py-2 bg-red-500 text-white rounded-md"
+      >
+        Error
+      </button>
+      <button
+        type="button"
+        onClick={() => toast.warning("Please review your input")}
+        class="px-4 py-2 bg-yellow-500 text-white rounded-md"
+      >
+        Warning
+      </button>
+    </div>
+  )
+}`}
+/>
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/toast.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/toast.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/toast.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={toastCode} lang="tsx" title="components/ui/toast.tsx" />
+  </TabItem>
+</Tabs>
+
+## Usage
+
+The Toast component uses Ark UI's toast primitive. You need to render the `Toaster` component in your app root and use the `toast` function to display notifications.
+
+```tsx
+import { Toaster, toast } from "@/components/ui/toast"
+
+function App() {
+  return (
+    <>
+      <Toaster />
+      <button onClick={() => toast("Hello world")}>Show toast</button>
+    </>
+  )
+}
+```
+
+### toast function
+
+The `toast` function accepts either a string or an object:
+
+```tsx
+// Simple usage
+toast("Event created")
+
+// With options
+toast({
+  title: "Event created",
+  description: "Your event has been saved successfully",
+  type: "success", // "info" | "success" | "error" | "warning"
+  duration: 5000,
+})
+```
+
+### Convenience methods
+
+```tsx
+toast.success("Operation successful")
+toast.error("Something went wrong")
+toast.warning("Please review your input")
+toast.info("New update available")
+toast.dismiss() // Dismiss all toasts
+toast.dismiss(id) // Dismiss specific toast
+```
