@@ -1,0 +1,77 @@
+---
+title: DataTable
+description: A table component with column definitions and data rendering.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components"
+import ComponentPreview from "@/components/ComponentPreview.astro"
+import dataTableCode from "../../../../../../../packages/react/src/components/ui/data-table.tsx?raw"
+
+## Component
+
+<ComponentPreview
+  framework="react"
+  component="datatable"
+  story="default"
+  height="300px"
+  code={`import { DataTable, columns, data } from "@/components/ui/data-table"
+
+export function DataTableDemo() {
+  return (
+    <DataTable
+      columns={columns}
+      data={data}
+    />
+  )
+}`}
+/>
+
+
+## Installation
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/data-table.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/data-table.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/data-table.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={dataTableCode} lang="tsx" title="components/ui/data-table.tsx" />
+  </TabItem>
+</Tabs>
+
+
+## API Reference
+
+### `Column<T>`
+
+```ts
+interface Column<T> {
+  accessorKey?: keyof T
+  header?: string | React.ReactNode
+  cell?: (row: T) => React.ReactNode
+  accessorFn?: (row: T) => unknown
+}
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `columns` | `Column<T>[]` | - | Array of column definitions |
+| `data` | `T[]` | - | Array of data to display |
+| `caption` | `string` | - | Table caption |
+| `emptyMessage` | `string` | `"No data available"` | Message to show when no data |

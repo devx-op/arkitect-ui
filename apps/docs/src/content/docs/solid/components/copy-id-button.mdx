@@ -1,0 +1,54 @@
+---
+title: Copy ID Button
+description: A button component that copies an ID to the clipboard.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import copyIdButtonCode from "../../../../../../../packages/solid/src/components/ui/copy-id-button.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="copy-id-button"
+  story="default"
+  height="150px"
+  code={`import { CopyIdButton } from "@/components/ui/copy-id-button"
+
+export function CopyIdButtonDemo() {
+  return (
+    <div class="flex items-center gap-2">
+      <span class="text-sm text-muted-foreground">user_123456789</span>
+      <CopyIdButton id="user_123456789" />
+    </div>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/copy-id-button.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/copy-id-button.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/copy-id-button.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={copyIdButtonCode} lang="tsx" title="components/ui/copy-id-button.tsx" />
+  </TabItem>
+</Tabs>

@@ -1,0 +1,100 @@
+---
+title: Combobox
+description: A dropdown component with search functionality and keyboard navigation.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import comboboxCode from "../../../../../../../packages/solid/src/components/ui/combobox.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="combobox"
+  story="default"
+  height="300px"
+  code={`import { createSignal } from "solid-js"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxControl,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxItemIndicator,
+  ComboboxItemText,
+  ComboboxTrigger,
+  createListCollection,
+} from "@/components/ui/combobox"
+import { IconChevronDown, IconCheck } from "@tabler/icons-react"
+
+const frameworks = createListCollection({
+  items: [
+    { label: "React", value: "react" },
+    { label: "Vue", value: "vue" },
+    { label: "Angular", value: "angular" },
+    { label: "Svelte", value: "svelte" },
+    { label: "Solid", value: "solid" },
+  ],
+})
+
+export function ComboboxDemo() {
+  const [value, setValue] = createSignal<string[]>([])
+
+  return (
+    <Combobox
+      collection={frameworks}
+      value={value()}
+      onValueChange={setValue}
+    >
+      <ComboboxControl>
+        <ComboboxInput placeholder="Select framework..." />
+        <ComboboxTrigger>
+          <IconChevronDown class="h-4 w-4 opacity-50" />
+        </ComboboxTrigger>
+      </ComboboxControl>
+      <ComboboxContent>
+        <ComboboxItem item={frameworks.items[0]}>
+          <ComboboxItemIndicator>
+            <IconCheck class="h-4 w-4" />
+          </ComboboxItemIndicator>
+          <ComboboxItemText>{frameworks.items[0].label}</ComboboxItemText>
+        </ComboboxItem>
+        <ComboboxItem item={frameworks.items[1]}>
+          <ComboboxItemIndicator>
+            <IconCheck class="h-4 w-4" />
+          </ComboboxItemIndicator>
+          <ComboboxItemText>{frameworks.items[1].label}</ComboboxItemText>
+        </ComboboxItem>
+      </ComboboxContent>
+    </Combobox>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/combobox.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/combobox.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/combobox.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={comboboxCode} lang="tsx" title="components/ui/combobox.tsx" />
+  </TabItem>
+</Tabs>

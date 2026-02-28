@@ -1,0 +1,68 @@
+---
+title: Float
+description: A simple positioning component for floating content relative to a trigger.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import floatCode from "../../../../../../../packages/react/src/components/ui/float.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="react"
+  component="float"
+  story="default"
+  height="200px"
+  code={`import { useState } from "react"
+import { Float } from "@/components/ui/float"
+import { Button } from "@/components/ui/button"
+
+export function FloatDemo() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <div className="flex justify-center items-center h-32">
+      <div className="relative">
+        <Button onClick={() => setIsOpen(!isOpen)}>
+          Toggle Float
+        </Button>
+        {isOpen && (
+          <Float placement="bottom">
+            <div className="rounded-md border bg-background p-4 shadow-lg">
+              <p className="text-sm">Floating content here</p>
+            </div>
+          </Float>
+        )}
+      </div>
+    </div>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/float.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/float.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/float.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={floatCode} lang="tsx" title="components/ui/float.tsx" />
+  </TabItem>
+</Tabs>

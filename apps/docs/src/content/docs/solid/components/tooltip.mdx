@@ -1,0 +1,60 @@
+---
+title: Tooltip
+description: A component that displays a tooltip on hover or focus.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import tooltipCode from "../../../../../../../packages/solid/src/components/ui/tooltip.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="tooltip"
+  story="default"
+  height="150px"
+  code={`import { Tooltip, Tooltip_trigger, Tooltip_content, Tooltip_provider } from "@/components/ui/tooltip"
+
+export function TooltipDemo() {
+  return (
+    <Tooltip_provider>
+      <Tooltip>
+        <Tooltip_trigger class="px-4 py-2 rounded-md bg-primary text-primary-foreground">
+          Hover me
+        </Tooltip_trigger>
+        <Tooltip_content>
+          This is a tooltip
+        </Tooltip_content>
+      </Tooltip>
+    </Tooltip_provider>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/tooltip.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/tooltip.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/tooltip.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={tooltipCode} lang="tsx" title="components/ui/tooltip.tsx" />
+  </TabItem>
+</Tabs>

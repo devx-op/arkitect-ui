@@ -36,6 +36,40 @@
       ]
     },
     {
+      "name": "r/checkbox",
+      "type": "registry:ui",
+      "title": "React checkbox",
+      "description": "checkbox component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react",
+        "@tabler/icons-react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/checkbox",
+      "type": "registry:ui",
+      "title": "Solid checkbox",
+      "description": "checkbox component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid",
+        "@tabler/icons-solidjs"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "r/dropdown-menu",
       "type": "registry:ui",
       "title": "React dropdown-menu",
@@ -163,6 +197,885 @@
       "files": [
         {
           "path": "packages/solid/src/components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/select",
+      "type": "registry:ui",
+      "title": "React select",
+      "description": "select component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/select",
+      "type": "registry:ui",
+      "title": "Solid select",
+      "description": "select component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/badge",
+      "type": "registry:ui",
+      "title": "React badge",
+      "description": "badge component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/badge",
+      "type": "registry:ui",
+      "title": "Solid badge",
+      "description": "badge component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/card",
+      "type": "registry:ui",
+      "title": "React card",
+      "description": "card component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/card",
+      "type": "registry:ui",
+      "title": "Solid card",
+      "description": "card component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/separator",
+      "type": "registry:ui",
+      "title": "React separator",
+      "description": "separator component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/separator",
+      "type": "registry:ui",
+      "title": "Solid separator",
+      "description": "separator component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/alert-dialog",
+      "type": "registry:ui",
+      "title": "React alert-dialog",
+      "description": "alert-dialog component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/alert-dialog",
+      "type": "registry:ui",
+      "title": "Solid alert-dialog",
+      "description": "alert-dialog component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/avatar",
+      "type": "registry:ui",
+      "title": "React avatar",
+      "description": "avatar component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/avatar",
+      "type": "registry:ui",
+      "title": "Solid avatar",
+      "description": "avatar component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/collapsible",
+      "type": "registry:ui",
+      "title": "React collapsible",
+      "description": "collapsible component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/collapsible",
+      "type": "registry:ui",
+      "title": "Solid collapsible",
+      "description": "collapsible component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/combobox",
+      "type": "registry:ui",
+      "title": "React combobox",
+      "description": "combobox component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/combobox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/combobox",
+      "type": "registry:ui",
+      "title": "Solid combobox",
+      "description": "combobox component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/combobox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/empty",
+      "type": "registry:ui",
+      "title": "React empty",
+      "description": "empty component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/empty.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/empty",
+      "type": "registry:ui",
+      "title": "Solid empty",
+      "description": "empty component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/empty.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/float",
+      "type": "registry:ui",
+      "title": "React float",
+      "description": "float (popover) component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/float.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/float",
+      "type": "registry:ui",
+      "title": "Solid float",
+      "description": "float (popover) component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/float.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/sheet",
+      "type": "registry:ui",
+      "title": "React sheet",
+      "description": "sheet component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/sheet.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/sheet",
+      "type": "registry:ui",
+      "title": "Solid sheet",
+      "description": "sheet component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/sheet.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/sidebar",
+      "type": "registry:ui",
+      "title": "React sidebar",
+      "description": "sidebar component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/sidebar",
+      "type": "registry:ui",
+      "title": "Solid sidebar",
+      "description": "sidebar component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/skeleton",
+      "type": "registry:ui",
+      "title": "React skeleton",
+      "description": "skeleton component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/skeleton",
+      "type": "registry:ui",
+      "title": "Solid skeleton",
+      "description": "skeleton component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/toast",
+      "type": "registry:ui",
+      "title": "React Toast",
+      "description": "Toast component using Ark UI",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/toast.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/toast",
+      "type": "registry:ui",
+      "title": "Solid Toast",
+      "description": "Toast component using Ark UI",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/toast.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/pagination",
+      "type": "registry:ui",
+      "title": "React pagination",
+      "description": "pagination component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/pagination",
+      "type": "registry:ui",
+      "title": "Solid pagination",
+      "description": "pagination component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/table",
+      "type": "registry:ui",
+      "title": "React table",
+      "description": "table component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/table",
+      "type": "registry:ui",
+      "title": "Solid table",
+      "description": "table component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/data-table-filters",
+      "type": "registry:ui",
+      "title": "React data-table-filters",
+      "description": "data-table-filters component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react",
+        "@tanstack/react-table"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/data-table-filters.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/data-table-filters",
+      "type": "registry:ui",
+      "title": "Solid data-table-filters",
+      "description": "data-table-filters component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid",
+        "@tanstack/solid-table"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/data-table-filters.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/data-table",
+      "type": "registry:ui",
+      "title": "React data-table",
+      "description": "data-table component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react",
+        "@tanstack/react-table"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/data-table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/data-table",
+      "type": "registry:ui",
+      "title": "Solid data-table",
+      "description": "data-table component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid",
+        "@tanstack/solid-table"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/data-table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/center",
+      "type": "registry:ui",
+      "title": "React center",
+      "description": "center component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/center.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/center",
+      "type": "registry:ui",
+      "title": "Solid center",
+      "description": "center component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/center.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/grid-pattern",
+      "type": "registry:ui",
+      "title": "React grid-pattern",
+      "description": "grid-pattern component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/grid-pattern.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/grid-pattern",
+      "type": "registry:ui",
+      "title": "Solid grid-pattern",
+      "description": "grid-pattern component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/grid-pattern.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/grid",
+      "type": "registry:ui",
+      "title": "React grid",
+      "description": "grid component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/grid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/grid",
+      "type": "registry:ui",
+      "title": "Solid grid",
+      "description": "grid component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/grid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/chart",
+      "type": "registry:ui",
+      "title": "React chart",
+      "description": "chart component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react",
+        "recharts"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/chart.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/chart",
+      "type": "registry:ui",
+      "title": "Solid chart",
+      "description": "chart component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "chart.js"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/chart.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/copy-id-button",
+      "type": "registry:ui",
+      "title": "React copy-id-button",
+      "description": "copy-id-button component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react",
+        "@tabler/icons-react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/copy-id-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/copy-id-button",
+      "type": "registry:ui",
+      "title": "Solid copy-id-button",
+      "description": "copy-id-button component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid",
+        "@tabler/icons-solidjs"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/copy-id-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/marquee",
+      "type": "registry:ui",
+      "title": "React Marquee",
+      "description": "marquee component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/marquee.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/marquee",
+      "type": "registry:ui",
+      "title": "Solid Marquee",
+      "description": "marquee component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/marquee.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/input-group",
+      "type": "registry:ui",
+      "title": "React input-group",
+      "description": "input-group component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/input-group",
+      "type": "registry:ui",
+      "title": "Solid input-group",
+      "description": "input-group component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/textarea",
+      "type": "registry:ui",
+      "title": "React textarea",
+      "description": "textarea component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/textarea",
+      "type": "registry:ui",
+      "title": "Solid textarea",
+      "description": "textarea component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/tooltip",
+      "type": "registry:ui",
+      "title": "React tooltip",
+      "description": "tooltip component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/react"
+      ],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/tooltip",
+      "type": "registry:ui",
+      "title": "Solid tooltip",
+      "description": "tooltip component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [
+        "@ark-ui/solid"
+      ],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "r/stack",
+      "type": "registry:ui",
+      "title": "React stack",
+      "description": "stack component for react",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/react/src/components/ui/stack.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "s/stack",
+      "type": "registry:ui",
+      "title": "Solid stack",
+      "description": "stack component for solid",
+      "author": "Arkitect-UI (http://devx-ops https://devx-op.github.io/arkitect-ui/)",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "packages/solid/src/components/ui/stack.tsx",
           "type": "registry:ui"
         }
       ]

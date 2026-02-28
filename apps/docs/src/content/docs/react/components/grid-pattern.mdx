@@ -1,0 +1,56 @@
+---
+title: Grid Pattern
+description: A component that displays a grid pattern background.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import gridPatternCode from "../../../../../../../packages/react/src/components/ui/grid-pattern.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="react"
+  component="gridpattern"
+  story="default"
+  height="200px"
+  code={`import { GridPattern } from "@/components/ui/grid-pattern"
+
+export function GridPatternDemo() {
+  return (
+    <div className="relative w-full h-48 overflow-hidden rounded-lg bg-background">
+      <GridPattern className="text-border" />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-sm text-muted-foreground">Grid Pattern Background</span>
+      </div>
+    </div>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/grid-pattern.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/grid-pattern.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/grid-pattern.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={gridPatternCode} lang="tsx" title="components/ui/grid-pattern.tsx" />
+  </TabItem>
+</Tabs>

@@ -1,0 +1,81 @@
+---
+title: DataTableFilters
+description: Filter controls for data tables with text, select, and date inputs.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components"
+import ComponentPreview from "@/components/ComponentPreview.astro"
+import dataTableFiltersCode from "../../../../../../../packages/react/src/components/ui/data-table-filters.tsx?raw"
+
+## Component
+
+<ComponentPreview 
+  framework="react"
+  component="datatablefilters"
+  story="default"
+  height="100px"
+  code={`import { DataTableFilters } from "@/components/ui/data-table-filters"
+
+export function DataTableFiltersDemo() {
+  return (
+    <DataTableFilters
+      filters={[
+        { id: "name", type: "text", label: "Name", placeholder: "Search by name..." },
+        { id: "status", type: "select", label: "Status", placeholder: "Select status", options: [
+          { label: "Active", value: "active" },
+          { label: "Inactive", value: "inactive" },
+        ]},
+      ]}
+      onFilterChange={(values) => console.log("Filter values:", values)}
+    />
+  )
+}`}
+ />
+
+## Installation
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/data-table-filters.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/data-table-filters.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/r/data-table-filters.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={dataTableFiltersCode} lang="tsx" title="components/ui/data-table-filters.tsx" />
+  </TabItem>
+</Tabs>
+
+## API Reference
+
+### FilterConfigType
+
+```ts
+type FilterConfig = {
+  id: string
+  type: "text" | "select" | "date"
+  label: string
+  placeholder?: string
+  options?: { label: string; value: string }[]
+}
+```
+
+### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `filters` | `FilterConfig[]` | `[]` | Array of filter configurations |
+| `values` | `Record<string, any>` | `{}` | Current filter values |
+| `onFilterChange` | `(values: Record<string, any>) => void` | - | Callback when filter values change |

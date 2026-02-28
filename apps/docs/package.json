@@ -31,6 +31,7 @@
     "react-dom": "catalog:",
     "sharp": "catalog:",
     "solid-js": "catalog:",
+    "starlight-changelogs": "catalog:",
     "starlight-sidebar-topics": "catalog:",
     "starlight-sidebar-topics-dropdown": "catalog:",
     "starlight-theme-nova": "catalog:",

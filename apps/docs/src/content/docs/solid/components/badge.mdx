@@ -1,0 +1,56 @@
+---
+title: Badge
+description: Displays a badge or a component that looks like a badge.
+---
+
+import { Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import ComponentPreview from "@/components/ComponentPreview.astro";
+import badgeCode from "../../../../../../../packages/solid/src/components/ui/badge.tsx?raw";
+
+## Component
+
+<ComponentPreview 
+  framework="solid"
+  component="badge"
+  story="default"
+  height="150px"
+  code={`import { Badge } from "@/components/ui/badge"
+
+export function BadgeDemo() {
+  return (
+    <div class="flex gap-2 flex-wrap">
+      <Badge variant="default">Default</Badge>
+      <Badge variant="secondary">Secondary</Badge>
+      <Badge variant="destructive">Destructive</Badge>
+      <Badge variant="outline">Outline</Badge>
+    </div>
+  )
+}`}
+  />
+
+## Installation
+
+<Tabs>
+  <TabItem label="CLI">
+    <Tabs>
+      <TabItem label="npm">
+        ```bash
+        npx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/badge.json
+        ```
+      </TabItem>
+      <TabItem label="pnpm">
+        ```bash
+        pnpm dlx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/badge.json
+        ```
+      </TabItem>
+      <TabItem label="bun">
+        ```bash
+        bunx shadcn@latest add https://devx-op.github.io/arkitect-ui/r/s/badge.json
+        ```
+      </TabItem>
+    </Tabs>
+  </TabItem>
+  <TabItem label="Manual">
+    <Code code={badgeCode} lang="tsx" title="components/ui/badge.tsx" />
+  </TabItem>
+</Tabs>
