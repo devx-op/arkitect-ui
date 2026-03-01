@@ -5,6 +5,11 @@ import react from "@vitejs/plugin-react"
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    watch: {
+      ignored: ["**/node_modules/**"],
+    },
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

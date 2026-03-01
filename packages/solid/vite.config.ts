@@ -14,6 +14,11 @@ export default defineConfig({
       insertTypesEntry: true,
     }),
   ],
+  server: {
+    watch: {
+      ignored: ["**/node_modules/**"],
+    },
+  },
   resolve: {
     alias: {
       "@/lib/utils": path.resolve(__dirname, "../shared/src/lib/utils.ts"),

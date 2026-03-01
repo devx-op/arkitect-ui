@@ -19,7 +19,7 @@
       "cache": false,
       "dependsOn": [
         {
-          "target": "dev",
+          "target": "build",
           "projects": ["@arkitect-ui/react", "@arkitect-ui/solid"]
         }
       ],

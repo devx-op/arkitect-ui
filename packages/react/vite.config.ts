@@ -19,6 +19,11 @@ export default {
     },
   },
   plugins: [react(), nxViteTsPaths()],
+  server: {
+    watch: {
+      ignored: ["**/node_modules/**"],
+    },
+  },
   build: {
     outDir: "dist",
     lib: {

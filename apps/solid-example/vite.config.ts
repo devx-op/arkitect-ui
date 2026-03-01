@@ -13,6 +13,9 @@ export default defineConfig({
   plugins: [devtools(), solidPlugin(), tailwindcss()],
   server: {
     port: 3000,
+    watch: {
+      ignored: ["**/node_modules/**"],
+    },
   },
   build: {
     target: "esnext",
