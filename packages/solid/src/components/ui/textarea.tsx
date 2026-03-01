@@ -1,3 +1,4 @@
+import { Field as FieldPrimitives } from "@ark-ui/solid"
 import { cva } from "class-variance-authority"
 import { type ComponentProps, splitProps } from "solid-js"
 import { cn } from "@/lib/utils"
@@ -18,12 +19,17 @@ const textareaStyle = cva(
   },
 )
 
-export interface TextareaProps extends ComponentProps<"textarea"> {
+export interface TextareaProps extends ComponentProps<typeof FieldPrimitives.Textarea> {
   variant?: "outline" | "soft" | "plain"
 }
 
 export function Textarea(props: TextareaProps) {
   const [local, rest] = splitProps(props, ["class", "variant"])
 
-  return <textarea class={cn(textareaStyle({ variant: local.variant, className: local.class }))} {...rest} />
+  return (
+    <FieldPrimitives.Textarea
+      class={cn(textareaStyle({ variant: local.variant, className: local.class }))}
+      {...rest}
+    />
+  )
 }

@@ -51,6 +51,28 @@
       height: 0;
     }
   }
+
+  /* Marquee animations */
+  @keyframes marquee-x {
+    from {
+      transform: translateX(var(--marquee-translate, 0%));
+    }
+    to {
+      transform: translateX(calc(-100% + var(--marquee-translate, 0%)));
+    }
+  }
+
+  @keyframes marquee-y {
+    from {
+      transform: translateY(var(--marquee-translate, 0%));
+    }
+    to {
+      transform: translateY(calc(-100% + var(--marquee-translate, 0%)));
+    }
+  }
+
+  --marquee-duration: 40s;
+  --marquee-spacing: 0px;
 }
 
 @utility container {

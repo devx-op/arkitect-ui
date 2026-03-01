@@ -8,8 +8,8 @@ packages:
   - '!packages/*/*/storybook-static'
 
 catalog:
-  '@ark-ui/react': ^5.31.0
-  '@ark-ui/solid': ^5.31.0
+  '@ark-ui/react': 5.34.0
+  '@ark-ui/solid': 5.34.0
   '@astrojs/react': ^4.4.2
   '@astrojs/solid-js': ^5.1.3
   '@astrojs/starlight': 0.36.3

@@ -1,3 +1,4 @@
+import { Field as FieldPrimitives } from "@ark-ui/react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { forwardRef, type TextareaHTMLAttributes } from "react"
 import { cn } from "@/lib/utils"
@@ -24,7 +25,13 @@ export interface TextareaProps
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, variant, ...props }, ref) => {
-    return <textarea className={cn(textareaStyle({ variant, className }))} ref={ref} {...props} />
+    return (
+      <FieldPrimitives.Textarea
+        className={cn(textareaStyle({ variant, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
   },
 )
 Textarea.displayName = "Textarea"

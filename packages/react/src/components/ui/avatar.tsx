@@ -1,5 +1,6 @@
+import { Avatar as AvatarPrimitives } from "@ark-ui/react/avatar"
 import { cva, type VariantProps } from "class-variance-authority"
-import { type ComponentProps, forwardRef } from "react"
+import { type ComponentProps, type ComponentRef, forwardRef } from "react"
 import { cn } from "@/lib/utils"
 
 const avatarSizes = cva("shrink-0", {
@@ -17,12 +18,13 @@ const avatarSizes = cva("shrink-0", {
 })
 
 const Avatar = forwardRef<
-  HTMLSpanElement,
-  ComponentProps<"span"> & VariantProps<typeof avatarSizes>
+  ComponentRef<typeof AvatarPrimitives.Root>,
+  ComponentProps<typeof AvatarPrimitives.Root> & VariantProps<typeof avatarSizes>
 >(({ className, size, ...props }, ref) => {
   return (
-    <span
+    <AvatarPrimitives.Root
       ref={ref}
+      data-slot="avatar"
       className={cn("relative flex shrink-0 overflow-hidden rounded-full", avatarSizes({ size }), className)}
       {...props}
     />
@@ -30,14 +32,26 @@ const Avatar = forwardRef<
 })
 Avatar.displayName = "Avatar"
 
-const AvatarImage = forwardRef<HTMLImageElement, ComponentProps<"img">>(({ className, ...props }, ref) => {
-  return <img ref={ref} className={cn("aspect-square h-full w-full object-cover", className)} {...props} />
+const AvatarImage = forwardRef<
+  ComponentRef<typeof AvatarPrimitives.Image>,
+  ComponentProps<typeof AvatarPrimitives.Image>
+>(({ className, ...props }, ref) => {
+  return (
+    <AvatarPrimitives.Image
+      ref={ref}
+      className={cn("aspect-square h-full w-full object-cover", className)}
+      {...props}
+    />
+  )
 })
 AvatarImage.displayName = "AvatarImage"
 
-const AvatarFallback = forwardRef<HTMLSpanElement, ComponentProps<"span">>(({ className, ...props }, ref) => {
+const AvatarFallback = forwardRef<
+  ComponentRef<typeof AvatarPrimitives.Fallback>,
+  ComponentProps<typeof AvatarPrimitives.Fallback>
+>(({ className, ...props }, ref) => {
   return (
-    <span
+    <AvatarPrimitives.Fallback
       ref={ref}
       className={cn("flex h-full w-full items-center justify-center rounded-full bg-muted", className)}
       {...props}

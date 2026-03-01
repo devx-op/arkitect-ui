@@ -1,9 +1,15 @@
-import { type ComponentProps, type CSSProperties } from "react"
+"use client"
+
+import { Marquee as ArkMarquee } from "@ark-ui/react/marquee"
+import { type ComponentProps } from "react"
 import { cn } from "@/lib/utils"
 
-export interface MarqueeProps extends ComponentProps<"div"> {
+export interface MarqueeProps
+  extends Omit<ComponentProps<typeof ArkMarquee.Root>, "children" | "speed" | "autoFill" | "reverse">
+{
   speed?: number
   direction?: "left" | "right"
+  children?: React.ReactNode
 }
 
 export function Marquee({
@@ -13,29 +19,17 @@ export function Marquee({
   children,
   ...props
 }: MarqueeProps) {
-  const style: CSSProperties = {
-    animation: `scroll ${10000 / speed}ms linear infinite`,
-    animationDirection: direction === "right" ? "reverse" : "normal",
-  }
-
   return (
-    <div className={cn("overflow-hidden", className)} {...props}>
-      <div className="flex w-max" style={style}>
-        {children}
-        {children}
-      </div>
-    </div>
+    <ArkMarquee.Root
+      className={cn("overflow-hidden", className)}
+      autoFill
+      speed={speed}
+      reverse={direction === "right"}
+      {...props}
+    >
+      <ArkMarquee.Viewport>
+        <ArkMarquee.Content>{children}</ArkMarquee.Content>
+      </ArkMarquee.Viewport>
+    </ArkMarquee.Root>
   )
-}
-
-// SSR guard - only run on client
-if (typeof document !== "undefined") {
-  const style = document.createElement("style")
-  style.textContent = `
-@keyframes scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-`
-  document.head.appendChild(style)
 }

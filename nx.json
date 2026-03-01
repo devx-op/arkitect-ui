@@ -119,23 +119,6 @@
     ]
   },
   "targets": {
-    "dev:all": {
-      "executor": "nx:run-commands",
-      "dependsOn": [
-        {
-          "target": "build",
-          "projects": ["@arkitect-ui/react", "@arkitect-ui/solid"]
-        }
-      ],
-      "options": {
-        "commands": [
-          "nx dev @arkitect-ui/docs",
-          "nx serve:storybook @arkitect-ui/react",
-          "nx serve:storybook @arkitect-ui/solid"
-        ],
-        "parallel": true
-      }
-    },
     "local-registry": {
       "executor": "@nx/js:verdaccio",
       "options": {

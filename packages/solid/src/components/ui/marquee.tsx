@@ -1,9 +1,13 @@
-import { type ComponentProps, splitProps } from "solid-js"
+import { Marquee as ArkMarquee } from "@ark-ui/solid/marquee"
+import { type ComponentProps, type JSX, splitProps } from "solid-js"
 import { cn } from "@/lib/utils"
 
-export interface MarqueeProps extends ComponentProps<"div"> {
+export interface MarqueeProps
+  extends Omit<ComponentProps<typeof ArkMarquee.Root>, "children" | "speed" | "autoFill" | "reverse">
+{
   speed?: number
   direction?: "left" | "right"
+  children?: JSX.Element
 }
 
 export function Marquee(props: MarqueeProps) {
@@ -12,17 +16,17 @@ export function Marquee(props: MarqueeProps) {
   const speed = () => local.speed ?? 50
   const direction = () => local.direction ?? "left"
 
-  const style = {
-    animation: `scroll ${10000 / speed()}ms linear infinite`,
-    animationDirection: direction() === "right" ? "reverse" : "normal",
-  }
-
   return (
-    <div class={cn("overflow-hidden", local.class)} {...rest}>
-      <div class="flex w-max" style={style}>
-        {local.children}
-        {local.children}
-      </div>
-    </div>
+    <ArkMarquee.Root
+      class={cn("overflow-hidden", local.class)}
+      autoFill
+      speed={speed()}
+      reverse={direction() === "right"}
+      {...rest}
+    >
+      <ArkMarquee.Viewport>
+        <ArkMarquee.Content>{local.children}</ArkMarquee.Content>
+      </ArkMarquee.Viewport>
+    </ArkMarquee.Root>
   )
 }
