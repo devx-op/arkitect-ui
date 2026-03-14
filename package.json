@@ -40,7 +40,7 @@
     "@nx/react": "catalog:",
     "@nx/storybook": "catalog:",
     "@nx/vite": "catalog:",
-    "@nx/vitest": "22.4.5",
+    "@nx/vitest": "22.5.4",
     "@nx/web": "catalog:",
     "@swc-node/register": "catalog:",
     "@swc/core": "catalog:",
@@ -54,7 +54,7 @@
     "husky": "catalog:",
     "jiti": "catalog:",
     "lint-staged": "catalog:",
-    "nx": "22.4.5",
+    "nx": "22.5.4",
     "nx-oxlint": "catalog:",
     "oxlint": "1.42.0",
     "shadcn": "catalog:",
@@ -71,7 +71,10 @@
         "dependsOn": [
           {
             "target": "build",
-            "projects": ["@arkitect-ui/react", "@arkitect-ui/solid"]
+            "projects": [
+              "@arkitect-ui/react",
+              "@arkitect-ui/solid"
+            ]
           }
         ],
         "options": {
@@ -104,18 +107,15 @@
     },
     "onlyBuiltDependencies": [
       "@parcel/watcher",
-      "@prisma/client",
-      "@prisma/engines",
       "@swc/core",
       "@tailwindcss/oxide",
       "better-sqlite3",
       "core-js",
-      "dprint",
       "esbuild",
       "msgpackr-extract",
+      "msw",
       "nx",
-      "prisma",
-      "unrs-resolver"
+      "sharp"
     ],
     "ignoredBuiltDependencies": [
       "bun"
