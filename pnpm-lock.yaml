@@ -33,12 +33,6 @@ catalogs:
     '@effect/language-service':
       specifier: 0.75.1
       version: 0.75.1
-    '@fontsource/geist-mono':
-      specifier: ^5.2.7
-      version: 5.2.7
-    '@fontsource/geist-sans':
-      specifier: ^5.2.5
-      version: 5.2.5
     '@nx/js':
       specifier: 22.5.4
       version: 22.5.4
@@ -93,6 +87,9 @@ catalogs:
     '@swc/helpers':
       specifier: 0.5.19
       version: 0.5.19
+    '@tabler/icons-react':
+      specifier: 3.36.1
+      version: 3.36.1
     '@tabler/icons-solidjs':
       specifier: ^3.36.1
       version: 3.40.0
@@ -425,18 +422,15 @@ importers:
       '@astrojs/starlight-tailwind':
         specifier: 'catalog:'
         version: 5.0.0(@astrojs/starlight@0.38.1(astro@6.0.4(@types/node@25.5.0)(ioredis@5.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.59.0)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2)))(tailwindcss@4.2.1)
-      '@fontsource/geist-mono':
-        specifier: 'catalog:'
-        version: 5.2.7
-      '@fontsource/geist-sans':
-        specifier: 'catalog:'
-        version: 5.2.5
       '@radix-ui/react-dropdown-menu':
         specifier: 'catalog:'
         version: 2.1.16(@types/react-dom@19.1.9(@types/react@19.1.13))(@types/react@19.1.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@radix-ui/react-slot':
         specifier: 'catalog:'
         version: 1.2.4(@types/react@19.1.13)(react@19.2.4)
+      '@tabler/icons-react':
+        specifier: 'catalog:'
+        version: 3.36.1(react@19.2.4)
       '@tabler/icons-solidjs':
         specifier: 'catalog:'
         version: 3.40.0(solid-js@1.9.11)
@@ -1963,12 +1957,6 @@ packages:
 
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
-
-  '@fontsource/geist-mono@5.2.7':
-    resolution: {integrity: sha512-xVPVFISJg/K0VVd+aQN0Y7X/sw9hUcJPyDWFJ5GpyU3bHELhoRsJkPSRSHXW32mOi0xZCUQDOaPj1sqIFJ1FGg==}
-
-  '@fontsource/geist-sans@5.2.5':
-    resolution: {integrity: sha512-anllOHyJbElRs9fV15TeDRqAeb1IKm4bSknPl6ZMoyPTx1BBy7logudcUwpNjmQLkzn4Q0JGQLRCUKJYoyST6A==}
 
   '@hono/node-server@1.19.11':
     resolution: {integrity: sha512-dr8/3zEaB+p0D2n/IUrlPF1HZm586qgJNXK1a9fhg/PzdtkK7Ksd5l312tJX2yBuALqDYBlG20QEbayqPyxn+g==}
@@ -11295,10 +11283,6 @@ snapshots:
       react-dom: 19.2.4(react@19.2.4)
 
   '@floating-ui/utils@0.2.11': {}
-
-  '@fontsource/geist-mono@5.2.7': {}
-
-  '@fontsource/geist-sans@5.2.5': {}
 
   '@hono/node-server@1.19.11(hono@4.12.8)':
     dependencies:

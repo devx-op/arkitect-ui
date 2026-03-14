@@ -12,7 +12,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 import expressiveCode from "astro-expressive-code"
 import react from "@astrojs/react"
-import solid from "@astrojs/solid-js"
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,7 +19,6 @@ export default defineConfig({
   base: "/arkitect-ui/",
   vite: {
     plugins: [
-      // @ts-expect-error - Type mismatch due to Vite version difference between Astro and Workspace
       tailwindcss(),
     ],
     resolve: {
@@ -33,10 +31,8 @@ export default defineConfig({
   },
   integrations: [
     expressiveCode(),
-    // Solid.js DEBE ir primero para que los contextos funcionen correctamente
-    // Ver: https://github.com/withastro/astro/issues/11300
-    solid({
-      include: ["**/packages/solid/**", "**/apps/docs/src/components/ui/**"],
+    react({
+      include: ["**/packages/react/**", "**/apps/docs/src/components/ui/**"],
     }),
     starlight({
       title: "",
