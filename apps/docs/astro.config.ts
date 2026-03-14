@@ -6,7 +6,7 @@ import { defineConfig } from "astro/config"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import startlightSidebarTopics from "starlight-sidebar-topics"
-import startlightThemeNova from "starlight-theme-nova"
+import starlightThemeRapide from "starlight-theme-rapide"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -33,9 +33,8 @@ export default defineConfig({
   },
   integrations: [
     expressiveCode(),
-    react({
-      include: ["**/packages/react/**", "**/react/**"],
-    }),
+    // Solid.js DEBE ir primero para que los contextos funcionen correctamente
+    // Ver: https://github.com/withastro/astro/issues/11300
     solid({
       include: ["**/packages/solid/**", "**/apps/docs/src/components/ui/**"],
     }),
@@ -46,6 +45,7 @@ export default defineConfig({
         dark: "./src/assets/dark-logo.svg",
       },
       plugins: [
+        starlightThemeRapide(),
         startlightSidebarTopics([
           {
             label: "ReactJs",
@@ -150,7 +150,7 @@ export default defineConfig({
             ],
           },
         ]),
-        startlightThemeNova(),
+        // startlightThemeNova(),
       ],
       components: {
         Head: "./src/components/Head.astro",
